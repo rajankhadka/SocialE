@@ -23,9 +23,6 @@
   margin-bottom: 10px;
 }
 
-.registerPage__header > div {
-}
-
 .registerPage__body > form {
   display: flex;
   flex-direction: column;
