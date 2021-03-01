@@ -1,0 +1,26 @@
+.loginregisterUI {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 821px;
+}
+
+.loginregisterUI__body > h1 {
+  font-size: 100px;
+}
+
+.loginregisterUI__body > p {
+  font-size: 20px;
+}
+
+.loginregisterUI__registerModal {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.28);
+  height: 821px;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 999;
+  padding-left: 35%;
+  padding-top: 6%;
+}

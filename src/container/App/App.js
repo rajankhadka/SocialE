@@ -1,10 +1,14 @@
 import './App.css';
 
+//importing components
+import LoginRegisterUI from '../../components/UI/LoginRegisterUI/LoginRegisterUI';
+
+
 function App() {
+  const appHeight = window.innerHeight;
+  console.log(appHeight);
   return (
-    <div className="App">
-      <h1>SocialE</h1>
-    </div>
+    <LoginRegisterUI />
   );
 }
 
