@@ -6,3 +6,21 @@
   display: flex;
   height: 92vh;
 }
+
+.homePage__body__body {
+  flex: 0.8;
+}
+
+.homePage__body__bodyHeaderTitle {
+  padding-left: 10px;
+}
+
+.homePage__body__bodyHeaderCompany {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.homePage__body__bodyHeaderCompanyLeft {
+  flex: 0.5;
+}
