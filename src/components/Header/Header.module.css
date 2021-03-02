@@ -1,0 +1,45 @@
+.header__header {
+  position: sticky;
+  top: 0;
+  height: 8vh;
+  background-color: #ededed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__header__left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__header__logo > img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.header__header__right {
+  flex: 0.1;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+}
+
+.header__header__right > .header__header__right__avatar {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.header__header__right > .header__header__right__avatar:hover {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+/* .header__header__right:hover .headerTooltip__content {
+  visibility: visible;
+} */

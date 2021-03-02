@@ -12,8 +12,14 @@ import { openRegister } from "../../redux/actions/showregisterAction";
 //using third party packages
 import validator from 'validator';
 
+//react-router
+import { useHistory } from "react-router-dom";
 
 function LoginPage(props) {
+
+    let loginHistory = useHistory();
+    // console.log("loginHistory", loginHistory);
+
     const [email, setEmail] = useState({
         error: false,
         helperText: "",
@@ -98,8 +104,9 @@ function LoginPage(props) {
     //submitting the data to the server
     const submitHandler = (event) => {
         event.preventDefault();
-        console.log("email--->", email.value);
-        console.log("password--->",password.value)
+        // console.log("email--->", email.value);
+        // console.log("password--->", password.value);
+        loginHistory.replace('/');
     }
 
     return (

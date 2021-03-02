@@ -1,0 +1,33 @@
+.sideBar__body__sideBar {
+  flex: 0.17;
+  background-color: #2a3f54;
+}
+
+.sideBar__body__sideBar__header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sideBar__body__sideBar__content {
+  color: white;
+  font-size: 8px;
+}
+
+.sideBar__body__sideBar__content > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 10px;
+  height: 70px;
+  cursor: pointer;
+}
+
+.sideBar__body__sideBar__content > div:hover {
+  border-right: 5px solid black;
+}
+
+.sideBar__body__sideBar__content > div > h1 {
+  font-weight: 300;
+  flex: 0.9;
+  padding-left: 10px;
+}

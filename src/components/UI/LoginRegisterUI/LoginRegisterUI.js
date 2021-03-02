@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 
 function LoginRegisterUI(props) {
     console.log(props.showRegisterState)
-
+    console.log(props)
     //registerPage Enable
     let showregister = (
         <>
@@ -32,10 +32,8 @@ function LoginRegisterUI(props) {
                 <p>phishing campaign</p>
             </div>
             <LoginPage />
-            
-           
+
             {showregister}
-           
             
            
         </div>
