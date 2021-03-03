@@ -1,0 +1,98 @@
+
+.homePage__body__body {
+  flex: 0.9;
+  z-index: 9;
+}
+
+.homePage__body__bodyTable {
+  margin-top: 20px;
+  height: 72vh;
+}
+
+/* ---------------------------table header-------------------- */
+
+.homePage__body__bodyTableHeader {
+  display: flex;
+  cursor: pointer;
+}
+/* ----------------------name------------------------ */
+.homePage__body__bodyTable__name {
+  padding-left: 10px;
+  flex: 0.3;
+}
+
+.homePage__body__bodyTable__name > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ----------------------create------------------------ */
+.homePage__body__bodyTable__create {
+  flex: 0.2;
+}
+
+.homePage__body__bodyTable__create > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ------------------------------unique open---------------------- */
+.homePage__body__bodyTable__uniqueOpen {
+  flex: 0.2;
+}
+
+.homePage__body__bodyTable__uniqueOpen > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* -----------------------------send------------------------- */
+.homePage__body__bodyTable__send {
+  flex: 0.1;
+}
+
+.homePage__body__bodyTable__send > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ---------------------------------edit------------------------- */
+.homePage__body__bodyTable__edit {
+  flex: 0.1;
+}
+
+.homePage__body__bodyTable__edit > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ------------------------------------delete--------------------------- */
+.homePage__body__bodyTable__delete {
+  flex: 0.1;
+}
+
+.homePage__body__bodyTable__delete > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ----------------------------------------tablebody row------------------------- */
+
+.homePage__body__bodyTableBody {
+  height: 65vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  cursor: pointer;
+}
+
+.homePage__body__bodyTableBodyRow {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  align-items: center;
+}
+
+.homePage__body__bodyTableBody > .homePage__body__bodyTableBodyRow:hover {
+  background-color: #ededed;
+}
