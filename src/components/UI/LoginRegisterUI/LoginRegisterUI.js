@@ -27,10 +27,11 @@ function LoginRegisterUI(props) {
     return (
         <div className={classes.loginregisterUI} >
 
-            <div className={classes.loginregisterUI__body}>
+            {/* <div className={classes.loginregisterUI__body}>
                 <h1>SocialE</h1>
                 <p>phishing campaign</p>
-            </div>
+            </div> */}
+            <h1>SocialE</h1>
             <LoginPage />
 
             {showregister}

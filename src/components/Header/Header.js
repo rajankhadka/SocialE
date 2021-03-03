@@ -21,9 +21,9 @@ function Header(props) {
                 </div>
             </div>
 
-            <div className={classes.header__header__right}>
+            <div className={classes.header__header__right} >
                 
-                <Avatar alt="Remy Sharp" src="" className={classes.header__header__right__avatar} />
+                <Avatar alt="Remy Sharp" src="" className={classes.header__header__right__avatar}  />
                 <HeaderTooltip />
             </div>
         </div>

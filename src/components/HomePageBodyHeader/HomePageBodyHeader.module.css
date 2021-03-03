@@ -1,0 +1,24 @@
+/* .homePage__body__bodyHeader{
+  background-color: brown;
+} */
+
+.homePage__body__bodyHeaderTitle {
+  padding-left: 10px;
+}
+
+.homePage__body__bodyHeaderCompany {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.homePage__body__bodyHeaderCompanyLeft {
+  flex: 0.5;
+}
+
+.homePage__body__bodyHeaderCompanyRight {
+  flex: 0.5;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
