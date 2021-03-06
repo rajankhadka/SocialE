@@ -8,6 +8,7 @@ import { Button, IconButton, TextField } from '@material-ui/core';
 //implementating redux
 import { connect } from "react-redux";
 import { openRegister } from "../../redux/actions/showregisterAction";
+import { openForgetPassword } from "../../redux/actions/showforgetpasswordAction";
 
 //using third party packages
 import validator from 'validator';
@@ -155,15 +156,16 @@ function LoginPage(props) {
                 </form>
             </div>
             <div className={classes.loginPage__footer}>
-                <Button color="primary"
+                {/* <Button color="primary"
                     className={classes.loginPage__forget}
                     onClick ={props.openRegisterAction}
                 >
                     Sign Up
-                </Button>
+                </Button> */}
 
                 <Button color="primary"
                     className={classes.loginPage__forget}
+                    onClick ={ props.openForgetPasswordAction}
                 >
                     Forgot Password
                 </Button>
@@ -175,7 +177,8 @@ function LoginPage(props) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        openRegisterAction : () => dispatch(openRegister())
+        openRegisterAction: () => dispatch(openRegister()),
+        openForgetPasswordAction : () => dispatch(openForgetPassword()),
     }
 }
 

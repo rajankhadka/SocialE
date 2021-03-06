@@ -1,12 +1,12 @@
-
 .homePage__body__body {
-  flex: 0.9;
+  flex: 1;
   z-index: 9;
+  margin-top: 10px;
 }
 
 .homePage__body__bodyTable {
   margin-top: 20px;
-  height: 72vh;
+  height: 70vh;
 }
 
 /* ---------------------------table header-------------------- */
@@ -28,7 +28,7 @@
 
 /* ----------------------create------------------------ */
 .homePage__body__bodyTable__create {
-  flex: 0.2;
+  flex: 0.3;
 }
 
 .homePage__body__bodyTable__create > h2 {

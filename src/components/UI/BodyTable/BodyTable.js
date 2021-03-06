@@ -8,10 +8,17 @@ import { Add, Edit, Search, Send, Delete } from '@material-ui/icons';
 //importing components
 import HomePageBodyHeader from "../../HomePageBodyHeader/HomePageBodyHeader";
 
+//redux
+import { connect } from "react-redux";
+
 const BodyTable = (props) =>{
     console.log("bodytable",props)
     return(
-        <div className={classes.homePage__body__body}>
+        <div className={classes.homePage__body__body}
+            style={{
+                zIndex: !props.showtooltipReducers.bodyzIndex ? "-1" : "1" 
+            }}
+        >
             <HomePageBodyHeader 
                 header={props.header} 
                 buttonName={props.buttonName} 
@@ -83,136 +90,43 @@ const BodyTable = (props) =>{
                             </IconButton>
                         </div>
                     </div>
-                    
+
+
                     <div className={classes.homePage__body__bodyTableBodyRow}>
                         <div className={classes.homePage__body__bodyTable__name}>
                             <p>Meet Sendy, our new app!</p>
+                            
                         </div>
 
                         <div className={classes.homePage__body__bodyTable__create}>
                             <p>Mon, Oct 12, 2020, 12:00AM</p>
+                            
                         </div>
 
                         <div className={classes.homePage__body__bodyTable__uniqueOpen}>
                             <p>279 opened</p>
                         </div>
-                    </div>
 
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
+                        <div className={classes.homePage__body__bodyTable__send}>
+                            <IconButton>
+                                <Send style={{fontSize:15 , color:"blue"}} />
+                            </IconButton>
                         </div>
 
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
+                        <div className={classes.homePage__body__bodyTable__edit}>
+                            <IconButton>
+                                <Edit style={{fontSize:15 ,color:"green"}} />
+                            </IconButton>
                         </div>
 
-                            <div className={classes.homePage__body__bodyTable__uniqueOpen}>
-                            <p>279 opened</p>
-                        </div>
-                    </div>
-
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
-                            
-                        </div>
-
-                            <div className={classes.homePage__body__bodyTable__uniqueOpen}>
-                            <p>279 opened</p>
+                        <div className={classes.homePage__body__bodyTable__edit}>
+                            <IconButton>
+                                <Delete style={{fontSize:15 , color:"red"}} />
+                            </IconButton>
                         </div>
                     </div>
-
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
-                            
-                        </div>
-                    </div>
-
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
-                            
-                        </div>
-                    </div>
-
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
-                            
-                        </div>
-                    </div>
-
-
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
-                            
-                        </div>
-                    </div>
-
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
-                            
-                        </div>
-                    </div>
-
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
-                            
-                        </div>
-                    </div>
-
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>Meet Sendy, our new app!</p>
-                            
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>Mon, Oct 12, 2020, 12:00AM</p>
-                            
-                        </div>
-                    </div>
+                    
+                    
 
                 </div>
 
@@ -222,5 +136,10 @@ const BodyTable = (props) =>{
     )
 }
 
+const mapStateToProps = state => {
+    return {
+        showtooltipReducers: state.showtooltipReducers
+    }
+}
 
-export default BodyTable
+export default connect(mapStateToProps, undefined)(BodyTable);

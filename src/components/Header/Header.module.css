@@ -33,13 +33,9 @@
 .header__header__right > .header__header__right__avatar {
   width: 30px;
   height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0);
+  /* border: 1px solid rgba(0, 0, 0, 0); */
 }
 
-.header__header__right > .header__header__right__avatar:hover {
+/* .header__header__right > .header__header__right__avatar:hover {
   border: 1px solid rgba(0, 0, 0, 0.5);
-}
-
-/* .header__header__right:hover .headerTooltip__content {
-  visibility: visible;
 } */

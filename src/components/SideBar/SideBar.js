@@ -6,7 +6,6 @@ import { IconButton } from '@material-ui/core';
 import { Close, Group, Home, TrackChanges, Warning } from '@material-ui/icons';
 
 //react router
-import {Link} from "react-router-dom";
 import {useHistory} from "react-router-dom";
 
 function SideBar(props) {

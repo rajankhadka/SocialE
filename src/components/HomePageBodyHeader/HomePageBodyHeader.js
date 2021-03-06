@@ -16,6 +16,7 @@ const HomePageBodyHeader = (props) =>{
     }
 
     const searchTitle = `Search ${props.title}`
+    
     return(
         <div className={classes.homePage__body__bodyHeader}>
             <div className={classes.homePage__body__bodyHeaderTitle}>
