@@ -10,3 +10,8 @@ export const headerTooltip = {
     OPENTOOLTIP: "OPENTOOLTIP",
     CLOSETOOLTIP : "CLOSETOOLTIP"
 }
+
+export const sidebar = {
+    OPENSIDEBAR: "OPENSIDEBAR",
+    CLOSESIDEBAR : "CLOSESIDEBAR"
+}
