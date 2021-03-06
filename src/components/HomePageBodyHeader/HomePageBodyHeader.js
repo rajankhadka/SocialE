@@ -5,11 +5,21 @@ import classes from "./HomePageBodyHeader.module.css"
 import { Button, TextField } from '@material-ui/core';
 import { Add, Search } from '@material-ui/icons';
 
+//react router 
+import {useHistory} from "react-router-dom"
+
 const HomePageBodyHeader = (props) =>{
+    const homepageHistory = useHistory();
+
+    const campaignCreateHandler = () =>{
+        homepageHistory.push(props.url)
+    }
+
+    const searchTitle = `Search ${props.title}`
     return(
         <div className={classes.homePage__body__bodyHeader}>
             <div className={classes.homePage__body__bodyHeaderTitle}>
-                <h1>Campaigns</h1>
+                <h1>{props.header}</h1>
             </div>
 
             <div className={classes.homePage__body__bodyHeaderCompany}>
@@ -22,18 +32,20 @@ const HomePageBodyHeader = (props) =>{
                             fontWeight: 'lighter',
                             marginLeft: "10px"
                         }}
+                        onClick = {campaignCreateHandler}
                     >
-                        Add New Campaign
+                        {props.buttonName}
                     </Button>
                 </div>
 
                 <div className={classes.homePage__body__bodyHeaderCompanyRight}>
                     <TextField id="outlined-basic"
                         variant="outlined"
-                        placeholder="Search Campaign"
+                        placeholder={searchTitle}
                         InputProps={{
                             startAdornment: <Search />
                         }}
+                        size="small"
                     />
                 </div>
             </div>

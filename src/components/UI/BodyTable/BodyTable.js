@@ -9,15 +9,21 @@ import { Add, Edit, Search, Send, Delete } from '@material-ui/icons';
 import HomePageBodyHeader from "../../HomePageBodyHeader/HomePageBodyHeader";
 
 const BodyTable = (props) =>{
+    console.log("bodytable",props)
     return(
         <div className={classes.homePage__body__body}>
-            <HomePageBodyHeader />
+            <HomePageBodyHeader 
+                header={props.header} 
+                buttonName={props.buttonName} 
+                title={props.title}
+                url={props.url}
+            />
             <div className={classes.homePage__body__bodyTable}>
 
                 {/* ----------------------------table Header-------------------------- */}
                 <div className={classes.homePage__body__bodyTableHeader}>
                     <div className={classes.homePage__body__bodyTable__name}>
-                        <h2>Campagin</h2>
+                        <h2>{props.title}</h2>
                     </div>
 
                     <div className={classes.homePage__body__bodyTable__create}>

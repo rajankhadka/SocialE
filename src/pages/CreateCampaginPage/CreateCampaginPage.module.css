@@ -1,0 +1,26 @@
+.homePage {
+  height: 100vh;
+}
+
+.homePage__body {
+  display: flex;
+  height: 92vh;
+}
+
+/* -----------------------createCampaignBody----------------------------- */
+.createCampaignBody {
+  flex: 0.83;
+  padding-left: 20px;
+}
+
+.createCampaignBodyHeader {
+  margin-bottom: 20px;
+}
+
+.createCampaignBody__body {
+}
+
+.createCampaignBody__body > form {
+  display: flex;
+  flex-direction: column;
+}
