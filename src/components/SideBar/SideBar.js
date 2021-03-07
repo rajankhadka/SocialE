@@ -3,7 +3,11 @@ import classes from "./SideBar.module.css"
 
 //material UI
 import { IconButton } from '@material-ui/core';
-import { Close, Group, Home, TrackChanges, Warning,Menu } from '@material-ui/icons';
+import {
+    Close, Group, Home,
+    TrackChanges, Warning, Menu,
+    Description
+} from '@material-ui/icons';
 
 //react router
 import {useHistory} from "react-router-dom";
@@ -69,7 +73,7 @@ function SideBar(props) {
                         sideBarHistory.push("/home/templates")
                     }}
                 >
-                    <Home style={{fontSize: 30}} />
+                    <Description style={{fontSize: 30}} />
                     <h1>Template</h1>
                     
                 </div>
