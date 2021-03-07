@@ -11,7 +11,16 @@ export const headerTooltip = {
     CLOSETOOLTIP : "CLOSETOOLTIP"
 }
 
+
 export const sidebar = {
     OPENSIDEBAR: "OPENSIDEBAR",
     CLOSESIDEBAR : "CLOSESIDEBAR"
+}
+
+export const sidebarActive = {
+    HOME: "HOME",
+    TEMPLATE: "TEMPLATE",
+    LOGS: "LOGS",
+    TARGETINFO: "TARGETINFO",
+    USERMANAGEMENT: "USERMANAGEMENT"
 }

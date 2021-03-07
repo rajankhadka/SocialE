@@ -23,9 +23,9 @@
   cursor: pointer;
 }
 
-.sideBar__body__sideBar__content > div:hover {
+/* .sideBar__body__sideBar__content > div:hover {
   border-right: 5px solid black;
-}
+} */
 
 .sideBar__body__sideBar__content > div > h1 {
   font-weight: 300;
