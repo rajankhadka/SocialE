@@ -17,9 +17,6 @@
   margin-bottom: 20px;
 }
 
-.createCampaignBody__body {
-}
-
 .createCampaignBody__body > form {
   display: flex;
   flex-direction: column;

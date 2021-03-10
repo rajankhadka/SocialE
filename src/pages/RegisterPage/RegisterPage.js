@@ -51,7 +51,7 @@ function RegisterPage(props) {
 
     return (
         <div className={classes.registerPage}>
-            <div className={classes.registerPage__header}>
+            {/* <div className={classes.registerPage__header}>
                 <h1>Sign Up</h1>
 
                 <div>
@@ -61,8 +61,8 @@ function RegisterPage(props) {
                 </div>
                 
                 
-            </div>
-            <hr />
+            </div> */}
+            {/* <hr /> */}
             <div className={classes.registerPage__body}>
                 <form>
 
@@ -114,7 +114,7 @@ function RegisterPage(props) {
                         type="submit" color="primary"
                         className={classes.registerPage__button}
                     >
-                        Sign Up
+                        Register User
                     </Button>
                 </form>
             </div>

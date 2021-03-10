@@ -1,0 +1,97 @@
+.userpermissions {
+  display: flex;
+  flex-direction: column;
+  background-color: #f6f9fc;
+  border: 1px solid #f6f9fc;
+  width: 650px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.24);
+  height: 82vh;
+  margin-left: 40px;
+}
+
+.userpermissions:hover {
+  box-shadow: 0 0 17px 2px rgba(0, 0, 0, 0.24);
+}
+
+/* --------------------header----------------------- */
+.userpermissions__header {
+  margin: 20px 10px;
+}
+
+/* ------------------------body----------------------------- */
+.userpermissions__body {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+/* --------------------------body left--------------------------- */
+.userpermissions__body__left {
+  width: 300px;
+  box-sizing: border-box;
+}
+
+/* -----------------------------body left header ------------------------ */
+.userpermissions__body__left__header {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+}
+/* --------------------------body left body-------------------------- */
+
+.userpermissions__body__left__body {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-top: 0px;
+  padding-left: 5px;
+  width: 300px;
+
+  height: 50vh;
+  box-sizing: border-box;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+.userpermissions__body__left__body > p {
+  width: 300px;
+  white-space: nowrap;
+}
+
+.userpermissions__body__left__body > p:hover {
+  background-color: green;
+}
+
+/* ------------------------body left footer -------------------- */
+.userpermissions__body__left__footer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.userpermissions__body__left__footer > p {
+  font-size: 13px;
+}
+
+/* ---------------------------body middle--------------------------- */
+.userpermissions__body__middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.userpermissions__body__middle > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.5);
+}

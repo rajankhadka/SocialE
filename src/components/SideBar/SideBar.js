@@ -122,7 +122,7 @@ function SideBar(props) {
                     }}
                     onClick={() => {
                         props.usermanagementsidebarAction()
-                        sideBarHistory.push("/");
+                        sideBarHistory.push("/home/user-management");
                     }}
                 
                 >

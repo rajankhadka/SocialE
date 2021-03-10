@@ -1,0 +1,8 @@
+.usermanagementPage {
+  height: 100vh;
+}
+
+.usermanagementPage__body {
+  display: flex;
+  height: 92vh;
+}

@@ -10,6 +10,8 @@ import CreateCampaginPage from '../../pages/CreateCampaginPage/CreateCampaginPag
 import TempaltePage from '../../pages/TemplatePage/TemplatePage';
 import CreateTemplatePage from '../../pages/CreateTemplatePage/CreateTemplatePage';
 import VerifyYourEmail from '../../pages/VerifyYourEmail/VerifyYourEmail';
+import UserManagementPage from '../../pages/UserManagementPage/UserManagementPage';
+import CreateUserPage from "../../pages/UserManagementPage/CreateUserPage/CreateUserPage"
 
 function App(props) {
   return (
@@ -21,6 +23,8 @@ function App(props) {
         <Route path="/home/templates" exact component={TempaltePage} />
         <Route path="/home/create-template" exact component={CreateTemplatePage} />
         <Route path="/forgot-password/verify-your-email" exact component={VerifyYourEmail} />
+        <Route path="/home/user-management" exact component={UserManagementPage} />
+        <Route path="/home/create-user" exact component={CreateUserPage} />
       </Switch>
       
     </Router>
