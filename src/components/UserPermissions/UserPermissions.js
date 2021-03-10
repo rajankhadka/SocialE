@@ -55,9 +55,9 @@ const UserPermissions = (props) =>{
                 
                 {/* body middle */}
                 <div className ={ classes.userpermissions__body__middle}>
-                   <div>
-                        <ArrowForward style={{fontSize:"20px", marginBottom: "10px" }} />
-                        <ArrowBack style={{fontSize:"20px"}} />
+                   <div >
+                        <ArrowForward style={{fontSize:"20px", marginBottom: "10px" }} className={classes.arrowForward} onClick ={() => console.log("arrow forward")}/>
+                        <ArrowBack style={{fontSize:"20px"}} onClick ={() => console.log("arrow Backward")} className={classes.arrowBackward}/>
                    </div>
                 </div>
                 
@@ -77,7 +77,7 @@ const UserPermissions = (props) =>{
 
                     <div className={classes.userpermissions__body__left__footer}>
                         <ArrowBackIos style={{fontSize:"15px"}}/>
-                        <p>choose All Permissions</p>
+                        <p>remove All Permissions</p>
                     </div>
                 </div>
            </div>
