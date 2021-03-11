@@ -9,7 +9,7 @@
 
 /* -----------------------createCampaignBody----------------------------- */
 .createCampaignBody {
-  flex: 0.83;
+  flex: 1;
   padding-left: 20px;
 }
 
@@ -17,7 +17,19 @@
   margin-bottom: 20px;
 }
 
-.createCampaignBody__body > form {
+.createCampaignBody__body {
+  display: flex;
+}
+
+.createCampaignBody__body__left > form {
   display: flex;
   flex-direction: column;
+}
+
+.createCampaignBody__body__right {
+  margin-left: 180px;
+}
+
+.createCampaignBody__body__right > p {
+  margin-bottom: 10px;
 }

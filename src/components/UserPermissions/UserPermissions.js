@@ -1,10 +1,35 @@
-import React from "react";
+import React,{useState,useRef} from "react";
 import classes from "./UserPermissions.module.css";
 
 //material ui
-import { ArrowBack, ArrowBackIos, ArrowForward, ArrowForwardIos } from "@material-ui/icons";
+import {
+    ArrowBack, ArrowBackIos,
+    ArrowForward, ArrowForwardIos
+} from "@material-ui/icons";
 
-const UserPermissions = (props) =>{
+const UserPermissions = (props) => {
+
+    const [selectItem, setSelectItem] = useState([]);
+    const currentPtag = useRef(false)
+    const [choosePermission, setChoosePermission] = useState([]);
+
+    const addClassNameHandler = (event) => {
+        console.log(event.target);
+        console.log(event.target.innerText);
+        console.log(selectItem)
+        if (event.target.className === classes.actve_p) {
+            event.target.className = ""
+            const newItem = selectItem.filter(item => {
+                return item !== event.target.innerText
+            });
+            setSelectItem(newItem)
+        } else {
+            event.target.className = classes.actve_p;
+            const newItem = selectItem.concat(event.target.innerText);
+            setSelectItem(newItem);
+        }
+    }
+
     return(
         <div className={classes.userpermissions}>
            <div className={classes.userpermissions__header}>
@@ -20,12 +45,12 @@ const UserPermissions = (props) =>{
                     </div>
 
                     <div className={classes.userpermissions__body__left__body}>
-                        <p>admin | can log entry | user create | admin | | can log entry | user create |</p>
-                        <p>admin | can log entry | user create</p>
-                        <p>admin | can log entry | user create</p>
-                        <p>admin | can log entry | user create</p>
-                        <p>admin | can log entry | user create</p>
-                        <p>admin | can log entry | user create | admin</p>
+                        <p onClick={(event)=> addClassNameHandler(event) } >admin | can log entry | user create | admin | | can log entry | user create |</p>
+                        <p onClick={(event)=> addClassNameHandler(event)}>admin | can log entry | user create</p>
+                        <p onClick={(event)=> addClassNameHandler(event) }>admin | can log entry | user create</p>
+                        <p onClick={(event)=> addClassNameHandler(event) }>admin | can log entry | user create</p>
+                        <p onClick={(event)=> addClassNameHandler(event) }>admin | can log entry | user create</p>
+                        <p onClick={(event)=> addClassNameHandler(event) }>admin | can log entry | user create | admin</p>
                         <p>admin | can log entry | user create</p>
                         <p>admin | can log entry | user create</p>
                         <p>admin | can log entry | user create</p>

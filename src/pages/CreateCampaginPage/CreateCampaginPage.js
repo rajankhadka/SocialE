@@ -4,7 +4,18 @@ import classes from "./CreateCampaginPage.module.css";
 //importing components
 import Header from "../../components/Header/Header"
 import SideBar from "../../components/SideBar/SideBar"
-import { Button, InputBase, InputLabel, MenuItem, TextField } from "@material-ui/core";
+import { Button, FormControl, InputBase, InputLabel, MenuItem, Select, TextField } from "@material-ui/core";
+
+//ck editor
+// import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor"
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+// const editorConfiguration = {
+//     plugins: [  Bold ],
+//     toolbar: [ 'bold' ]
+// };
 
 const CreateCampaginPage = (props) =>{
     console.log(props)
@@ -18,35 +29,56 @@ const CreateCampaginPage = (props) =>{
                         <h2>Create Campaign</h2>
                    </div>
 
-                   <div className={classes.createCampaignBody__body}>
-                       <form>
-                           <TextField variant="standard" 
-                                label="Campaign Name" 
-                                style={{  marginBottom: "20px",width:"250px"}}
+                    <div className={classes.createCampaignBody__body}>
+                        <div className={classes.createCampaignBody__body__left}>
+                            <form>
+                                <TextField variant="standard" 
+                                        label="Campaign Name" 
+                                        style={{  marginBottom: "20px",width:"250px"}}
+                                    />
+
+                                <TextField variant="standard" 
+                                        label="Campaign Subject"
+                                        style={{  marginBottom: "20px",width:"250px"}}
+                                    />
+
+                                <TextField variant="standard" 
+                                        label="Campaign Description" 
+                                        multiline={true} rowsMax={4}
+                                        style={{  marginBottom: "20px",width:"250px"}}
+                                    />
+
+                                    {/* <TextField variant="standard" 
+                                        label="Select Template"
+                                        select={true} style={{width:"250px",marginBottom: "20px"}} 
+                                    >
+                                        <MenuItem value="Nabil">Nabil</MenuItem>
+                                        <MenuItem value="Nabil">Nic</MenuItem>
+                                        <MenuItem value="Nabil">BOK</MenuItem>
+                                    </TextField> */}
+
+                                    <FormControl style={{width:"250px",marginBottom: "20px"}}>
+                                        <InputLabel id="selectTemplate">Select Template</InputLabel>
+                                        <Select labelId="selectTemplate">
+                                            <MenuItem value="Nabil">Nabil</MenuItem>
+                                            <MenuItem value="Nic">Nic</MenuItem>
+                                        <   MenuItem value="BOK">BOK</MenuItem>
+                                        </Select>
+                                    </FormControl>
+
+                                <Button variant="contained" style={{width:"250px"}}> Create Campaign</Button>
+                            </form>
+                        </div>
+                       
+
+                        <div className={classes.createCampaignBody__body__right}>
+                            <p>Create Template</p>
+                            <CKEditor
+                                editor={ClassicEditor}
+                                style={{backgroundColor: "red"}}
                             />
-
-                           <TextField variant="standard" 
-                                label="Campaign Subject"
-                                style={{  marginBottom: "20px",width:"250px"}}
-                            />
-
-                           <TextField variant="standard" 
-                                label="Campaign Description" 
-                                multiline={true} rowsMax={4}
-                                style={{  marginBottom: "20px",width:"250px"}}
-                            />
-
-                            <TextField variant="standard" 
-                                label="Select Template"
-                                select={true} style={{width:"250px",marginBottom: "20px"}} 
-                            >
-                                <MenuItem value="Nabil">Nabil</MenuItem>
-                                <MenuItem value="Nabil">Nic</MenuItem>
-                                <MenuItem value="Nabil">BOK</MenuItem>
-                            </TextField>
-
-                           <Button variant="contained" style={{width:"250px"}}> Create Campaign</Button>
-                       </form>
+                            
+                        </div>
                    </div>
                 </div>
                 

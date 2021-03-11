@@ -4,7 +4,6 @@ import classes from "./CreateUserPage.module.css";
 //importing components
 import Header from "../../../components/Header/Header"
 import SideBar from "../../../components/SideBar/SideBar"
-import { Button, InputBase, InputLabel, MenuItem, TextField } from "@material-ui/core";
 import RegisterPage from "../../RegisterPage/RegisterPage";
 import UserPermissions from "../../../components/UserPermissions/UserPermissions";
 

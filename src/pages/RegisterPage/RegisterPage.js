@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import classes from "./RegisterPage.module.css";
 
 //material UI
-import { TextField,Button,IconButton } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { TextField,Button, } from '@material-ui/core';
+import {  } from '@material-ui/icons';
 
 //implementing redux
 import { connect } from "react-redux";
@@ -72,6 +72,14 @@ function RegisterPage(props) {
                         className={classes.registerPage__input}
                         name="firstName"
                         value={firstName.value}
+                        onChange={
+                            (event) => setFirstName(prevState => {
+                                return {
+                                    ...prevState,
+                                    value: event.target.value
+                                }
+                            })
+                        }
                     />
 
                     <TextField variant="outlined"
@@ -79,6 +87,14 @@ function RegisterPage(props) {
                         className={classes.registerPage__input}
                         name="lastName"
                         value={lastName.value}
+                        onChange={
+                            (event) => setLastName(prevState => {
+                                return {
+                                    ...prevState,
+                                    value: event.target.value
+                                }
+                            })
+                        }
                     />
 
                     <TextField variant="outlined"
@@ -86,6 +102,14 @@ function RegisterPage(props) {
                         className={classes.registerPage__input}
                         name="email"
                         value={email.value}
+                        onChange={
+                            (event) => setEmail(prevState => {
+                                return {
+                                    ...prevState,
+                                    value: event.target.value
+                                }
+                            })
+                        }
                     />
 
                     <TextField variant="outlined"
@@ -93,6 +117,14 @@ function RegisterPage(props) {
                         className={classes.registerPage__input}
                         name="contactNumber"
                         value={contactNumber.value}
+                        onChange={
+                            (event) => setContactNumber(prevState => {
+                                return {
+                                    ...prevState,
+                                    value: event.target.value
+                                }
+                            })
+                        }
                     />
 
                     <TextField variant="outlined"
@@ -100,6 +132,14 @@ function RegisterPage(props) {
                         className={classes.registerPage__input}
                         name="password"
                         value={password.value}
+                        onChange={
+                            (event) => setPassword(prevState => {
+                                return {
+                                    ...prevState,
+                                    value: event.target.value
+                                }
+                            })
+                        }
                     />
 
                     <TextField variant="outlined"
@@ -108,6 +148,14 @@ function RegisterPage(props) {
                         className={classes.registerPage__input}
                         name="confirmPassword"
                         value={confirmPassword.value}
+                        onChange={
+                            (event) => setConfirmPassword(prevState => {
+                                return {
+                                    ...prevState,
+                                    value: event.target.value
+                                }
+                            })
+                        }
                     />
 
                     <Button variant="contained"

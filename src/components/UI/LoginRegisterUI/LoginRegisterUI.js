@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './LoginRegisterUI.module.css';
 //pages
 import LoginPage from "../../../pages/LoginPage/LoginPage";
-import RegisterPage from "../../../pages/RegisterPage/RegisterPage";
 import ForgetPassword from '../../../pages/ForgetPassword/ForgetPassword';
 
 
