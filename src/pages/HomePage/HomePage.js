@@ -24,8 +24,9 @@ function HomePage(props) {
                 <BodyTable 
                     header="Campaigns" 
                     buttonName = "Add New Campaign"
-                     title="Campaign" 
-                     url="/home/create-campagin"
+                    title="Campaign" 
+                    url="/home/create-campagin"
+                    campaigndetailURL = "/home/campaign"
                 />
                 
             </div>

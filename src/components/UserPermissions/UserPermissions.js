@@ -72,17 +72,32 @@ const UserPermissions = (props) => {
                         <p>admin | can log entry | user create</p>
                     </div>
 
-                    <div className={classes.userpermissions__body__left__footer}>
-                        <p>choose All Permissions</p>
-                        <ArrowForwardIos style={{fontSize:"15px"}}/>
+                    <div
+                        className={classes.userpermissions__body__left__footer}
+                        onClick={()=> console.log("Choose All Permission")}
+                    >
+                        <p style={{cursor:"pointer"}}>choose All Permissions</p>
+                        <ArrowForwardIos style={{fontSize:"15px",cursor:"pointer"}}/>
                     </div>
                 </div>
                 
                 {/* body middle */}
                 <div className ={ classes.userpermissions__body__middle}>
                    <div >
-                        <ArrowForward style={{fontSize:"20px", marginBottom: "10px" }} className={classes.arrowForward} onClick ={() => console.log("arrow forward")}/>
-                        <ArrowBack style={{fontSize:"20px"}} onClick ={() => console.log("arrow Backward")} className={classes.arrowBackward}/>
+                        <ArrowForward
+                            style={{ fontSize: "20px", marginBottom: "10px" }}
+                            className={classes.arrowForward}
+                            onClick={() => {
+                                setChoosePermission((prevState) => {
+                                    return[...prevState,...selectItem]
+                                });
+                                console.log("choosePermission--->", choosePermission);
+                            }}
+                        />
+                        <ArrowBack style={{ fontSize: "20px", }}
+                            onClick={() => console.log("arrow Backward")}
+                            className={classes.arrowBackward}
+                        />
                    </div>
                 </div>
                 
@@ -93,16 +108,19 @@ const UserPermissions = (props) => {
                     </div>
 
                     <div className={classes.userpermissions__body__left__body}>
+                        {/* <p>admin | can log entry | user create</p>
                         <p>admin | can log entry | user create</p>
                         <p>admin | can log entry | user create</p>
                         <p>admin | can log entry | user create</p>
-                        <p>admin | can log entry | user create</p>
-                        <p>admin | can log entry | user create</p>
+                        <p>admin | can log entry | user create</p> */}
+                        {choosePermission.map((item, index) => {
+                            return (<p key={index}>{ item}</p>)
+                        })}
                     </div>
 
                     <div className={classes.userpermissions__body__left__footer}>
-                        <ArrowBackIos style={{fontSize:"15px"}}/>
-                        <p>remove All Permissions</p>
+                        <ArrowBackIos style={{fontSize:"15px",cursor:"pointer"}}/>
+                        <p style={{cursor:"pointer"}}>remove All Permissions</p>
                     </div>
                 </div>
            </div>

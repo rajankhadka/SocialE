@@ -11,8 +11,17 @@ import HomePageBodyHeader from "../../HomePageBodyHeader/HomePageBodyHeader";
 //redux
 import { connect } from "react-redux";
 
-const BodyTable = (props) =>{
-    console.log("bodytable",props)
+//react router 
+import { useHistory } from "react-router-dom";
+
+const BodyTable = (props) => {
+    const bodytableHistory = useHistory();
+    console.log("bodytable", props);
+
+    const routeURLHandler = () => {
+        bodytableHistory.push(props.campaigndetailURL);
+    }
+
     return(
         <div className={classes.homePage__body__body}
             style={{
@@ -57,7 +66,7 @@ const BodyTable = (props) =>{
                 {/* -----------------------------table body-------------------------------------- */}
                 <div className={classes.homePage__body__bodyTableBody}>
 
-                    <div className={classes.homePage__body__bodyTableBodyRow}>
+                    <div className={classes.homePage__body__bodyTableBodyRow} onClick={props.campaigndetailURL ? routeURLHandler  : ()=> console.log("No Campaign detail")}>
                         <div className={classes.homePage__body__bodyTable__name}>
                             <p>Meet Sendy, our new app!</p>
                             

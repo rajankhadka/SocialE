@@ -6,16 +6,6 @@ import Header from "../../components/Header/Header"
 import SideBar from "../../components/SideBar/SideBar"
 import { Button, FormControl, InputBase, InputLabel, MenuItem, Select, TextField } from "@material-ui/core";
 
-//ck editor
-// import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor"
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-// import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
-// const editorConfiguration = {
-//     plugins: [  Bold ],
-//     toolbar: [ 'bold' ]
-// };
 
 const CreateCampaginPage = (props) =>{
     console.log(props)
@@ -73,10 +63,7 @@ const CreateCampaginPage = (props) =>{
 
                         <div className={classes.createCampaignBody__body__right}>
                             <p>Create Template</p>
-                            <CKEditor
-                                editor={ClassicEditor}
-                                style={{backgroundColor: "red"}}
-                            />
+                            
                             
                         </div>
                    </div>

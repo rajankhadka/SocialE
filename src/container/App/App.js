@@ -12,12 +12,14 @@ import CreateTemplatePage from '../../pages/CreateTemplatePage/CreateTemplatePag
 import VerifyYourEmail from '../../pages/VerifyYourEmail/VerifyYourEmail';
 import UserManagementPage from '../../pages/UserManagementPage/UserManagementPage';
 import CreateUserPage from "../../pages/UserManagementPage/CreateUserPage/CreateUserPage"
+import Campaign from '../../pages/HomePage/Campaign/Campaign';
 
 function App(props) {
   return (
     <Router>
       <Switch>
-        <Route  path="/" exact component={HomePage} />
+        <Route path="/" exact component={HomePage} />
+        <Route path="/home/campaign" exact component={ Campaign}/>
         <Route path="/home/create-campagin" component={CreateCampaginPage} />
         <Route path="/login" exact component={LoginRegisterUI} />
         <Route path="/home/templates" exact component={TempaltePage} />
