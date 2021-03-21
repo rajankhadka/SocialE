@@ -11,9 +11,6 @@ import {  } from '@material-ui/icons';
 import BodyTable from '../../components/UI/BodyTable/BodyTable';
 
 
-
-
-
 function HomePage(props) {
     console.log(props)
     return (
@@ -28,7 +25,6 @@ function HomePage(props) {
                     url="/home/create-campagin"
                     campaigndetailURL = "/home/campaign"
                 />
-                
             </div>
         </div>
     )

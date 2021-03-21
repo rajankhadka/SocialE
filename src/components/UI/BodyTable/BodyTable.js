@@ -82,7 +82,7 @@ const BodyTable = (props) => {
                         </div>
 
                         <div className={classes.homePage__body__bodyTable__send}>
-                            <IconButton>
+                            <IconButton onClick={()=> console.log("send")}>
                                 <Send style={{fontSize:15 , color:"blue"}} />
                             </IconButton>
                         </div>

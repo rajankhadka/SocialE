@@ -38,15 +38,6 @@ const CreateCampaginPage = (props) =>{
                                         style={{  marginBottom: "20px",width:"250px"}}
                                     />
 
-                                    {/* <TextField variant="standard" 
-                                        label="Select Template"
-                                        select={true} style={{width:"250px",marginBottom: "20px"}} 
-                                    >
-                                        <MenuItem value="Nabil">Nabil</MenuItem>
-                                        <MenuItem value="Nabil">Nic</MenuItem>
-                                        <MenuItem value="Nabil">BOK</MenuItem>
-                                    </TextField> */}
-
                                     <FormControl style={{width:"250px",marginBottom: "20px"}}>
                                         <InputLabel id="selectTemplate">Select Template</InputLabel>
                                         <Select labelId="selectTemplate">
