@@ -24,3 +24,8 @@ export const sidebarActive = {
     TARGETINFO: "TARGETINFO",
     USERMANAGEMENT: "USERMANAGEMENT"
 }
+
+export const LOGINACTIVITY = {
+    LOGIN: "LOGIN",
+    LOGOUT: "LOGOUT"
+}

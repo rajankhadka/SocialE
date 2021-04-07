@@ -49,22 +49,46 @@ function RegisterPage(props) {
         showPassword: false
     })
 
+    const [userName, setUserName] = useState({
+        error: false,
+        helperText: "",
+        value: ""
+    })
+
+    //userregisterHandler
+    const userregisterHandler = (event) => {
+        event.preventDefault();
+        console.log(firstName, lastName, userName, email, password, confirmPassword, contactNumber);
+        if (password.value === confirmPassword.value) {
+            console.log("password");
+            fetch("http://127.0.0.1:8000/signup/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    first_name: firstName.value,
+                    last_name: lastName.value,
+                    email: email.value,
+                    username: userName.value,
+                    password: password.value,
+                    confirm_password: confirmPassword.value,
+                    phonenumber: contactNumber.value
+                })
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(err => console.log(err));
+        } else {
+            console.log("password mismatch");
+        }
+    }
+
     return (
         <div className={classes.registerPage}>
-            {/* <div className={classes.registerPage__header}>
-                <h1>Sign Up</h1>
-
-                <div>
-                    <IconButton onClick={props.closeRegisterAction}>
-                        <Close />
-                    </IconButton>
-                </div>
-                
-                
-            </div> */}
-            {/* <hr /> */}
+            
             <div className={classes.registerPage__body}>
-                <form>
+                <form onSubmit={userregisterHandler}>
 
                     <TextField variant="outlined"
                         label="FirstName"
@@ -98,6 +122,22 @@ function RegisterPage(props) {
                     />
 
                     <TextField variant="outlined"
+                        label="UserName"
+                        type="text"
+                        className={classes.registerPage__input}
+                        name="userName"
+                        value={userName.value}
+                        onChange={
+                            (event) => setUserName(prevState => {
+                                return {
+                                    ...prevState,
+                                    value: event.target.value
+                                }
+                            })
+                        }
+                    />
+
+                    <TextField variant="outlined"
                         label="Email" type="email"
                         className={classes.registerPage__input}
                         name="email"
@@ -113,7 +153,7 @@ function RegisterPage(props) {
                     />
 
                     <TextField variant="outlined"
-                        label="ContactNumber" type="number"
+                        label="ContactNumber" type="text"
                         className={classes.registerPage__input}
                         name="contactNumber"
                         value={contactNumber.value}

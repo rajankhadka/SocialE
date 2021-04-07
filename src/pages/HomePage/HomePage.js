@@ -10,11 +10,14 @@ import {  } from '@material-ui/core';
 import {  } from '@material-ui/icons';
 import BodyTable from '../../components/UI/BodyTable/BodyTable';
 
+import { Redirect,useHistory } from "react-router-dom";
 
 function HomePage(props) {
     console.log(props)
+    const homepageHistory = useHistory()
     return (
         <div className={classes.homePage}>
+            {window.localStorage.getItem("token") === null && homepageHistory.replace('/login')}
             <Header />
             <div className={classes.homePage__body}>
                 <SideBar />

@@ -39,7 +39,6 @@ function UploadTemplate(props) {
                     .then(url => {
                         console.log(url);
                         
-
                         //database
 
                         const firebasedb = db.ref();

@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useRef} from 'react';
 import classes from "./LoginPage.module.css";
 
 //material UI
@@ -21,6 +21,8 @@ function LoginPage(props) {
     let loginHistory = useHistory();
     // console.log("loginHistory", loginHistory);
 
+    const form = useRef(null);
+
     const [email, setEmail] = useState({
         error: false,
         helperText: "",
@@ -34,7 +36,11 @@ function LoginPage(props) {
         showPassword : "false"
     });
 
-    const [buttondisable, setButtondisable] = useState(false)
+    const [errormsg, setErrormsg] = useState("");
+
+    const [buttondisable, setButtondisable] = useState(false);
+
+    const [initialclick, setInitialclick] = useState(true);
     //saving value of input field to the local state
 
     const inputFieldHandler = (event) => {
@@ -93,7 +99,8 @@ function LoginPage(props) {
                             helperText: "",
                         }
                     })
-                    setButtondisable(false)
+                    setButtondisable(false);
+                    setInitialclick(false);
                 }
                 break;
             default:
@@ -105,9 +112,47 @@ function LoginPage(props) {
     //submitting the data to the server
     const submitHandler = (event) => {
         event.preventDefault();
-        // console.log("email--->", email.value);
-        // console.log("password--->", password.value);
-        loginHistory.replace('/');
+        
+        fetch("http://127.0.0.1:8000/signin/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "email": email.value,
+                "password": password.value
+            })
+            
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.status) {
+                    setErrormsg(data.status);
+                    setEmail(prevState => {
+                        return {
+                            ...prevState,
+                            error: true,
+                        }
+                    });
+                    setPassword(prevState => {
+                        return {
+                            ...prevState,
+                            error: true,
+                        }
+                    })
+                } else {
+                    window.localStorage.setItem('user', data.user);
+                    window.localStorage.setItem('token', data.key);
+                    console.log("loginhistory--->", loginHistory);
+                    setButtondisable(false);
+                    loginHistory.replace("/")
+                }
+                
+                
+            })
+            .catch(err => console.log(err));
+
     }
 
     return (
@@ -117,7 +162,18 @@ function LoginPage(props) {
                 <h3 className={classes.loginPage__header__login}>Login</h3>
             </div>
             <div className={classes.loginPage__body}>
-                <form onSubmit={submitHandler}>
+                {errormsg.length > 0 &&
+                    <p
+                        style={{
+                            
+                        textAlign: "center",
+                           color:"red", 
+                            
+                        }}
+                    >
+                        no user with such credentials
+                    </p>}
+                <form ref={form} onSubmit={submitHandler} >
                     <TextField variant="outlined"
                         label="Email" type="email" name="email"
                         className={classes.loginPage__input}
@@ -134,6 +190,7 @@ function LoginPage(props) {
                         className={classes.loginPage__input}
                         onChange={inputFieldHandler}
                         value={password.value}
+                        error={password.error}
                         InputProps={{
                             endAdornment: 
                                 <IconButton
@@ -147,7 +204,7 @@ function LoginPage(props) {
                     />
 
                     <Button variant="contained"
-                        type="submit" color="primary" disabled={buttondisable}
+                        type="submit" color="primary" disabled={ buttondisable || initialclick }
                         className={classes.loginPage__button}
                     >
                         Sign In

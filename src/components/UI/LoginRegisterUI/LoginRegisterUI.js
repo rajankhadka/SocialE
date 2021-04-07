@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import classes from './LoginRegisterUI.module.css';
 //pages
 import LoginPage from "../../../pages/LoginPage/LoginPage";
@@ -9,10 +9,18 @@ import ForgetPassword from '../../../pages/ForgetPassword/ForgetPassword';
 import { connect } from "react-redux";
 import { closeForgetPassword } from "../../../redux/actions/showforgetpasswordAction";
 
-function LoginRegisterUI(props) {
-    console.log(props.showForgetPasswordState)
-    console.log(props)
+//react router
+import { useHistory ,Redirect} from "react-router-dom";
 
+
+function LoginRegisterUI(props) {
+    
+    const loginregisteruiHistory = useHistory();
+    
+
+    // console.log(props.showForgetPasswordState)
+    // console.log("loginregisterui--->", props)
+    // console.log("loginregisteruiHistory---->", loginregisteruiHistory);
     //registerPage Enable
     // let showregister = (
     //     <>
@@ -64,11 +72,12 @@ function LoginRegisterUI(props) {
             </div>
         )
     }
-
     return (
-        <div className={classes.loginregisterUI} >
 
+        <div className={classes.loginregisterUI} >
+            {window.localStorage.getItem('token') !== null && loginregisteruiHistory.replace("/") }
             <h1>SocialE</h1>
+            
             <LoginPage />
             {showforgetpassword}
             

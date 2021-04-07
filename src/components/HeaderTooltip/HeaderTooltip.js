@@ -14,6 +14,12 @@ function HeaderTooltip(props) {
 
     const headertooltipHistory = useHistory();
 
+    const logoutHandler = () => {
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('user');
+        headertooltipHistory.replace("/login");
+    }
+
     return (
         <div className={classes.headerTooltip__content}
             style={{
@@ -21,7 +27,7 @@ function HeaderTooltip(props) {
             }}>
             <p> <AccountCircle /> User Profile</p>
             <p> <Settings /> Setting</p>
-            <p onClick={()=> headertooltipHistory.replace("/login") }> <ExitToApp /> Logout</p>
+            <p onClick={logoutHandler}> <ExitToApp /> Logout</p>
         </div>
     )
 }
