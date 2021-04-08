@@ -6,7 +6,9 @@ import { IconButton } from '@material-ui/core';
 import {
     Close, Group, Home,
     TrackChanges, Warning, Menu,
-    Description
+    Description,
+    Settings,
+    AccountCircle
 } from '@material-ui/icons';
 
 //react router
@@ -18,7 +20,9 @@ import { closesidebar } from "../../redux/actions/showsidebarAction";
 import {
     homesidebar, logssidebar,
     targetinfosidebar, templatesidebar,
-    usermanagementsidebar
+    usermanagementsidebar,
+    settingsidebar,
+    userprofilesidebar
 } from "../../redux/actions/activesidebarAction";
 
 function SideBar(props) {
@@ -129,6 +133,41 @@ function SideBar(props) {
                     <Group style={{fontSize: 30}}/>
                     <h1>UserManagement</h1>
                 </div>
+
+                {/* setting */}
+                <div
+                    style={{
+                        borderRightWidth: props.activesidebarReducers.setting && "5px",
+                        borderRightStyle: props.activesidebarReducers.setting && "solid",
+                        borderRightColor : props.activesidebarReducers.setting && "black"
+                    }}
+                    onClick={() => {
+                        props.settingsidebarAction();
+                        sideBarHistory.push("/home/setting");
+                    }}
+                
+                >
+                    <Settings style={{fontSize: 30}}/>
+                    <h1>Settings</h1>
+                </div>
+
+                {/* user-profile */}
+                <div
+                    style={{
+                        borderRightWidth: props.activesidebarReducers.userProfile && "5px",
+                        borderRightStyle: props.activesidebarReducers.userProfile && "solid",
+                        borderRightColor : props.activesidebarReducers.userProfile && "black"
+                    }}
+                    onClick={() => {
+                        props.userprofilesidebarAction();
+                        sideBarHistory.push("/home/setting");
+                    }}
+                
+                >
+                    <AccountCircle style={{fontSize: 30}}/>
+                    <h1>User Profile</h1>
+                </div>
+
             </div>
 
         </div>
@@ -149,7 +188,9 @@ const mapDispatchToProps = dispatch => {
         templatesidebarAction: () => dispatch(templatesidebar()),
         logssidebarAction: () => dispatch(logssidebar()),
         targetinfosidebarAction: () => dispatch(targetinfosidebar()),
-        usermanagementsidebarAction: () => dispatch(usermanagementsidebar())
+        usermanagementsidebarAction: () => dispatch(usermanagementsidebar()),
+        settingsidebarAction: () => dispatch(settingsidebar()),
+        userprofilesidebarAction: () => dispatch(userprofilesidebar())
     }
 }
 

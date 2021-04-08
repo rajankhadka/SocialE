@@ -29,3 +29,17 @@ export const usermanagementsidebar = () => {
         type: sidebarActive.USERMANAGEMENT
     }
 }
+
+export const settingsidebar = () => {
+    return {
+        type: sidebarActive.SETTING
+    }
+
+
+}
+
+export const userprofilesidebar = () => {
+    return {
+        type: sidebarActive.USERPROFILE
+    }
+}

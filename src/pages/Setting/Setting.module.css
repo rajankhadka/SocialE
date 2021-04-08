@@ -1,0 +1,110 @@
+.setting {
+  height: 100vh;
+}
+
+.setting__body {
+  display: flex;
+  height: 92vh;
+}
+
+.setting__body__content {
+  flex: 1;
+  margin-top: 10px;
+  margin-left: 10px;
+  /* background-color: aqua; */
+}
+
+.setting__body__content__header {
+  margin-bottom: 10px;
+}
+
+/* ------------------------two auth-------------------------- */
+.setting__body__twoAuth {
+  /* background-color: aqua; */
+  width: 60vh;
+}
+
+.setting__body__twoAuth__header {
+  display: flex;
+  /* background-color: aqua; */
+  align-items: center;
+}
+
+.setting__body__twoAuth__header > h3 {
+  flex: 0.9;
+}
+
+.setting__body__twoAuth__body {
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  /* background-color: bisque; */
+  border: 1px solid #f6f9fc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.24);
+}
+
+.setting__body__twoAuth__body__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.setting__twoAuth__button {
+  text-transform: capitalize !important;
+  /* margin-top: 20px !important; */
+}
+
+/* ----------------------change password ----------------------- */
+
+.setting__body__password {
+  margin-top: 20px;
+  /* background-color: aqua; */
+  width: 60vh;
+}
+
+.setting__body__password__header {
+  display: flex;
+  /* background-color: aqua; */
+  align-items: center;
+}
+
+.setting__body__password__header > h3 {
+  flex: 0.9;
+}
+
+.setting__body__password__body {
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  /* background-color: bisque; */
+  border: 1px solid #f6f9fc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.24);
+  display: flex;
+  flex-direction: column;
+}
+
+.setting__password__button {
+  text-transform: capitalize !important;
+  margin-top: 10px !important;
+}
+
+/* ----------------------change password form ------------------ */
+.oldPassword,
+.newPassword,
+.confirmPassword {
+  /* background-color: aqua; */
+  height: 4vh;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+input[type="password"] {
+  height: 3vh;
+  margin-right: 10px;
+  width: 30vh;
+}

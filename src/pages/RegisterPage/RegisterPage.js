@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import classes from "./RegisterPage.module.css";
 
 //material UI
-import { TextField,Button, } from '@material-ui/core';
+import { TextField,Button, FormControl, InputLabel, Select, } from '@material-ui/core';
 import {  } from '@material-ui/icons';
 
 //implementing redux
 import { connect } from "react-redux";
 import { closeRegister } from "../../redux/actions/showregisterAction";
+import UserPermissions from '../../components/UserPermissions/UserPermissions';
 
 function RegisterPage(props) {
 
@@ -20,40 +21,76 @@ function RegisterPage(props) {
     const [lastName, setLastName] = useState({
         error: false,
         helperText: "",
-        value:""
-    })
+        value: ""
+    });
 
     const [email, setEmail] = useState({
         error: false,
         helperText: "",
-        value:""
-    })
+        value: ""
+    });
 
     const [contactNumber, setContactNumber] = useState({
         error: false,
         helperText: "",
-        value:""
-    })
+        value: ""
+    });
 
     const [password, setPassword] = useState({
         error: false,
         helperText: "",
         value: "",
         showPassword: false
-    })
+    });
 
     const [confirmPassword, setConfirmPassword] = useState({
         error: false,
         helperText: "",
         value: "",
         showPassword: false
-    })
+    });
 
     const [userName, setUserName] = useState({
         error: false,
         helperText: "",
         value: ""
-    })
+    });
+
+    const [group, setGroup] = useState({
+        error: false,
+        helperText: "",
+        value:""
+    });
+
+
+    const [creategroup, setCreategroup] = useState(false);
+    const [groupname, setGroupname] = useState("");
+
+    const groupnameHandler = (event) => {
+        console.log(groupname);
+        setGroupname(event.target.value);
+    }
+
+    const creategroupHandler = () => {
+        setCreategroup(false);
+
+        if (groupname.length > 0) {
+            setGroup(prevState => {
+                return {
+                    ...prevState,
+                    value: groupname
+                }
+            });
+        } else {
+            setGroup(prevState => {
+                return {
+                    ...prevState,
+                    value: ""
+                }
+            });
+        }
+        
+    }
 
     //userregisterHandler
     const userregisterHandler = (event) => {
@@ -95,6 +132,7 @@ function RegisterPage(props) {
                         type="text"
                         className={classes.registerPage__input}
                         name="firstName"
+                        size="small"
                         value={firstName.value}
                         onChange={
                             (event) => setFirstName(prevState => {
@@ -111,6 +149,7 @@ function RegisterPage(props) {
                         className={classes.registerPage__input}
                         name="lastName"
                         value={lastName.value}
+                        size="small"
                         onChange={
                             (event) => setLastName(prevState => {
                                 return {
@@ -126,6 +165,7 @@ function RegisterPage(props) {
                         type="text"
                         className={classes.registerPage__input}
                         name="userName"
+                        size="small"
                         value={userName.value}
                         onChange={
                             (event) => setUserName(prevState => {
@@ -141,6 +181,7 @@ function RegisterPage(props) {
                         label="Email" type="email"
                         className={classes.registerPage__input}
                         name="email"
+                        size="small"
                         value={email.value}
                         onChange={
                             (event) => setEmail(prevState => {
@@ -156,6 +197,7 @@ function RegisterPage(props) {
                         label="ContactNumber" type="text"
                         className={classes.registerPage__input}
                         name="contactNumber"
+                        size="small"
                         value={contactNumber.value}
                         onChange={
                             (event) => setContactNumber(prevState => {
@@ -171,6 +213,7 @@ function RegisterPage(props) {
                         label="Password" type="password"
                         className={classes.registerPage__input}
                         name="password"
+                        size="small"
                         value={password.value}
                         onChange={
                             (event) => setPassword(prevState => {
@@ -185,6 +228,7 @@ function RegisterPage(props) {
                     <TextField variant="outlined"
                         label="Confirm Password"
                         type="password"
+                        size="small"
                         className={classes.registerPage__input}
                         name="confirmPassword"
                         value={confirmPassword.value}
@@ -197,6 +241,37 @@ function RegisterPage(props) {
                             })
                         }
                     />
+                    
+                    <FormControl variant="outlined" className={classes.registerPage__input} size="small">
+                        <InputLabel htmlFor="group">Group</InputLabel>
+                        <Select
+                            native
+                            label="Group"
+                            id="group"
+                            name="group"
+                            value={group.value}
+                            onChange={(event) => {
+                                console.log("onchange--->",event.target.value);
+                                console.log("onchange--->", event.target.name);
+                                if (event.target.value === "Create Group") {
+                                    console.log("yes");
+                                    setCreategroup(true);
+                                }
+                                setGroup((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        value: event.target.value
+                                    }
+                                })
+                            }}
+                        >
+                            <option value="" />
+                            <option value="Create Group">Create Group</option>
+                            <option value="System Admin">System Admin</option>
+                            <option value="Company Admin">Company Admin</option>
+                            <option value="Staff">Staff</option>
+                        </Select>
+                    </FormControl>
 
                     <Button variant="contained"
                         type="submit" color="primary"
@@ -206,6 +281,25 @@ function RegisterPage(props) {
                     </Button>
                 </form>
             </div>
+
+            {
+                creategroup
+                    ?
+                        <div className={classes.creategroup}>
+                            <div>
+                                
+                                <UserPermissions
+                                    creategroup={creategroup}
+                                    groupname={groupname}
+                                    groupnameHandler={groupnameHandler}
+                                    creategroupHandler={creategroupHandler}
+                                />
+                            </div>               
+                        </div>
+                    :
+                        null
+                
+            }
         </div>
     )
 }

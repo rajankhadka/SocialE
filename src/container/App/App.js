@@ -13,6 +13,7 @@ import VerifyYourEmail from '../../pages/VerifyYourEmail/VerifyYourEmail';
 import UserManagementPage from '../../pages/UserManagementPage/UserManagementPage';
 import CreateUserPage from "../../pages/UserManagementPage/CreateUserPage/CreateUserPage"
 import Campaign from '../../pages/HomePage/Campaign/Campaign';
+import Setting from '../../pages/Setting/Setting';
 
 function App(props) {
   return (
@@ -27,6 +28,7 @@ function App(props) {
         <Route path="/forgot-password/verify-your-email" exact component={VerifyYourEmail} />
         <Route path="/home/user-management" exact component={UserManagementPage} />
         <Route path="/home/create-user" exact component={CreateUserPage} />
+        <Route path="/home/setting" exact component={Setting} />
       </Switch>
       
     </Router>

@@ -5,7 +5,9 @@ const initialState = {
     template: false,
     logs: false,
     tragetInfo: false,
-    userManagement : false
+    userManagement: false,
+    setting: false,
+    userProfile : false,
 }
 
 const activesidebarReducers = (state = initialState, action) => {
@@ -16,7 +18,9 @@ const activesidebarReducers = (state = initialState, action) => {
                 template: false,
                 logs: false,
                 tragetInfo: false,
-                userManagement : false  
+                userManagement: false,
+                setting: false,
+                userProfile : false,
             }
         
         case sidebarActive.TARGETINFO:
@@ -25,7 +29,9 @@ const activesidebarReducers = (state = initialState, action) => {
                 template: false,
                 logs: false,
                 tragetInfo: true,
-                userManagement : false  
+                userManagement: false,
+                setting: false,
+                userProfile : false,
             }
         
         case sidebarActive.LOGS:
@@ -34,7 +40,9 @@ const activesidebarReducers = (state = initialState, action) => {
                 template: false,
                 logs: true,
                 tragetInfo: false,
-                userManagement : false  
+                userManagement: false,
+                setting: false,
+                userProfile : false,
             }
         
         
@@ -44,7 +52,9 @@ const activesidebarReducers = (state = initialState, action) => {
                 template: true,
                 logs: false,
                 tragetInfo: false,
-                userManagement : false  
+                userManagement: false,
+                setting: false,
+                userProfile : false,
             }
         
         case sidebarActive.USERMANAGEMENT:
@@ -53,8 +63,33 @@ const activesidebarReducers = (state = initialState, action) => {
                 template: false,
                 logs: false,
                 tragetInfo: false,
-                userManagement : true  
+                userManagement: true,
+                setting: false,
+                userProfile : false,
             }
+        
+        case sidebarActive.USERPROFILE:
+            return {
+                home: false,
+                template: false,
+                logs: false,
+                tragetInfo: false,
+                userManagement: false,
+                setting: false,
+                userProfile : true,
+            }
+            
+        case sidebarActive.SETTING:
+            return {
+                home: false,
+                template: false,
+                logs: false,
+                tragetInfo: false,
+                userManagement: false,
+                setting: true,
+                userProfile: false,
+            }
+
     
         default:
             return state;

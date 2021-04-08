@@ -26,7 +26,7 @@ function HeaderTooltip(props) {
                 visibility: !props.showtooltipReducers.visibility ? "hidden" : "visible"
             }}>
             <p> <AccountCircle /> User Profile</p>
-            <p> <Settings /> Setting</p>
+            <p onClick={()=>console.log("setting")}> <Settings /> Setting</p>
             <p onClick={logoutHandler}> <ExitToApp /> Logout</p>
         </div>
     )

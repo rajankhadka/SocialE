@@ -33,7 +33,7 @@ function ForgetPassword(props) {
         console.log(password);
         console.log(confirmPassword);
         if (password === confirmPassword) {
-            fetch("http://127.0.0.1:8000/newpassword/", {
+            fetch("http://127.0.0.1:8000/setpassword/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -102,7 +102,7 @@ function ForgetPassword(props) {
     //otphandler
     const otpverifyHandler = (event) => {
         event.preventDefault();
-        fetch("http://127.0.0.1:8000/verify_otp/", {
+        fetch("http://127.0.0.1:8000/verify/otp/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
