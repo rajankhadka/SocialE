@@ -181,7 +181,17 @@ function LoginPage(props) {
                         value={email.value}
                         onBlur={validationHandler}
                         error={email.error}
-                        helperText = {email.helperText}
+                        helperText={email.helperText}
+                        onFocus={() => {
+                            console.log("no focus called");
+                            setErrormsg("");
+                            setEmail(prevState => {
+                                return {
+                                    ...prevState,
+                                    error: false
+                                }
+                            })
+                        }}
                     />
 
                     <TextField variant="outlined"
@@ -194,11 +204,21 @@ function LoginPage(props) {
                         InputProps={{
                             endAdornment: 
                                 <IconButton
+                                    style={{marginLeft: password.showPassword && "62px" }}
                                     onClick={showPasswordHandler}
                                     edge="end"
                                 >
-                                    {password.showPassword ?<Visibility /> :<VisibilityOff/>}  
+                                    {password.showPassword ? <Visibility /> :<VisibilityOff/>}
                                 </IconButton>
+                        }}
+
+                        onFocus={() => {
+                            setPassword(prevState => {
+                                return {
+                                    ...prevState,
+                                    error : false,
+                                }
+                            })
                         }}
                         
                     />

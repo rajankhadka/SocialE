@@ -11,7 +11,8 @@ import SideBar from '../../components/SideBar/SideBar';
 function Setting(props) {
 
     const [enableTwoAuth, setEnableTwoAuth] = useState(false);
-    const [twoAuth,setTwoAuth] = useState("email")
+    const [twoAuth, setTwoAuth] = useState("email");
+    
 
     const [changePassword, setChangePassword] = useState(false);
 
@@ -25,8 +26,9 @@ function Setting(props) {
                         <h1>Setting</h1>
                     </div>
 
-                    {/* enable two factor auth */}
-                    <div className={classes.setting__body__twoAuth}>
+                    <div className={classes.setting__body__content__body}>
+
+                        <div className={classes.setting__body__twoAuth}>
                         <div className={classes.setting__body__twoAuth__header}>
                             <h3>Enable Two Factor Auth</h3>
                             <FormControlLabel
@@ -63,10 +65,25 @@ function Setting(props) {
                                                 } }
                                             >
                                                 <FormControlLabel value="email" control={<Radio />} label="Email Based" />
-                                                <FormControlLabel value="qrcode" control={<Radio />} label="QR Based" />
                                                 <FormControlLabel value="sms" control={<Radio />} label="SMS Based" />
+                                                <FormControlLabel value="qrcode" control={<Radio />} label="QR Based" />
                                             </RadioGroup>
                                         </FormControl>
+                                        
+                                        {
+                                                twoAuth === 'qrcode'
+                                                    ?
+                                                    <div style={{marginLeft:"90px"}}>
+                                                        <p >Scan the QR code first</p>
+                                                        <div className={classes.qrcodeEnable} >
+                                                            <img alt="qrcode" src="https://i.stack.imgur.com/Mspmr.png" />
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    : null
+                                            
+                                        }
+
 
                                         <Button color="primary"
                                             className={classes.setting__twoAuth__button}
@@ -136,6 +153,11 @@ function Setting(props) {
 
                         
                     </div>
+
+                    </div>
+
+                    {/* enable two factor auth */}
+                    
 
                 </div>
             </div>
