@@ -31,3 +31,7 @@ export const LOGINACTIVITY = {
     LOGIN: "LOGIN",
     LOGOUT: "LOGOUT"
 }
+
+export const token = {
+    TOKEN: "TOKEN"
+}
