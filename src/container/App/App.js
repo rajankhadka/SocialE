@@ -14,6 +14,8 @@ import UserManagementPage from '../../pages/UserManagementPage/UserManagementPag
 import CreateUserPage from "../../pages/UserManagementPage/CreateUserPage/CreateUserPage"
 import Campaign from '../../pages/HomePage/Campaign/Campaign';
 import Setting from '../../pages/Setting/Setting';
+import Template001 from '../../template/Template001';
+import Template002 from '../../template/Template002';
 
 function App(props) {
   return (
@@ -29,6 +31,10 @@ function App(props) {
         <Route path="/home/user-management" exact component={UserManagementPage} />
         <Route path="/home/create-user" exact component={CreateUserPage} />
         <Route path="/home/setting" exact component={Setting} />
+
+        {/* template */}
+        <Route path="/template/001" exact component={Template001} />
+        <Route path="/template/002"  exact component={Template002} />
       </Switch>
       
     </Router>
