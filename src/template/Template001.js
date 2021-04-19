@@ -1,9 +1,48 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 
-import { useHistory } from "react-router-dom";
+import { useHistory,useLocation } from "react-router-dom";
+
+
+//redux
+import { connect } from "react-redux";
 
 function Template001(props) {
 
+    const location = useLocation();
+    console.log(location.search);
+
+    let searchParams1 = new URLSearchParams(window.location.href);
+    console.log("searchParams1", searchParams1)
+    console.log(searchParams1.get(`http://localhost:3000/template/001?template_name`));
+
+    let template_name = searchParams1.get(`http://localhost:3000/template/001?template_name`);
+    console.log(template_name);
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/template/resource/retrieve/?template_name=${template_name}`, {
+            
+            
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                
+            },
+            
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.data);
+                setTemplateData({
+                    bodyBackgroundcolor:data.data.bodyBackgroundcolor
+                });
+            })
+            .catch(err => console.log(err))
+        
+    }, [])
+
+    const [templateData, setTemplateData] = useState({
+        bodyBackgroundcolor:"ffffff"
+    });
     const temp001 = useHistory();
 
     return (
@@ -64,8 +103,7 @@ function Template001(props) {
                     alignItems: "center",
                     justifyContent: "space-around",
                     borderBottom: "1px solid black",
-                    // backgroundColor:"red",
-                    color:"red",
+                    backgroundColor: templateData.bodyBackgroundcolor,
                 }}
             >
                 <div style={{ flex: 0.4 }}>
@@ -140,4 +178,10 @@ function Template001(props) {
     )
 }
 
-export default Template001;
+const mapStatetoProps = (state) => {
+    return {
+        templateReducers: state.templateReducers.templateName,
+    }
+}
+
+export default connect(mapStatetoProps,undefined)(Template001);

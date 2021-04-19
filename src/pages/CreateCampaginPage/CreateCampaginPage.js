@@ -13,12 +13,16 @@ import {
 //color picker 
 import ColorPicker from "../../components/ColorPicker/ColorPicker";
 
+//redux
+import { connect } from "react-redux";
+import { setTemplate } from "../../redux/actions/templateAction";
+
 const templateData = [
     {
-        templateName: "Template 001",
+        templateName: "temp001",
         url:"http://localhost:3000/template/001",
     }, {
-        templateName: "Template 002",
+        templateName: "temp002",
         url:"http://localhost:3000/template/002",
     }
 ];
@@ -26,6 +30,7 @@ const templateData = [
 
 const CreateCampaginPage = (props) =>{
     // console.log(props);
+    const [template_name, setTemplate_name] = useState("");
 
     //template
     const [selectTemplate, setSelectTemplate] = useState("");
@@ -284,10 +289,13 @@ const CreateCampaginPage = (props) =>{
     
 
     const IframerenderHandler = (event) => {
-        console.log(event.target.value);
-        setSelectTemplate(event.target.value);
-        setIframerender(event.target.value);
         const templatedata = templateData.filter(item => event.target.value === item.url);
+        console.log(event.target.value);
+        const url = `${event.target.value}?template_name=${templatedata[0].templateName}`;
+        setSelectTemplate(event.target.value);
+        setIframerender(url);
+        // setIframerender(event.target.value);
+        console.log(templatedata[0].templateName);
         setTemplateName(templatedata[0].templateName);
     }
 
@@ -368,6 +376,29 @@ const CreateCampaginPage = (props) =>{
 
         console.log("footer background color", footerbackgroundColorPicker);
         console.log("footer font color", footerColorPicker);
+
+        fetch("http://127.0.0.1:8000/template/resource/create/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                headerBackgroundColor: headerbackgroundColorPicker,
+                headerFontColor: headerColorPicker,
+                bodyBackgroundcolor: bodybackgroundColorPicker,
+                bodyFontColor: bodyColorPicker,
+                headerNav1: headerNav1,
+                headerNav2: headerNav2,
+                headerNav3: headerNav3,
+                template_url: iframerender, //template url
+                template_name: template_name, //new template name
+                bodyButtonColor: bodyButtonColorPicker
+            })
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(err));
     }
 
     return(
@@ -384,9 +415,11 @@ const CreateCampaginPage = (props) =>{
                         <div className={classes.createCampaignBody__body__left}>
                             <form>
                                 <TextField variant="standard" 
-                                        label="Campaign Name" 
-                                        style={{  marginBottom: "10px",width:"250px"}}
-                                    />
+                                    label="Campaign Name"
+                                    value={template_name}
+                                    onChange={(event)=> setTemplate_name(event.target.value)}
+                                    style={{  marginBottom: "10px",width:"250px"}}
+                                />
 
                                 <TextField variant="standard" 
                                         label="Campaign Subject"
@@ -452,7 +485,16 @@ const CreateCampaginPage = (props) =>{
                                     &&
                                     <div>
                                         {/* <a style={{ color: "white" }} href={iframerender} target="_blank" rel="noreferrer">Preview Template</a> */}
-                                        <a style={{ color: "white" }} href={iframerender} target="_blank" rel="noreferrer">Preview Template</a>
+                                        <a style={{ color: "white" }}
+                                            onClick={() => {
+                                                console.log("a tag clicked!!!")
+                                                props.setTemplateAction()
+                                            }}
+                                            href={iframerender} target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            Preview Template
+                                        </a>
                                         
                                         {
                                             modifyTemplate
@@ -833,4 +875,10 @@ const CreateCampaginPage = (props) =>{
     );
 }
 
-export default CreateCampaginPage;
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        setTemplateAction: (data) => dispatch(setTemplate(data))
+    }
+}
+
+export default connect(undefined,mapDispatchtoProps)(CreateCampaginPage);

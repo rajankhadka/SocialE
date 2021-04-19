@@ -35,3 +35,8 @@ export const LOGINACTIVITY = {
 export const token = {
     TOKEN: "TOKEN"
 }
+
+export const TEMPLATE = {
+    GETTEMPLATE: "GETTEMPLATE",
+    SETTEMPLATE: "SETTEMPLATE"
+}

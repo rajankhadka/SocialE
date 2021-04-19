@@ -8,6 +8,8 @@ import showsidebarReducers from "../reducers/showsidebarReducers/showsidebarRedu
 import activesidebarReducers from "../reducers/activesidebarReducers/activesidebarReducers";
 import loginReducers from "../reducers/loginuserReducers/loginuserReducers";
 import tokensavedReducers from "../reducers/tokensavedReducers/tokensavedReducers";
+import templateReducers from "../reducers/templateReducers/templateReducers";
+
 
 const rootReducers = combineReducers({
     showregisterReducers: showregisterReducers,
@@ -16,7 +18,8 @@ const rootReducers = combineReducers({
     showsidebarReducers: showsidebarReducers,
     activesidebarReducers: activesidebarReducers,
     loginReducers: loginReducers,
-    tokensavedReducers:tokensavedReducers
+    tokensavedReducers: tokensavedReducers,
+    templateReducers: templateReducers,
 });
 
 const configureStore = () => createStore(rootReducers)
