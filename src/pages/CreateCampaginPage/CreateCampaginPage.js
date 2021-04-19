@@ -43,6 +43,8 @@ const CreateCampaginPage = (props) =>{
     const activebody = useRef(null);
     const activefooter = useRef(null);
 
+    
+
     //modify template handler
     const [modifyTemplate, setModifyTemplate] = useState(false);
 
@@ -288,17 +290,6 @@ const CreateCampaginPage = (props) =>{
 
     
 
-    const IframerenderHandler = (event) => {
-        const templatedata = templateData.filter(item => event.target.value === item.url);
-        console.log(event.target.value);
-        const url = `${event.target.value}?template_name=${templatedata[0].templateName}`;
-        setSelectTemplate(event.target.value);
-        setIframerender(url);
-        // setIframerender(event.target.value);
-        console.log(templatedata[0].templateName);
-        setTemplateName(templatedata[0].templateName);
-    }
-
     const addtitleactiveclassNameHandler = () => {
         activetitle.current.className = classes.modifyTemplate__body__header__content__title__active;
         activeheader.current.className = classes.modifyTemplate__body__header__content__header;
@@ -355,6 +346,20 @@ const CreateCampaginPage = (props) =>{
         })
     }
 
+    //new template
+    const [newTemplate, setNewTemplate] = useState("");
+
+    const IframerenderHandler = (event) => {
+        const templatedata = templateData.filter(item => event.target.value === item.url);
+        console.log(event.target.value);
+        const url = `${event.target.value}`;
+        setSelectTemplate(event.target.value);
+        setIframerender(url);
+        // setIframerender(event.target.value);
+        console.log(templatedata[0].templateName);
+        setTemplateName(templatedata[0].templateName);
+    }
+
     //createCampaign
     const [createCampaign, setCreateCampaign] = useState(false)
 
@@ -397,7 +402,10 @@ const CreateCampaginPage = (props) =>{
             })
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data);
+                setNewTemplate(data.tempate_name)
+            })
             .catch(err => console.log(err));
     }
 
@@ -490,7 +498,7 @@ const CreateCampaginPage = (props) =>{
                                                 console.log("a tag clicked!!!")
                                                 props.setTemplateAction()
                                             }}
-                                            href={iframerender} target="_blank"
+                                            href={`${iframerender}?template_name=${templateName}`} target="_blank"
                                             rel="noreferrer"
                                         >
                                             Preview Template
@@ -512,7 +520,18 @@ const CreateCampaginPage = (props) =>{
                                                     </Button>
 
                                         }
+
+                                        {
+                                            newTemplate.length > 0 &&
+                                            <a style={{ color: "white" }}
+                                                href={`${iframerender}?template_name=${newTemplate}`} target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                new Template
+                                            </a>
+                                        }
                                         
+
                                     </div>
                                 }
                             </div>
