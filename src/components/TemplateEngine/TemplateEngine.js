@@ -1,10 +1,10 @@
 import { Button } from '@material-ui/core';
 import React, { useRef,useState} from 'react'
 import classes  from "./TemplateEngine.module.css";
-import TemplateEngineBody from './TemplateEngineBody';
-import TemplateEngineHeader from './TemplateEngineHeader';
+import TemplateEngineBody from './TemplateEngineBody/TemplateEngineBody';
+import TemplateEngineHeader from './TemplateEngineHeader/TemplateEngineHeader';
 
-import classes1 from "./TemplateEngineHeader.module.css";
+import classes1 from "./TemplateEngineHeader/TemplateEngineHeader.module.css";
 
 function TemplateEngine(props) {
 

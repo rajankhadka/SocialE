@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import React,{useState} from 'react'
-import ColorPicker from '../../components/ColorPicker/ColorPicker';
+import ColorPicker from '../../ColorPicker/ColorPicker';
 import classes from "./TemplateEngineBody.module.css";
 
 function TemplateEngineBody(props) {

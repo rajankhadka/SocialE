@@ -11,3 +11,10 @@
   height: 45vh;
   width: 90%;
 }
+
+.createTemplate {
+  /* background-color: aqua; */
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}

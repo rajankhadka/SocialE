@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from "react";
+import React,{useState} from "react";
 import classes from "./CreateCampaginPage.module.css";
 
 //importing components
@@ -10,13 +10,11 @@ import {
     Select, TextField
 } from "@material-ui/core";
 
-//color picker 
-import ColorPicker from "../../components/ColorPicker/ColorPicker";
 
 //redux
 import { connect } from "react-redux";
 import { setTemplate } from "../../redux/actions/templateAction";
-import TemplateEngine from "./TemplateEngine";
+import TemplateEngine from "../../components/TemplateEngine/TemplateEngine";
 
 const templateData = [
     {
