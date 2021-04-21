@@ -2,19 +2,14 @@ import { Button } from '@material-ui/core';
 import React, { useRef,useState} from 'react'
 import ColorPicker from '../../components/ColorPicker/ColorPicker';
 import classes  from "./TemplateEngine.module.css";
+import TemplateEngineHeader from './TemplateEngineHeader';
+
+import classes1 from "./TemplateEngineHeader.module.css";
 
 function TemplateEngine(props) {
 
-
-    const activetitle = useRef(null);
-    const activeheader = useRef(null);
-    const activebody = useRef(null);
-    const activefooter = useRef(null);
-
     //upload field
-
     //color
-
     //header color
     const [headerbackgroundColorPicker,setHeaderbackgroundColorPicker] = useState("#ffffff")
 
@@ -90,6 +85,12 @@ function TemplateEngine(props) {
 
     const modifyTemplateHandler = () => setModifyTemplate(true);
 
+    const activetitle = useRef(null);
+    const activeheader = useRef(null);
+    const activebody = useRef(null);
+    const activefooter = useRef(null);
+
+
     //header inner 
     const [showheaderInner, setShowheaderInner] = useState({
         title: false,
@@ -107,6 +108,7 @@ function TemplateEngine(props) {
         titleLogo: true,
     });
 
+   
     //header 
     const [activeclassesHeader, setActiveclassesHeader] = useState({
         headerbackgroundColor: true,
@@ -123,7 +125,7 @@ function TemplateEngine(props) {
         bodybuttonColor : false,
 
     });
-
+    
     //footer
     const [activeclassesFooter, setActiveclassesFooter] = useState({
         footerBackgroundColor: true,
@@ -193,6 +195,7 @@ function TemplateEngine(props) {
         }
     }
 
+    
     const activeclassesHeaderHandler = (event) => {
         switch (event.target.id) {
             case "headerbackgroundColor":
@@ -256,12 +259,9 @@ function TemplateEngine(props) {
     }
 
     
-
-    const addtitleactiveclassNameHandler = () => {
-        activetitle.current.className = classes.modifyTemplate__body__header__content__title__active;
-        activeheader.current.className = classes.modifyTemplate__body__header__content__header;
-        activebody.current.className = classes.modifyTemplate__body__header__content__body;
-        activefooter.current.className = classes.modifyTemplate__body__header__content__footer;
+    
+    //title part 
+    const setShowheaderInnerTitleHandler = () => {
         setShowheaderInner({
             title: true,
             header: false,
@@ -271,11 +271,18 @@ function TemplateEngine(props) {
         })
     }
 
-    const addheaderactiveclassNameHandler = () => {
-        activetitle.current.className = classes.modifyTemplate__body__header__content__title;
-        activeheader.current.className = classes.modifyTemplate__body__header__content__header__active;
-        activebody.current.className = classes.modifyTemplate__body__header__content__body;
-        activefooter.current.className = classes.modifyTemplate__body__header__content__footer;
+    
+    const addtitleactiveclassNameHandler = () => {
+        activetitle.current.className = classes1.modifyTemplate__body__header__content__title__active;
+        activeheader.current.className = classes1.modifyTemplate__body__header__content__header;
+        activebody.current.className = classes1.modifyTemplate__body__header__content__body;
+        activefooter.current.className = classes1.modifyTemplate__body__header__content__footer;
+        setShowheaderInnerTitleHandler()
+    }
+
+    //header part
+
+    const setShowheaderInnerHeaderHandler = () => {
         setShowheaderInner({
             title: false,
             header: true,
@@ -284,12 +291,17 @@ function TemplateEngine(props) {
             inner:true,
         })
     }
+   
+    const addheaderactiveclassNameHandler = () => {
+        activetitle.current.className = classes1.modifyTemplate__body__header__content__title;
+        activeheader.current.className = classes1.modifyTemplate__body__header__content__header__active;
+        activebody.current.className = classes1.modifyTemplate__body__header__content__body;
+        activefooter.current.className = classes1.modifyTemplate__body__header__content__footer;
+        setShowheaderInnerHeaderHandler();
+    }
 
-    const addbodyactiveclassNameHandler = () => {
-        activetitle.current.className = classes.modifyTemplate__body__header__content__title;
-        activeheader.current.className = classes.modifyTemplate__body__header__content__header;
-        activebody.current.className = classes.modifyTemplate__body__header__content__body__active;
-        activefooter.current.className = classes.modifyTemplate__body__header__content__footer;
+    //body part 
+    const showheaderInnerBodyHandler = () => {
         setShowheaderInner({
             title: false,
             header: false,
@@ -299,11 +311,18 @@ function TemplateEngine(props) {
         })
     }
 
-    const addfooteractiveclassNameHandler = () => {
-        activetitle.current.className = classes.modifyTemplate__body__header__content__title;
-        activeheader.current.className = classes.modifyTemplate__body__header__content__header;
-        activebody.current.className = classes.modifyTemplate__body__header__content__body;
-        activefooter.current.className = classes.modifyTemplate__body__header__content__footer__active;
+     
+    const addbodyactiveclassNameHandler = () => {
+        activetitle.current.className = classes1.modifyTemplate__body__header__content__title;
+        activeheader.current.className = classes1.modifyTemplate__body__header__content__header;
+        activebody.current.className = classes1.modifyTemplate__body__header__content__body__active;
+        activefooter.current.className = classes1.modifyTemplate__body__header__content__footer;
+        showheaderInnerBodyHandler();
+    }
+
+    //footer part 
+
+    const showheaderInnerFooterHandler = () => {
         setShowheaderInner({
             title: false,
             header: false,
@@ -311,6 +330,15 @@ function TemplateEngine(props) {
             footer: true,
             inner:true,
         })
+    }
+
+    
+    const addfooteractiveclassNameHandler = () => {
+        activetitle.current.className = classes1.modifyTemplate__body__header__content__title;
+        activeheader.current.className = classes1.modifyTemplate__body__header__content__header;
+        activebody.current.className = classes1.modifyTemplate__body__header__content__body;
+        activefooter.current.className = classes1.modifyTemplate__body__header__content__footer__active;
+        showheaderInnerFooterHandler();
     }
 
     //new template
@@ -426,132 +454,35 @@ function TemplateEngine(props) {
             <div className={classes.modifyTemplate__body} style={{display: modifyTemplate ?  "block" : "none"}}>
 
                 {/* ---------------header---------------- */}
-                <div className={classes.modifyTemplate__body__header}>
-                    <div className={classes.modifyTemplate__body__header__content__title}
-                        onClick={addtitleactiveclassNameHandler}
-                        ref={activetitle}
-                    >
-                        <p style={{cursor:"pointer"}}>Title</p>
-                    </div>
+                
+                <TemplateEngineHeader
+                    activeclassesTitle = { activeclassesTitle }
+                    activeclassesHeader = { activeclassesHeader }
+                    activeclassesBody = { activeclassesBody }
+                    activeclassesFooter = {activeclassesFooter}
+                    activetitle={activetitle}
+                    activeheader={activeheader}
+                    activebody={activebody}
+                    activefooter={activefooter}
+                    showheaderInner={showheaderInner}
+                    activeclassesFooterHandler={activeclassesFooterHandler}
+                    activeclassesBodyHandler = { activeclassesBodyHandler }
+                    activeclassesHeaderHandler = { activeclassesHeaderHandler }
+                    activeclassesTitleHandler={activeclassesTitleHandler}
+                    addtitleactiveclassNameHandler = { addtitleactiveclassNameHandler }
+                    addheaderactiveclassNameHandler = { addheaderactiveclassNameHandler }
+                    addbodyactiveclassNameHandler = { addbodyactiveclassNameHandler }
+                    addfooteractiveclassNameHandler = {addfooteractiveclassNameHandler}
+                />
 
-                    <div className={classes.modifyTemplate__body__header__content__header}
-                        onClick={addheaderactiveclassNameHandler}
-                        ref={activeheader}
-                    > 
-                        <p>Header</p>
-                    </div>
-
-                    <div className={classes.modifyTemplate__body__header__content__body}
-                        onClick={addbodyactiveclassNameHandler}
-                        ref={activebody}
-                    >
-                        <p>Body</p>
-                    </div>
-
-                    <div className={classes.modifyTemplate__body__header__content__footer}
-                        onClick={addfooteractiveclassNameHandler}
-                        ref={activefooter}
-                    >
-                        <p>Footer</p>
-                    </div> 
-                </div>
-
-                {/* --------------header inner ------------------ */}
-                <div className={classes.modifyTemplate__body__header__inner}
-                    style={{
-                        display: showheaderInner.inner && 'flex'
-                    }}
-                >
-                    <div className={classes.modifyTemplate__body__header__inner__title}
-                        style={{
-                            display: showheaderInner.title && 'flex'
-                        }}
-                    >
-                        <p
-                            id="titleLogo"
-                            onClick={activeclassesTitleHandler}
-                            style={{
-                                color: activeclassesTitle.titleLogo ? "green" : "#2a3f54"
-                            }}>Title Logo</p>
-                        <p
-                            id="titleName"
-                            onClick={activeclassesTitleHandler}
-                            style={{
-                                color: activeclassesTitle.titleName ? "green" : "#2a3f54"
-                            }}>Title Name</p>
-                    </div>
-
-                    <div className={classes.modifyTemplate__body__header__inner__header}
-                        style={{
-                            display: showheaderInner.header && 'flex'
-                        }}
-                    >
-                        <p id="headerbackgroundColor"
-                            onClick={activeclassesHeaderHandler}
-                            style={{color: activeclassesHeader.headerbackgroundColor ? "green" : "#2a3f54"}}
-                        >BackgroundColor</p>
-
-                        <p id="headerColor"
-                            onClick={activeclassesHeaderHandler}
-                            style={{color: activeclassesHeader.headerColor ? "green" : "#2a3f54"}}
-                        >Font Color</p>
-
-                        <p id="headerLogo"
-                            onClick={activeclassesHeaderHandler}
-                            style={{color: activeclassesHeader.headerLogo ? "green" : "#2a3f54"}}
-                        >Header Logo</p>
-
-                        <p id="headerNavbar"
-                            onClick={activeclassesHeaderHandler}
-                            style={{color: activeclassesHeader.headerNavbar ? "green" : "#2a3f54"}}
-                        >NavBar Name</p>
-                    </div>
-
-                    
-                    <div className={classes.modifyTemplate__body__header__inner__body}
-                        style={{
-                            display: showheaderInner.body && 'flex'
-                        }}
-                    >
-                        <p id="bodybackgroundColor"
-                            onClick={activeclassesBodyHandler}
-                            style={{ color: activeclassesBody.bodybackgroundColor ? "green" : "#2a3f54" }}>BackgroundColor</p>
-                        
-                        <p id="bodyColor"
-                            onClick={activeclassesBodyHandler}
-                            style={{ color: activeclassesBody.bodyColor ? "green" : "#2a3f54" }}>Font Color</p>
-                        
-                        <p id="bodyImage"
-                            onClick={activeclassesBodyHandler}
-                            style={{color: activeclassesBody.bodyImage ? "green" : "#2a3f54"}}>Landing Page Image</p>
-
-                        <p id="bodybuttonColor"
-                            onClick={activeclassesBodyHandler}
-                            style={{color: activeclassesBody.bodybuttonColor ? "green" : "#2a3f54"}}>Button Color</p>
-                    </div>
-
-                    <div className={classes.modifyTemplate__body__header__inner__footer}
-                        style={{
-                            display: showheaderInner.footer && 'flex'
-                        }}
-                    >
-                        <p id="footerBackgroundColor"
-                            onClick={activeclassesFooterHandler}
-                            style={{ color: activeclassesFooter.footerBackgroundColor ? "green" : "#2a3f54" }}>BackgroundColor</p>
-                        
-                        <p id="footerColor"
-                            onClick={activeclassesFooterHandler}
-                            style={{color: activeclassesFooter.footerColor ? "green" : "#2a3f54"}}>Font Color</p>
-                    </div>
-                </div>
-
-                <div className={classes.modifyTemplate__body__body}>
-                    <div className={classes.modifyTemplate__body__body__content}>
-                        <div className={classes.modifyTemplate__body__body__title}>
+                
+                <div className={classes.templateEngine__body__body}>
+                    <div className={classes.templateEngine__body__body__content}>
+                        <div className={classes.templateEngine__body__body__title}>
 
                             {
                                 (showheaderInner.title && activeclassesTitle.titleLogo ) &&
-                                <div className={classes.modifyTemplate__body__body__titleLogo}>
+                                <div className={classes.templateEngine__body__body__titleLogo}>
                                     <label htmlFor="titleLogo" >Upload the Title Logo</label>
                                     <input type="file" id="titleLogo" onChange={ tileLogoHandler}/>
                                 </div>
@@ -559,7 +490,7 @@ function TemplateEngine(props) {
 
                             {
                                 (showheaderInner.title && activeclassesTitle.titleName) &&
-                                <div className={classes.modifyTemplate__body__body__titleName}>
+                                <div className={classes.templateEngine__body__body__titleName}>
                                     <label htmlFor="titleName" >Title Name</label>
                                     <input type="text"
                                         id="titleName"
@@ -571,7 +502,7 @@ function TemplateEngine(props) {
                             }
                         </div>
 
-                        <div className={classes.modifyTemplate__body__body__header} style={{ paddingTop: "10px", paddingLeft: "10px" }}>
+                        <div className={classes.templateEngine__body__body__header} style={{ paddingTop: "10px", paddingLeft: "10px" }}>
                             
                             {
                                 (showheaderInner.header && activeclassesHeader.headerbackgroundColor) &&
@@ -651,7 +582,7 @@ function TemplateEngine(props) {
 
                         </div>
 
-                        <div className={classes.modifyTemplate__body__body__body} style={{ paddingTop: "10px", paddingLeft: "10px" }}>
+                        <div className={classes.templateEngine__body__body__body} style={{ paddingTop: "10px", paddingLeft: "10px" }}>
                             {
                                 (showheaderInner.body && activeclassesBody.bodybackgroundColor) &&
                                 <>
@@ -715,7 +646,7 @@ function TemplateEngine(props) {
                             }
                         </div>
 
-                        <div className={classes.modifyTemplate__body__body__body} style={{ paddingTop: "10px", paddingLeft: "10px" }}>
+                        <div className={classes.templateEngine__body__body__body} style={{ paddingTop: "10px", paddingLeft: "10px" }}>
                             {
                                 (showheaderInner.footer && activeclassesFooter.footerBackgroundColor) &&
 

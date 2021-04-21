@@ -88,7 +88,7 @@
 }
 
 /* --------------------------modified body ----------------- */
-.modifyTemplate__body__body {
+.templateEngine__body__body {
   background-color: #f4f4f4;
   height: 50vh;
   display: flex;
@@ -96,7 +96,7 @@
   align-items: center;
 }
 
-.modifyTemplate__body__body__content {
+.templateEngine__body__body__content {
   background-color: white;
   height: 45vh;
   width: 90%;
