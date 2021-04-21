@@ -10,7 +10,7 @@ function Template001(props) {
 
     const location = useLocation();
     let searchParams1 = new URLSearchParams(window.location.href);
-    console.log(searchParams1.get(`http://localhost:3000/template/001?template_name`));
+    // console.log(searchParams1.get(`http://localhost:3000/template/001?template_name`));
 
     let template_name = searchParams1.get(`http://localhost:3000/template/001?template_name`);
     console.log(template_name);

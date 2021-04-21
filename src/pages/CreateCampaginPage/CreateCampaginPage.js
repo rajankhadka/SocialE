@@ -404,7 +404,8 @@ const CreateCampaginPage = (props) =>{
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                setNewTemplate(data.tempate_name)
+                setNewTemplate(data.tempate_name);
+                console.log("original url", `${iframerender}?template_name=${template_name}`);
             })
             .catch(err => console.log(err));
     }
@@ -479,7 +480,8 @@ const CreateCampaginPage = (props) =>{
                             </form>
                         </div>
                        
-
+                        {/* right part  */}
+                        
                         <div className={classes.createCampaignBody__body__right}>
                             <div
                                 style={{
@@ -492,7 +494,6 @@ const CreateCampaginPage = (props) =>{
                                     iframerender.length > 0
                                     &&
                                     <div>
-                                        {/* <a style={{ color: "white" }} href={iframerender} target="_blank" rel="noreferrer">Preview Template</a> */}
                                         <a style={{ color: "white" }}
                                             onClick={() => {
                                                 console.log("a tag clicked!!!")

@@ -160,7 +160,7 @@ function SideBar(props) {
                     }}
                     onClick={() => {
                         props.userprofilesidebarAction();
-                        sideBarHistory.push("/home/setting");
+                        sideBarHistory.push("/uesr-pofile");
                     }}
                 
                 >
