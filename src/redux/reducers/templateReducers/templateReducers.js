@@ -5,6 +5,7 @@ const initialState = {
 }
 
 const templateReducers = (state = initialState, action) => {
+    console.log("template new reducers");
     switch (action.type) {
         case TEMPLATE.SETTEMPLATE:
             return {

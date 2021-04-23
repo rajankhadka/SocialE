@@ -12,7 +12,6 @@ function CreateTemplatePage(props) {
             <Header />
             <div className={classes.homePage__body}>
                 <SideBar />
-                <UploadTemplate />
             </div>
         </div>
     )

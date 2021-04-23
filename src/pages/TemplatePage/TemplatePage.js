@@ -10,13 +10,16 @@ import BodyTable from "../../components/UI/BodyTable/BodyTable";
 import { connect } from "react-redux";
 import { closeTooltip } from "../../redux/actions/showToolTipAction";
 
-const TemplatePage = props =>{
+const TemplatePage = props => {
+    
+    
     return(
         <div className={classes.homePage}  >
             <Header />
             <div className={classes.homePage__body}>
                 <SideBar />
-                <BodyTable 
+                
+                <BodyTable
                     header="Templates" 
                     buttonName = "Create New Template" 
                     title="Template"
@@ -28,10 +31,16 @@ const TemplatePage = props =>{
     );
 }
 
+const mapStateToProps = state => {
+    return {
+        templatePageToggle: state.templatePageToggleReducers.templatePageToggle
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         closeTooltipAction : () => dispatch(closeTooltip())
     }
 }
 
-export default connect(undefined,mapDispatchToProps) (TemplatePage);
+export default connect(mapStateToProps,mapDispatchToProps) (TemplatePage);

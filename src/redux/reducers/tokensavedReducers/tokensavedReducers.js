@@ -5,7 +5,7 @@ const initialState = {
 };
 
 const tokensavedReducers = (state = initialState, action) => {
-    console.log("reducers token saved--->",action.data)
+    // console.log("reducers token saved--->",action.data)
     switch (action.type) {
         case token.TOKEN:
             

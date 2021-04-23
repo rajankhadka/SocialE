@@ -279,11 +279,6 @@ function TemplateEngine(props) {
     }
 
     
-
-    
-
-    
-
     return (
         <>
             <div
@@ -291,10 +286,10 @@ function TemplateEngine(props) {
                     backgroundColor: props.selectTemplate.length > 0 ? "#2a3f54" : "white",
                     color: props.selectTemplate.length > 0  ? "white" : "black"
                 }}>
-                <p>Create Template</p>
             
                 {
-                    props.iframerender.length > 0
+                    // props.iframerender.length > 0
+                    false
                     &&
                     <div>
                         <a style={{ color: "white" }}
@@ -307,7 +302,7 @@ function TemplateEngine(props) {
                             Preview Template
                         </a>
                         
-                        {
+                        {/* {
                             modifyTemplate
                                 ?
                                     <></>
@@ -322,7 +317,7 @@ function TemplateEngine(props) {
                                         Modify Template
                                     </Button>
 
-                        }
+                        } */}
                     
 
                         {
@@ -341,7 +336,11 @@ function TemplateEngine(props) {
             </div>
             
 
-            <div className={classes.modifyTemplate__body} style={{display: modifyTemplate ?  "block" : "none"}}>
+            <div className={classes.modifyTemplate__body}
+                style={{
+                    // display: modifyTemplate ? "block" : "none",
+                    display: "block"
+                }}>
 
                 {/* ---------------header---------------- */}
                 

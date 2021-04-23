@@ -1,11 +1,19 @@
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
+import { Visibility } from '@material-ui/icons';
 import React,{useState} from 'react'
 import ColorPicker from '../../ColorPicker/ColorPicker';
 import classes from "./TemplateEngineBody.module.css";
 
+//redux
+import { connect } from "react-redux";
+
 function TemplateEngineBody(props) {
 
     //upload field
+
+    //template name
+    const [templateName, setTemplateName] = useState("");
+
     //color
     //header color
     const [headerbackgroundColorPicker,setHeaderbackgroundColorPicker] = useState("#ffffff")
@@ -77,9 +85,10 @@ function TemplateEngineBody(props) {
         setBodyLandingImage(event.target.files[0]);
     }
 
+    const [createnewTemplate, setCreatenewTemplate] = useState(false);
     
-
     const createTemplateHandler = () => {
+        setCreatenewTemplate(true);
         props.modifyTemplateHandler()
         props.createCampaignHandler();
         console.log("Submitted!!!");
@@ -99,6 +108,8 @@ function TemplateEngineBody(props) {
         console.log("footer background color", footerbackgroundColorPicker);
         console.log("footer font color", footerColorPicker);
 
+        console.log("props.iframerender-->", props.iframerender);
+
         fetch("http://127.0.0.1:8000/template/resource/create/", {
             method: "POST",
             headers: {
@@ -113,8 +124,8 @@ function TemplateEngineBody(props) {
                 headerNav1: headerNav1,
                 headerNav2: headerNav2,
                 headerNav3: headerNav3,
-                template_url: props.iframerender, //template url
-                template_name: props.template_name, //new template name
+                template_url: props.shownewtemplateReducers, //template url
+                template_name: templateName, //new template name
                 bodyButtonColor: bodyButtonColorPicker
             })
         })
@@ -339,20 +350,56 @@ function TemplateEngineBody(props) {
             </div>
             </div>
             {
-                    <div className={classes.createTemplate} style={{display: props.modifyTemplate ?  "flex" : "none"}}>
+                <div className={classes.createTemplate}
+                    style={{
+                        // display: props.modifyTemplate ? "flex" : "none"
+                        display: "flex"
+                    }}
+                >
+                    <div className={classes.createTemplate__newTemplate}>
+                        <TextField
+                            id="newTemplate"
+                            label="New Template Name"
+                            variant="outlined" size="small" required
+                            value={templateName}
+                            onChange={(event) => setTemplateName(event.target.value)}
+                        />
+                    </div>
+                    {
+                        templateName.length > 0 &&
                         <Button
                             variant="contained"
-                            style={{ textTransform: "capitalize" }}
+                            style={{ textTransform: "capitalize",marginRight:"400px" }}
                             onClick={createTemplateHandler}
                             size="small"
+
                         >
                             Create Template
                         </Button>
+                    }
 
-                    </div>
-                }
+                    {
+                        (templateName.length > 0 && createnewTemplate ) &&
+                        <Button
+                            variant="contained"
+                            style={{ textTransform: "capitalize",marginRight:"20px" }}
+                            onClick={() => window.open(`${props.shownewtemplateReducers}?template_name=${templateName}`)}
+                            size="small"
+                        >
+                            <Visibility />
+                        </Button>
+                    }
+
+                </div>
+            }
         </>
     )
 }
 
-export default TemplateEngineBody
+const mapStateToProps = state => {
+    return {
+        shownewtemplateReducers: state.shownewtemplateReducers.shownewtemplate
+    }
+}
+
+export default connect(mapStateToProps)(TemplateEngineBody);
