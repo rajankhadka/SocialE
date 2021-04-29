@@ -4,7 +4,8 @@
   height: 30px;
   align-items: center;
   padding-top: 20px;
-  background-color: #2bae66;
+  /* background-color: #2bae66; */
+  background-color: #2a3f54;
   /* background-color: aqua; */
   cursor: pointer;
 }
@@ -19,6 +20,7 @@
   /* padding-bottom: 20px; */
   padding-left: 10px;
   box-sizing: border-box;
+  height: 75px;
 }
 
 .modifyTemplate__body__header__content__title__active,
@@ -30,14 +32,15 @@
   box-sizing: border-box;
   padding-left: 10px;
   color: #2a3f54;
-  background-color: white;
+  background-color: #f4f4f4;
+  height: 75px;
   /* background-color: aqua; */
 }
 
 /* ---------------------header inner ---------------------- */
 .modifyTemplate__body__header__inner {
   height: 50px;
-  background-color: white;
+  background-color: #f4f4f4;
   /* background-color: aqua; */
   color: #2a3f54;
   display: none;

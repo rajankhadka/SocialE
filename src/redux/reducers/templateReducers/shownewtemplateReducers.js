@@ -5,7 +5,6 @@ const initialState = {
 }
 
 const shownewtemplateReducers = (state = initialState, action) => {
-    console.log(action);
     switch (action.type) {
         case SHOWNEWTEMPLATE.NEWTEMPLATE:
             return {

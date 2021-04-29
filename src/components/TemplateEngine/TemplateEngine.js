@@ -320,7 +320,7 @@ function TemplateEngine(props) {
                         } */}
                     
 
-                        {
+                        {/* {
                             newTemplate.length > 0 &&
                             <a style={{ color: "white" }}
                                 href={`${props.iframerender}?template_name=${newTemplate}`} target="_blank"
@@ -329,7 +329,7 @@ function TemplateEngine(props) {
                                 new Template
                             </a>
                         }
-                        
+                         */}
 
                     </div>
                 }

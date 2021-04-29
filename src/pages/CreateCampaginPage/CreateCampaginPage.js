@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import classes from "./CreateCampaginPage.module.css";
 
 //importing components
@@ -7,158 +7,455 @@ import SideBar from "../../components/SideBar/SideBar"
 import {
     Button,
     FormControl, InputLabel,
-    Select, TextareaAutosize, TextField
+    Select, TextField
 } from "@material-ui/core";
+import { Add, Check, Close } from "@material-ui/icons";
 
-import Autocomplete from '@material-ui/lab/Autocomplete';
+
 //redux
 import { connect } from "react-redux";
 import { setTemplate } from "../../redux/actions/templateAction";
-import TemplateEngine from "../../components/TemplateEngine/TemplateEngine";
-
-const templateData = [
-    {
-        templateName: "temp001",
-        url:"http://localhost:3000/template/001",
-    }, {
-        templateName: "temp002",
-        url:"http://localhost:3000/template/002",
-    }
-];
+import {
+    availableTargetAudience,
+    clickTargetAudience,
+    disableTargetAudience,
+    addnewTargetAudience
+} from "../../redux/actions/targetaudienceAction";
 
 
-const CreateCampaginPage = (props) =>{
-    // console.log(props);
-    const [template_name, setTemplate_name] = useState("");
+const CreateCampaginPage = (props) => {
 
-    //template
-    const [selectTemplate, setSelectTemplate] = useState("");
-    const [templateName, setTemplateName] = useState("");
-    const [optionvalue, setOptionValue] = useState([]);
-    const [iframerender, setIframerender] = useState("");
+    const [addNewAudience, setAddNewAudience] = useState(false);
+    const [templateName, setTemplateName] = useState([]);
+    
+    useEffect(() => {
+        console.log("useEffect");
+
+        //target user audience
+
+        fetch("http://127.0.0.1:8000/targetuser/get/", {
+            "method": "GET",
+            "headers": {
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data.payload);
+                
+                props.availableTargetAudienceAction(data.payload);
+            })
+            .catch(err => console.log(err));
+        
+        //template name
+
+        fetch("http://127.0.0.1:8000/template/resource/list/", {
+            "method": "GET",
+            "headers": {
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data.data);
+                let newtemplateName = [];
+                // newtemplateName = [...newtemplateName,...data.data]
+
+                data.data.forEach(element => {
+                    // console.log(element);
+                    newtemplateName.push({
+                        id: element.id,
+                        template_name: element.template_name,
+                        template_url:element.template_url
+                    })
+                });
+
+                
+                // console.log("newtemplateName", newtemplateName);
+                setTemplateName(newtemplateName);
+            })
+            .catch(err => console.log(err));
+        
+    }, []);
+
+    //add new target audience
 
     
-
-    const IframerenderHandler = (event) => {
-        const templatedata = templateData.filter(item => event.target.value === item.url);
-        console.log(event.target.value);
-        const url = `${event.target.value}`;
-        setSelectTemplate(event.target.value);
-        setIframerender(url);
-        // setIframerender(event.target.value);
-        console.log(templatedata[0].templateName);
-        setTemplateName(templatedata[0].templateName);
-    }
-
     //createCampaign
     const [createCampaign, setCreateCampaign] = useState(false);
 
-    const createCampaignHandler = () => {
-        setCreateCampaign(true);
+    //campaign value
+    const [campaignValue, setCampaignValue] = useState({
+        campaignName: {
+            value: "",
+            err: "",
+            lenth: 0,
+            valid: false,
+        },
+        campaignSubject: {
+            value: "",
+            err: "",
+            lenth: 0,
+            valid: false,
+        },
+        selectTemplate: {
+            value: "",
+            err: "",
+            lenth: 0,
+            valid: false,
+            id:"",
+        },
+        campaignStartDate: {
+            value: "",
+            err: "",
+            lenth: 0,
+            valid: false,
+        },
+        campaignEndDate: {
+            value: "",
+            err: "",
+            lenth: 0,
+            valid: false,
+        },
+
+    });
+
+
+    //target user id for create campaign
+    const [campaignTargetUser, setCampaignTargetUser] = useState([]);
+
+    const campaignTargetUserHandler = (id) => {
+        console.log("remove!!!");
+        console.log(id);
+        const targetUserID = campaignTargetUser.filter(item => item !== id);
+        setCampaignTargetUser(targetUserID);
+        console.log(campaignTargetUser);
+    }
+    
+    const campaignValueHandler = (event) => {
+        console.log(campaignValue);
+        console.log(event.target.name);
+        console.log(event.target.value);
+        switch (event.target.name) {
+            case "Campaign Name":
+                console.log(`${event.target.value.length > 0  ? true : false}`);
+                setCampaignValue(prevState => {
+                    return {
+                        ...prevState,
+                        campaignName: {
+                            value: event.target.value,
+                            length: event.target.value.length,
+                            valid : event.target.value.length > 0  ? true : false
+                        }
+                    }  
+                });
+                break;
+            
+            case "Campaign Subject":
+                setCampaignValue(prevState => {
+                    return {
+                        ...prevState,
+                        campaignSubject: {
+                            value: event.target.value,
+                            length: event.target.value.length,
+                            valid : event.target.value.length > 0  ? true : false
+                        }
+                    }  
+                });
+                break;
+            
+            case "selectTemplate":
+                setCampaignValue(prevState => {
+                    return {
+                        ...prevState,
+                        selectTemplate: {
+                            value: event.target.value.toString(),
+                            length: event.target.value.length,
+                            valid : event.target.value.length > 0  ? true : false
+                        }
+                    }  
+                });
+                break;
+            
+            case "startDate":
+                setCampaignValue(prevState => {
+                    return {
+                        ...prevState,
+                        campaignStartDate: {
+                            value: event.target.value,
+                            length: event.target.value.length,
+                            valid : event.target.value.length > 0  ? true : false
+                        }
+                    }  
+                });
+                break;
+            
+            case "endDate":
+                setCampaignValue(prevState => {
+                    return {
+                        ...prevState,
+                        campaignEndDate: {
+                            value: event.target.value,
+                            length: event.target.value.length,
+                            valid : event.target.value.length > 0  ? true : false
+                        }
+                    }  
+                });
+                break;
+            
+            default:
+                setCampaignValue(prevState => {
+                    return {
+                        ...prevState
+                    }
+                })
+                break;
+        }
     }
 
-    const top100Films = [
-        { title: 'The Shawshank Redemption', year: 1994 },
-        { title: 'The Godfather', year: 1972 },
-        { title: 'The Godfather: Part II', year: 1974 },
-        { title: 'The Dark Knight', year: 2008 },
-        { title: '12 Angry Men', year: 1957 },
-        { title: "Schindler's List", year: 1993 },
-        { title: 'Pulp Fiction', year: 1994 },
-        { title: 'The Lord of the Rings: The Return of the King', year: 2003 },
-        { title: 'The Good, the Bad and the Ugly', year: 1966 },
-        { title: 'Fight Club', year: 1999 },
-        { title: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001 },
-        { title: 'Star Wars: Episode V - The Empire Strikes Back', year: 1980 },
-        { title: 'Forrest Gump', year: 1994 },
-        { title: 'Inception', year: 2010 },
-        { title: 'The Lord of the Rings: The Two Towers', year: 2002 },
-        { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-        { title: 'Goodfellas', year: 1990 },
-        { title: 'The Matrix', year: 1999 },
-        { title: 'Seven Samurai', year: 1954 },
-        { title: 'Star Wars: Episode IV - A New Hope', year: 1977 },
-        { title: 'City of God', year: 2002 },
-        { title: 'Se7en', year: 1995 },
-        { title: 'The Silence of the Lambs', year: 1991 },
-        { title: "It's a Wonderful Life", year: 1946 },
-        { title: 'Life Is Beautiful', year: 1997 },
-        { title: 'The Usual Suspects', year: 1995 },
-        { title: 'Léon: The Professional', year: 1994 },
-        { title: 'Spirited Away', year: 2001 },
-        { title: 'Saving Private Ryan', year: 1998 },
-        { title: 'Once Upon a Time in the West', year: 1968 },
-        { title: 'American History X', year: 1998 },
-        { title: 'Interstellar', year: 2014 },
-        { title: 'Casablanca', year: 1942 },
-        { title: 'City Lights', year: 1931 },
-        { title: 'Psycho', year: 1960 },
-        { title: 'The Green Mile', year: 1999 },
-        { title: 'The Intouchables', year: 2011 },
-        { title: 'Modern Times', year: 1936 },
-        { title: 'Raiders of the Lost Ark', year: 1981 },
-        { title: 'Rear Window', year: 1954 },
-        { title: 'The Pianist', year: 2002 },
-        { title: 'The Departed', year: 2006 },
-        { title: 'Terminator 2: Judgment Day', year: 1991 },
-        { title: 'Back to the Future', year: 1985 },
-        { title: 'Whiplash', year: 2014 },
-        { title: 'Gladiator', year: 2000 },
-        { title: 'Memento', year: 2000 },
-        { title: 'The Prestige', year: 2006 },
-        { title: 'The Lion King', year: 1994 },
-        { title: 'Apocalypse Now', year: 1979 },
-        { title: 'Alien', year: 1979 },
-        { title: 'Sunset Boulevard', year: 1950 },
-        { title: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb', year: 1964 },
-        { title: 'The Great Dictator', year: 1940 },
-        { title: 'Cinema Paradiso', year: 1988 },
-        { title: 'The Lives of Others', year: 2006 },
-        { title: 'Grave of the Fireflies', year: 1988 },
-        { title: 'Paths of Glory', year: 1957 },
-        { title: 'Django Unchained', year: 2012 },
-        { title: 'The Shining', year: 1980 },
-        { title: 'WALL·E', year: 2008 },
-        { title: 'American Beauty', year: 1999 },
-        { title: 'The Dark Knight Rises', year: 2012 },
-        { title: 'Princess Mononoke', year: 1997 },
-        { title: 'Aliens', year: 1986 },
-        { title: 'Oldboy', year: 2003 },
-        { title: 'Once Upon a Time in America', year: 1984 },
-        { title: 'Witness for the Prosecution', year: 1957 },
-        { title: 'Das Boot', year: 1981 },
-        { title: 'Citizen Kane', year: 1941 },
-        { title: 'North by Northwest', year: 1959 },
-        { title: 'Vertigo', year: 1958 },
-        { title: 'Star Wars: Episode VI - Return of the Jedi', year: 1983 },
-        { title: 'Reservoir Dogs', year: 1992 },
-        { title: 'Braveheart', year: 1995 },
-        { title: 'M', year: 1931 },
-        { title: 'Requiem for a Dream', year: 2000 },
-        { title: 'Amélie', year: 2001 },
-        { title: 'A Clockwork Orange', year: 1971 },
-        { title: 'Like Stars on Earth', year: 2007 },
-        { title: 'Taxi Driver', year: 1976 },
-        { title: 'Lawrence of Arabia', year: 1962 },
-        { title: 'Double Indemnity', year: 1944 },
-        { title: 'Eternal Sunshine of the Spotless Mind', year: 2004 },
-        { title: 'Amadeus', year: 1984 },
-        { title: 'To Kill a Mockingbird', year: 1962 },
-        { title: 'Toy Story 3', year: 2010 },
-        { title: 'Logan', year: 2017 },
-        { title: 'Full Metal Jacket', year: 1987 },
-        { title: 'Dangal', year: 2016 },
-        { title: 'The Sting', year: 1973 },
-        { title: '2001: A Space Odyssey', year: 1968 },
-        { title: "Singin' in the Rain", year: 1952 },
-        { title: 'Toy Story', year: 1995 },
-        { title: 'Bicycle Thieves', year: 1948 },
-        { title: 'The Kid', year: 1921 },
-        { title: 'Inglourious Basterds', year: 2009 },
-        { title: 'Snatch', year: 2000 },
-        { title: '3 Idiots', year: 2009 },
-        { title: 'Monty Python and the Holy Grail', year: 1975 },
-        ];
+    const [newAudience, setNewAudience] = useState({
+        username: {
+            value: "",
+            err: "",
+        },
+        email: {
+            value: "",
+            err:"",
+        }
+    });
+
+    const newAudienceHandler = (event) => {
+        switch (event.target.name) {
+            case "audienceUsername":
+                
+                setNewAudience(prevState => {
+                    return {
+                        ...prevState,
+                        username: {
+                            ...prevState.username,
+                            value: event.target.value
+                        }
+                    }
+                });
+                break;
+            
+            case "audienceEmail":
+                setNewAudience(prevState => {
+                    return {
+                        ...prevState,
+                        email: {
+                            ...prevState.email,
+                            value:event.target.value
+                        }
+                    }
+                });
+                break
+        
+            default:
+                return newAudience;
+        }
+    }
+
+
+
+    const addnewAudienceHandler = (event) => {
+        event.preventDefault();
+        console.log("data submitted!!!")
+        console.log(newAudience.username.value);
+        console.log(newAudience.email.value);
+
+        fetch("http://127.0.0.1:8000/targetuser/create/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                username: newAudience.username.value,
+                email: newAudience.email.value,
+            })
+        })
+            .then(response => {
+                console.log(response.status);
+                if (response.status === 400) throw new Error("Invalid Data");
+                return response.json()
+            })
+            .then(data => {
+                console.log(data);
+                let newTargetAudience = {
+                    id: data.target_user_id,
+                    email: data.email,
+                    username: data.target_username,
+                    click: true
+                }
+                props.addnewTargetAudienceAction(newTargetAudience);
+                setShowSuccessmsg(true);
+                setShowErrormsg(false);
+                setCampaignTargetUser(prevState => prevState.concat(newTargetAudience.id))
+            })
+            .catch(err => {
+                console.log(err);
+                setShowSuccessmsg(false);
+                setShowErrormsg(true);
+            });
+    }
+
+    const [showSuccessmsg, setShowSuccessmsg] = useState(false);
+    const [showErrormsg, setShowErrormsg] = useState(false);
+
+    let targetAudience = null;
+
+    //search by email
+
+    const [searchTargetAudience, setSearchTargetAudience] = useState("");
+
+    const searchTargetAudienceHandler = (event) => {
+        setSearchTargetAudience(event.target.value);
+        console.log(props.targetaudienceAvailable);
+
+        // const searchTarget = props.targetaudienceAvailable.forEach(item => )
+        // const searchTarget = props.targetaudienceAvailable.filter(item => item.email === event.target.value);
+        // console.log(searchTarget);
+    }
+
+    if (addNewAudience) {
+        targetAudience = (
+            <div className={classes.createCampaignBody__addnewAudience}>
+
+                {
+                    showSuccessmsg &&
+                    <div className={classes.createCampaignBody__addnewAudience__success}>
+                        <h5>New Audience Added !!!</h5>
+                        <Close
+                            fontSize="small"
+                            style={{
+                                cursor:"pointer"
+                            }}
+                            onClick={() => setShowSuccessmsg(false)}
+                        />
+                    </div>
+                }
+                
+                {
+                    showErrormsg &&
+                    <div className={classes.createCampaignBody__addnewAudience__error}>
+                        <h5>Invalid Data !!!</h5>
+                        <Close
+                            fontSize="small"
+                            style={{
+                                cursor:"pointer"
+                            }}
+                            onClick={() => setShowErrormsg(false)}
+                        />
+                    </div>
+                }
+
+                <form method="post" onSubmit={addnewAudienceHandler}>
+                    <TextField
+                        name="audienceUsername"
+                        className={classes.createCampaignBody__addnewAudience__input}
+                        variant="outlined" size="small" label="UserName" required
+                        type="text"
+                        onChange={newAudienceHandler}
+                        value={newAudience.username.value}
+                    />
+
+                    <TextField
+                        name="audienceEmail"
+                        className={classes.createCampaignBody__addnewAudience__input}
+                        variant="outlined" size="small" label="Email" required
+                        type="email"
+                        onChange={newAudienceHandler}
+                        value={newAudience.email.value}
+                    />
+
+                    <Button
+                        className={classes.createCampaignBody__addnewAudience__input}
+                        variant="contained"
+                        type="submit"
+                    >
+                        Add Audience
+                    </Button>
+                </form>
+                
+            </div>
+        )
+    } else {
+        targetAudience = (
+            <>
+                <input type="email"
+                    placeholder="search by email"
+                    value={searchTargetAudience}
+                    onChange={searchTargetAudienceHandler}
+                />
+                {
+                    props.targetaudienceAvailable.map((item, index) => {
+                        return (
+                            <div key={item.id} onClick={() => {
+                                
+                                
+                                if (item.click) {
+                                    props.disableTargetAudienceAction(item.id);
+                                    campaignTargetUserHandler(item.id);
+
+                                } else {
+                                    props.clickTargetAudienceAction(item.id);
+                                    console.log("item", item);
+                                    setCampaignTargetUser(prevState => prevState.concat(item.id))
+                                }
+                                // console.log(item.id);
+                                
+                            }}>
+                                <p className={classes.createCampaignBody__id}>{ index + 1}</p>
+                                <p className={classes.createCampaignBody__email}>{ item.email}</p>
+                                
+                                {
+                                    item.click ?
+                                        
+                                        <p className={classes.createCampaignBody__add}>
+                                            <Check style={{ color: "green" }} />
+                                        </p>
+                                        :
+                                        <p className={classes.createCampaignBody__add}>
+                                            <Add style={{ color: "black" }} />
+                                        </p>
+                                            
+                                }
+                            </div>
+                        );
+                    })
+                }
+
+            </>
+            
+        )
+    }
+
+    const campaignDataHandler = (event) => {
+        event.preventDefault();
+        console.log("create campaign", campaignValue.selectTemplate.value);
+        console.log("target audience", campaignTargetUser);
+
+        fetch("http://127.0.0.1:8000/campaign/create/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                "campaign_name": campaignValue.campaignName.value,
+                "campaign_title": campaignValue.campaignSubject.value,
+                "template": campaignValue.selectTemplate.value,
+                "targetuser": campaignTargetUser,
+                "start_date": campaignValue.campaignStartDate.value,
+                "end_date": campaignValue.campaignEndDate.value,
+            }),
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(err));
+
+    }
 
     return(
         <div className={classes.homePage}>
@@ -172,39 +469,48 @@ const CreateCampaginPage = (props) =>{
 
                     <div className={classes.createCampaignBody__body}>
                         <div className={classes.createCampaignBody__body__left}>
-                            <form>
-                                <TextField variant="standard" 
+                            <form method="POST" onSubmit={campaignDataHandler}>
+                                <TextField variant="standard"
+                                    name="Campaign Name"
                                     label="Campaign Name"
-                                    value={template_name}
-                                    onChange={(event)=> setTemplate_name(event.target.value)}
+                                    value={campaignValue.campaignName.value}
+                                    onChange={campaignValueHandler}
                                     style={{  marginBottom: "10px",width:"250px"}}
                                 />
 
-                                <TextField variant="standard" 
-                                        label="Campaign Subject"
-                                        style={{  marginBottom: "10px",width:"250px"}}
+                                <TextField
+                                    variant="standard"
+                                    name="Campaign Subject"    
+                                    label="Campaign Subject"
+                                    value={campaignValue.campaignSubject.value}
+                                    onChange={campaignValueHandler}
+                                    style={{  marginBottom: "10px",width:"250px"}}
                                     />
 
-                                <TextField variant="standard" 
-                                        label="Campaign Description" 
-                                        multiline={true} rowsMax={4}
-                                        style={{  marginBottom: "10px",width:"250px"}}
-                                    />
+                                <TextField
+                                    variant="standard"
+                                    label="Campaign Description" 
+                                    multiline={true} rowsMax={4}
+                                    style={{  marginBottom: "10px",width:"250px"}}
+                                />
 
                                 <FormControl style={{width:"250px",marginBottom: "20px"}}>
                                     <InputLabel id="selectTemplate">Select Template</InputLabel>
                                     <Select
+                                        name="selectTemplate"
                                         native
                                         labelId="selectTemplate"
                                         id="selectTemplate"
-                                        value={selectTemplate}
-                                        onChange={IframerenderHandler}
+                                        value={campaignValue.selectTemplate.value}
+                                        onChange={campaignValueHandler }
                                     >
                                         <option value="" />
+                                        
+                                        {
+                                            templateName.map(item => <option key={item.id} value={item.id}> {item.template_name} </option>)
+                                        }
 
-                                        {templateData.map((item, index) => {
-                                            return <option key={index} value={item.url} >{item.templateName}</option>
-                                        })}
+                                        {/* <option  value="TemplateName">TemplateName</option> */}
                                     </Select>
                                 </FormControl>
                                 
@@ -213,8 +519,10 @@ const CreateCampaginPage = (props) =>{
                                     variant="standard"
                                     type="date"
                                     id="startDate"
-                                    style={{marginBottom: "20px"}}
-                                    onChange={(event) => console.log(event.target.value)}
+                                    name="startDate"
+                                    style={{ marginBottom: "20px" }}
+                                    value={campaignValue.campaignStartDate.value}
+                                    onChange={campaignValueHandler}
                                 />
 
                                 <label htmlFor="endDate">End Date</label>
@@ -222,11 +530,32 @@ const CreateCampaginPage = (props) =>{
                                     variant="standard"
                                     type="date"
                                     id="endDate"
+                                    name="endDate"
                                     style={{marginBottom: "20px"}}
-                                    onChange={(event) => console.log(event.target.value)}
+                                    value={campaignValue.campaignEndDate.value}
+                                    onChange={campaignValueHandler}
                                 />
 
-                                <Button variant="contained" style={{width:"250px"}} disabled={!createCampaign}> Create Campaign</Button>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    style={{ width: "250px" }}
+                                    disabled={
+                                        !(
+                                            campaignValue.campaignName.valid &&
+                                            campaignValue.campaignSubject.valid &&
+                                            campaignValue.selectTemplate.valid &&
+                                            campaignValue.campaignStartDate.valid &&
+                                            campaignValue.campaignEndDate.valid &&
+                                            (campaignTargetUser.length > 0 ? true : false)
+                                        )
+                                            ? true
+                                            : false
+                                        
+                                    }
+                                >
+                                    Create Campaign
+                                </Button>
                             </form>
                         </div>
                        
@@ -234,37 +563,40 @@ const CreateCampaginPage = (props) =>{
 
                         <div className={classes.createCampaignBody__body__right}>
                             
+                            <div className={classes.createCampaignBody__right__header}>
+                                <div
+                                    className={classes.createCampaignBody__right__available}
+                                    onClick={() => setAddNewAudience(false)}
+                                    style={{
+                                        backgroundColor: !addNewAudience ? "#2bae66" : "#EDEDED",
+                                        color: !addNewAudience ? "#EDEDED" : "#2bae66"
+                                    }}
+                                >
+                                    Available Targeted Audience
+                                </div>
 
+                                <div
+                                    className={classes.createCampaignBody__right__add}
+                                    onClick={() => setAddNewAudience(true)}
+                                    style={{
+                                        backgroundColor: addNewAudience ? "#2bae66" : "#EDEDED",
+                                        color: addNewAudience ? "#EDEDED" : "#2bae66"
+                                    }}
+                                >
+                                    Add New Audience
+                                </div>
 
-                            {/* <TemplateEngine
-                                template_name={ template_name}
-                                iframerender={iframerender}
-                                templateName={templateName}
-                                selectTemplate={selectTemplate}
-                                createCampaignHandler={createCampaignHandler}
-                            /> */}
+                            </div>
 
-                            <Autocomplete
-                                id="combo-box-demo"
-                                options={top100Films}
-                                getOptionLabel={(option) => option.title}
-                                style={{ width: 300 }}
-                                renderInput={(params) => {
-                                    console.log(params);
-                                    return (
-                                        <TextField {...params} label="Combo box" variant="outlined" />
-                                    )
-                                }}
-                            />
-                            
-                            <TextareaAutosize aria-label="empty textarea" placeholder="Empty"
-                                style={{
-                                    resize: "none",
-                                    width: "30vh",
-                                    height: "30vh"
-                                }}
-                            />
-                            
+                            <div className={classes.createCampaignBody__right__body}>
+
+                                {
+                                  targetAudience  
+                                }
+
+                                
+                            </div>
+
                         </div>
                    </div>
                 </div>
@@ -274,10 +606,20 @@ const CreateCampaginPage = (props) =>{
     );
 }
 
-const mapDispatchtoProps = (dispatch) => {
+const mapStateToProps = state => {
     return {
-        setTemplateAction: (data) => dispatch(setTemplate(data))
+        targetaudienceAvailable: state.targetaudienceReducers.availableAudience
     }
 }
 
-export default connect(undefined,mapDispatchtoProps)(CreateCampaginPage);
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        setTemplateAction: (data) => dispatch(setTemplate(data)),
+        availableTargetAudienceAction: (data) => dispatch(availableTargetAudience(data)),
+        clickTargetAudienceAction: (id) => dispatch(clickTargetAudience(id)),
+        disableTargetAudienceAction: (id) => dispatch(disableTargetAudience(id)),
+        addnewTargetAudienceAction : (data) => dispatch(addnewTargetAudience(data)),
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchtoProps)(CreateCampaginPage);
