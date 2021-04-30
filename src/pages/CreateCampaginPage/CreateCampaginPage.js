@@ -309,13 +309,31 @@ const CreateCampaginPage = (props) => {
 
     const [searchTargetAudience, setSearchTargetAudience] = useState("");
 
+    //saving result of searched item
+    const [searchItem, setSearchItem] = useState([]);
+
     const searchTargetAudienceHandler = (event) => {
         setSearchTargetAudience(event.target.value);
         console.log(props.targetaudienceAvailable);
-
+        const result = [];
         // const searchTarget = props.targetaudienceAvailable.forEach(item => )
         // const searchTarget = props.targetaudienceAvailable.filter(item => item.email === event.target.value);
         // console.log(searchTarget);
+        console.log(event.target.value);
+        console.log("-------------search--------------")
+        props.targetaudienceAvailable.forEach(element => {
+            if (element.email.indexOf(event.target.value) > -1) {
+                // console.log(element);
+                // result.push(element);
+                // console.log(result[0]);
+                // setSearchItem(result);
+                setSearchItem(prevState => [...prevState,element])
+            }
+        });
+
+        // setSearchItem(result);
+        console.log(searchItem)
+        result.splice(0, result.length);
     }
 
     if (addNewAudience) {
@@ -389,41 +407,81 @@ const CreateCampaginPage = (props) => {
                     onChange={searchTargetAudienceHandler}
                 />
                 {
-                    props.targetaudienceAvailable.map((item, index) => {
-                        return (
-                            <div key={item.id} onClick={() => {
-                                
-                                
-                                if (item.click) {
-                                    props.disableTargetAudienceAction(item.id);
-                                    campaignTargetUserHandler(item.id);
+                    searchItem.length > 0
+                    
+                    ?
+                        searchItem.map((item, index) => {
+                            return (
+                                <div key={item.id} onClick={() => {
+                                    
+                                    
+                                    if (item.click) {
+                                        props.disableTargetAudienceAction(item.id);
+                                        campaignTargetUserHandler(item.id);
 
-                                } else {
-                                    props.clickTargetAudienceAction(item.id);
-                                    console.log("item", item);
-                                    setCampaignTargetUser(prevState => prevState.concat(item.id))
-                                }
-                                // console.log(item.id);
-                                
-                            }}>
-                                <p className={classes.createCampaignBody__id}>{ index + 1}</p>
-                                <p className={classes.createCampaignBody__email}>{ item.email}</p>
-                                
-                                {
-                                    item.click ?
-                                        
-                                        <p className={classes.createCampaignBody__add}>
-                                            <Check style={{ color: "green" }} />
-                                        </p>
-                                        :
-                                        <p className={classes.createCampaignBody__add}>
-                                            <Add style={{ color: "black" }} />
-                                        </p>
+                                    } else {
+                                        props.clickTargetAudienceAction(item.id);
+                                        console.log("item", item);
+                                        setCampaignTargetUser(prevState => prevState.concat(item.id))
+                                    }
+                                    // console.log(item.id);
+                                    
+                                }}>
+                                    <p className={classes.createCampaignBody__id}>{ index + 1}</p>
+                                    <p className={classes.createCampaignBody__email}>{ item.email}</p>
+                                    
+                                    {
+                                        item.click ?
                                             
-                                }
-                            </div>
-                        );
-                    })
+                                            <p className={classes.createCampaignBody__add}>
+                                                <Check style={{ color: "green" }} />
+                                            </p>
+                                            :
+                                            <p className={classes.createCampaignBody__add}>
+                                                <Add style={{ color: "black" }} />
+                                            </p>
+                                                
+                                    }
+                                </div>
+                            );
+                        })
+                        
+                    :
+                        props.targetaudienceAvailable.map((item, index) => {
+                            return (
+                                <div key={item.id} onClick={() => {
+                                    
+                                    
+                                    if (item.click) {
+                                        props.disableTargetAudienceAction(item.id);
+                                        campaignTargetUserHandler(item.id);
+
+                                    } else {
+                                        props.clickTargetAudienceAction(item.id);
+                                        console.log("item", item);
+                                        setCampaignTargetUser(prevState => prevState.concat(item.id))
+                                    }
+                                    // console.log(item.id);
+                                    
+                                }}>
+                                    <p className={classes.createCampaignBody__id}>{ index + 1}</p>
+                                    <p className={classes.createCampaignBody__email}>{ item.email}</p>
+                                    
+                                    {
+                                        item.click ?
+                                            
+                                            <p className={classes.createCampaignBody__add}>
+                                                <Check style={{ color: "green" }} />
+                                            </p>
+                                            :
+                                            <p className={classes.createCampaignBody__add}>
+                                                <Add style={{ color: "black" }} />
+                                            </p>
+                                                
+                                    }
+                                </div>
+                            );
+                        })
                 }
 
             </>
