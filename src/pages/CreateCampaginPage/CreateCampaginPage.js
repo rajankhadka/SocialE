@@ -80,10 +80,6 @@ const CreateCampaginPage = (props) => {
 
     //add new target audience
 
-    
-    //createCampaign
-    const [createCampaign, setCreateCampaign] = useState(false);
-
     //campaign value
     const [campaignValue, setCampaignValue] = useState({
         campaignName: {
@@ -503,17 +499,24 @@ const CreateCampaginPage = (props) => {
             body: JSON.stringify({
                 "campaign_name": campaignValue.campaignName.value,
                 "campaign_title": campaignValue.campaignSubject.value,
-                "template": campaignValue.selectTemplate.value,
+                "templateresource": campaignValue.selectTemplate.value,
                 "targetuser": campaignTargetUser,
                 "start_date": campaignValue.campaignStartDate.value,
                 "end_date": campaignValue.campaignEndDate.value,
             }),
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data);
+                setCreateCampaignSuccess(true);
+                setCreateCampaignError(false);
+            })
             .catch(err => console.log(err));
 
     }
+
+    const [createCampaignSuccess, setCreateCampaignSuccess] = useState(false);
+    const [createCampaignError, setCreateCampaignError] = useState(false);
 
     return(
         <div className={classes.homePage}>
@@ -527,6 +530,22 @@ const CreateCampaginPage = (props) => {
 
                     <div className={classes.createCampaignBody__body}>
                         <div className={classes.createCampaignBody__body__left}>
+
+                            {
+                                createCampaignSuccess &&
+                                <div className={classes.createCampaign__success}>
+                                    <p>Successfully Created!!!</p>
+                                    <Close onClick={ () => setCreateCampaignSuccess(false)}/>
+                                </div>
+                            }
+                            
+                            {
+                                createCampaignError &&
+                                <div className={classes.createCampaign__invalid}>
+                                    <p>Invalid Data!!!</p>
+                                    <Close onClick={ () => setCreateCampaignError(false)}/>
+                                </div>
+                            }
                             <form method="POST" onSubmit={campaignDataHandler}>
                                 <TextField variant="standard"
                                     name="Campaign Name"

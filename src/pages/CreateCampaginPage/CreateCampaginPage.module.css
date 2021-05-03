@@ -145,3 +145,25 @@
   width: 50vh;
   box-sizing: border-box;
 }
+
+/* -------------success and invalid msg------------- */
+
+.createCampaign__success {
+  width: 200px;
+  background-color: #ededed;
+  color: #2bae66;
+  height: 5vh;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+
+.createCampaign__invalid {
+  width: 200px;
+  background-color: #ededed;
+  color: red;
+  height: 5vh;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}

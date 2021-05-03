@@ -39,6 +39,7 @@ const BodyTable = (props) => {
     } else {
         bodyTable = (
             <BodyTableBody
+                data={props.data}
                 title={props.title}
                 routeURLHandler={routeURLHandler}
                 campaigndetailURL={props.campaigndetailURL}
