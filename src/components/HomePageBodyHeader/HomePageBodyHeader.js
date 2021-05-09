@@ -120,6 +120,19 @@ const HomePageBodyHeader = (props) =>{
                         >
                             {props.buttonName}
                         </Button>
+
+                        <Button variant="text"
+                            startIcon={<Add />}
+                            style={{
+                                // fontSize: 15,
+                                textTransform: 'capitalize',
+                                marginLeft: "10px",
+                            }}
+                            onClick = {campaignCreateHandler}
+                        >
+                            {props.groupName}
+                        </Button>
+                        
                     </div>
                 }
 

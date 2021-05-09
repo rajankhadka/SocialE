@@ -12,6 +12,7 @@
 
 .homePage__body__bodyHeaderCompanyLeft {
   flex: 0.5;
+  display: flex;
 }
 
 .homePage__body__bodyHeaderCompanyRight {
@@ -72,4 +73,9 @@
   padding-right: 10px;
   color: #2bae66;
   background-color: #fcf6f5;
+}
+
+.MuiButton-startIco {
+  font-size: 20px !important;
+  font-weight: 100 !important;
 }

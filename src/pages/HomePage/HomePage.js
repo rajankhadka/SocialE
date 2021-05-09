@@ -42,7 +42,8 @@ function HomePage(props) {
                 <SideBar />
                 <BodyTable 
                     header="Campaigns" 
-                    buttonName = "Add New Campaign"
+                    buttonName="Add New Campaign"
+                    groupName="Create Group"
                     title="Campaign" 
                     url="/home/create-campagin"
                     campaigndetailURL="/home/campaign"

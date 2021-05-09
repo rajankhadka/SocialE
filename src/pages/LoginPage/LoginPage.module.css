@@ -48,3 +48,44 @@
 .loginPage__forget {
   text-transform: capitalize !important;
 }
+
+/* ----------------------------- t20 -step verification ------------------- */
+
+.twostepverification__emailandsms > h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.twostepverification__sms {
+  height: 10vh;
+  /* background-color: aqua; */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.twostepverification__sms:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.twostepverification__email {
+  height: 10vh;
+  /* background-color: bisque; */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.twostepverification__email:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.loginPage__tryanotherway {
+  /* background-color: aqua; */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: -50px;
+}

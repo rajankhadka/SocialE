@@ -2,7 +2,7 @@ import React,{useState,useRef} from 'react';
 import classes from "./LoginPage.module.css";
 
 //material UI
-import { Lock, Visibility, VisibilityOff } from '@material-ui/icons';
+import { ClassSharp, Lock, Visibility, VisibilityOff } from '@material-ui/icons';
 import { Button, IconButton, TextField } from '@material-ui/core';
 
 //implementating redux
@@ -122,6 +122,9 @@ function LoginPage(props) {
         
     }
 
+    //get phonenumber
+    const [phonenumber, setPhonenumber] = useState("");
+
     //submitting the data to the server
     const submitHandler = (event) => {
         event.preventDefault();
@@ -141,6 +144,21 @@ function LoginPage(props) {
             .then(token => {
                 props.savedtokenAction(token.key);
                 console.log(token);
+
+                //get phoneNumber
+                fetch("http://127.0.0.1:8000/pnumber/", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Token ${token.key}`
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        setPhonenumber(data.status.phonenumber.slice(-3))
+                    })
+                    .catch(err => console.log(err));
+
                 if (token.status) {
                     setErrormsg(token.status);
                     setEmail(prevState => {
@@ -159,8 +177,10 @@ function LoginPage(props) {
                     
                     console.log("loginhistory--->", loginHistory);
                     setButtondisable(false);
-                    fetch("http://127.0.0.1:8000/signin/2f/", {
-                        method: "POST",
+
+                    //checking the auth method
+                    fetch("http://127.0.0.1:8000/status/auth/", {
+                        method: "GET",
                         headers: {
                             "Content-Type": "application/json",
                             "Authorization":`Token ${token.key}`
@@ -168,22 +188,27 @@ function LoginPage(props) {
                     })
                         .then(response => response.json())
                         .then(data => {
-                            // setToken(data.key)
-                            
                             console.log(data);
-                            if (data.status === "Email Based"){
-                                console.log("Email Based");
-                                setTwoAuth("email");
-                                setMessage("Check Your Email");
-                            } else if (data.message === "Totp Implemented") {
-                                console.log("Totp Implemented");
-                                setTwoAuth("totp");
-                                setMessage("Check Google Authenticator")
-                            } else if (data.status === "SMS Based") {
-                                console.log("SMS Based");
-                                setTwoAuth("sms");
-                                setMessage("Check Your SMS")
-                            } else if(data.message === "Two Factor Auth not implemented") {
+                            if (data.totp_two_factor_auth) {
+                                fetch("http://127.0.0.1:8000/signin/2f/", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Authorization": `Token ${token.key}`
+                                    }
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log("Totp Implemented");
+                                        setTwoAuth("totp");
+                                        setMessage("Check Google Authenticator")
+                                    })
+                                    .catch(err => console.log(err))  
+                            } else if (
+                                data.email_two_factor_auth === false &&
+                                data.totp_two_factor_auth === false &&
+                                data.email_and_sms_two_factor_auth === false
+                            ) {
                                 window.localStorage.setItem('token', token.key);
                                 console.log(token);
                                 console.log("Two Factor Auth not implemented");
@@ -191,9 +216,48 @@ function LoginPage(props) {
                                 setTwoAuth("");
                                 setMessage("");
                                 loginHistory.replace("/")
+                            } else {
+                                setTwoAuth("email");
+                                setMessage("Check Your Email");
                             }
                         })
                         .catch(err => console.log(err))
+
+                    // fetch("http://127.0.0.1:8000/signin/2f/", {
+                    //     method: "POST",
+                    //     headers: {
+                    //         "Content-Type": "application/json",
+                    //         "Authorization":`Token ${token.key}`
+                    //     }
+                    // })
+                    //     .then(response => response.json())
+                    //     .then(data => {
+                    //         // setToken(data.key)
+                            
+                    //         console.log(data);
+                    //         if (data.status === "Email Based"){
+                    //             console.log("Email Based");
+                    //             setTwoAuth("email");
+                    //             setMessage("Check Your Email");
+                    //         } else if (data.message === "Totp Implemented") {
+                    //             console.log("Totp Implemented");
+                    //             setTwoAuth("totp");
+                    //             setMessage("Check Google Authenticator")
+                    //         } else if (data.status === "SMS Based") {
+                    //             console.log("SMS Based");
+                    //             setTwoAuth("sms");
+                    //             setMessage("Check Your SMS")
+                    //         } else if(data.message === "Two Factor Auth not implemented") {
+                    //             window.localStorage.setItem('token', token.key);
+                    //             console.log(token);
+                    //             console.log("Two Factor Auth not implemented");
+                    //             console.log("time to online");
+                    //             setTwoAuth("");
+                    //             setMessage("");
+                    //             loginHistory.replace("/")
+                    //         }
+                    //     })
+                    //     .catch(err => console.log(err))
                     // loginHistory.replace("/")
                 }
                 
@@ -287,6 +351,330 @@ function LoginPage(props) {
         }        
     }
 
+    //single based login
+    let singlebasedlogin = null
+    if (twoAuth.length === 0) {
+        singlebasedlogin = (
+            <form ref={form} onSubmit={submitHandler} >
+                <TextField variant="outlined"
+                    label="Email" type="email" name="email"
+                    className={classes.loginPage__input}
+                    onChange={inputFieldHandler}
+                    value={email.value}
+                    onBlur={validationHandler}
+                    error={email.error}
+                    helperText={email.helperText}
+                    onFocus={() => {
+                        console.log("no focus called");
+                        setErrormsg("");
+                        setEmail(prevState => {
+                            return {
+                                ...prevState,
+                                error: false
+                            }
+                        })
+                    }}
+                />
+
+                <TextField variant="outlined"
+                    label="Password" name="password"
+                    type={password.showPassword ? "password" : "text"} 
+                    className={classes.loginPage__input}
+                    onChange={inputFieldHandler}
+                    value={password.value}
+                    error={password.error}
+                    InputProps={{
+                        endAdornment: 
+                            <IconButton
+                                style={{marginLeft: password.showPassword && "62px" }}
+                                onClick={showPasswordHandler}
+                                edge="end"
+                            >
+                                {password.showPassword ? <Visibility /> :<VisibilityOff/>}
+                            </IconButton>
+                    }}
+
+                    onFocus={() => {
+                        setPassword(prevState => {
+                            return {
+                                ...prevState,
+                                error : false,
+                            }
+                        })
+                    }}
+                    
+                />
+
+                <Button variant="contained"
+                    type="submit" color="primary" disabled={ buttondisable || initialclick }
+                    className={classes.loginPage__button}
+                >
+                    Sign In
+                </Button>
+
+            </form>
+        )
+    } else {
+        singlebasedlogin = null;
+    }
+
+
+    //qrcode and email_sms based
+
+    const [twostepmsg, setTwostepmsg] = useState("");
+    const emailref = useRef(null);
+    const smsref = useRef(null);
+
+    
+
+    //sms based handler
+    const twostepverificationsmsHandler = (event) => {
+        
+        setTwostepmsg("sms based");
+        twostepverificationHandler();
+    }
+
+    //email based handler
+    const twostepverificationemailHandler = (event) => {
+        setTwostepmsg("email based");
+        twostepverificationHandler();
+    }
+
+
+    const twostepverificationHandler = () => {
+
+        fetch("http://127.0.0.1:8000/status/auth/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${props.token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("from twostephandler", data)
+                //if two step is not google authenticator
+                if (!data.totp_two_factor_auth) {
+                    fetch("http://127.0.0.1:8000/signin/2f/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization":`Token ${props.token}`
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // setToken(data.key)
+                            
+                            console.log(data);
+                            
+                        })
+                        .catch(err => console.log(err))
+                } else {
+                    fetch("http://127.0.0.1:8000/mail/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Token ${props.token}`
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                        })
+                        .catch(err => console.log(err));
+                }
+            })
+            .catch(err => console.log(err));
+
+        console.log("clicked!!!");
+        console.log(props.token);
+        
+        
+    }
+
+    
+    
+
+    let twostepVerification = null;
+
+    const [twosteptotp, setTwosteptotp] = useState("");
+
+
+    //if google authenticator is enable
+    if ((message === "Check Google Authenticator") && (twoAuth.length > 0)) {
+        twostepVerification = (
+            <div style={{ width: "300px" }}>
+                <p>
+                    2-Step Verification
+                </p>
+                <p>
+                    {message}
+                </p>
+
+                <form onSubmit={otpcodeHandler}>
+                    <TextField
+                        style={{width:"300px"}}
+                        variant="outlined"
+                        label="OTP Code" type="text" name={twoAuth}
+                        className={classes.loginPage__input}
+                        onChange={(event) => {
+                            setOtpcode(prevState => {
+                                return {
+                                    ...prevState,
+                                    value:event.target.value
+                                }
+                            })
+                        }}
+                        value={otpcode.value}
+                        onBlur={()=>{}}
+                        error={otpcode.error}
+                        helperText={otpcode.helperText}
+                        onFocus={() => {
+                            console.log("no focus called");
+                            
+                            setOtpcode(prevState => {
+                                return {
+                                    ...prevState,
+                                    error: false
+                                }
+                            })
+                        }}
+                    />
+                    <Button variant="contained"
+                        type="submit" color="primary" 
+                        className={classes.loginPage__button}
+                    >
+                        Verify OTP
+                    </Button>
+                </form>
+
+                <div className={classes.loginPage__tryanotherway}>
+                    <Button variant="text"
+                        type="submit" color="primary" 
+                        className={classes.loginPage__button}
+                        onClick={() => {
+                            console.log("try another ways!!!");
+                            setTwosteptotp('totp');
+                            setMessage("try another way");
+                            setTwoAuth('email');
+                        }}
+                    >
+                        Try Another Ways
+                    </Button>
+                </div>
+            </div>
+        )
+    } else if ((message !== "Check Google Authenticator") && (twoAuth.length > 0)) {
+        let sliceEmail = null;
+        if (email.value.split("@")[0].length > 3) {
+            sliceEmail = email.value.slice(0, 3);
+        } else {
+            sliceEmail = email.value.split('@')[0]
+        }
+
+        sliceEmail += `...${email.value.slice(-3)}`
+
+        twostepVerification = (
+            <div style={{ width: "300px" }}>
+                <h2>
+                    2-Step Verification
+                </h2>
+
+                <div className={classes.twostepverification__emailandsms}>
+                    <h3>
+                        Choose the options
+                    </h3>
+
+                    <div className={classes.twostepverification__sms} onClick={twostepverificationsmsHandler} ref={smsref}>
+                        {
+                            phonenumber.length > 0
+                                ?
+                                <h5>Get a veification code at <sup>...</sup>{ phonenumber}</h5>
+                                :
+                                <h5>Error</h5>
+                        }
+                           
+                    </div>
+
+                    <div className={classes.twostepverification__email} onClick={twostepverificationemailHandler} ref={emailref}>
+                        <h5>Send a verification code at {sliceEmail}</h5>
+                    </div>
+                </div>
+
+            </div>
+        )
+        
+    } else {
+        twostepVerification = null;
+    }
+
+
+    // after choose email or sms based
+    let email_sms = null;
+    if (twostepmsg.length > 0) {
+        email_sms = (
+            <div style={{ width: "300px" }}>
+                <h2>
+                    2-Step Verification
+                </h2>
+                <p>
+                    {twostepmsg}
+                </p>
+
+                <form onSubmit={otpcodeHandler}>
+                    <TextField
+                        style={{width:"300px"}}
+                        variant="outlined"
+                        label="OTP Code" type="text" name={twoAuth}
+                        className={classes.loginPage__input}
+                        onChange={(event) => {
+                            setOtpcode(prevState => {
+                                return {
+                                    ...prevState,
+                                    value:event.target.value
+                                }
+                            })
+                        }}
+                        value={otpcode.value}
+                        onBlur={()=>{}}
+                        error={otpcode.error}
+                        helperText={otpcode.helperText}
+                        onFocus={() => {
+                            console.log("no focus called");
+                            
+                            setOtpcode(prevState => {
+                                return {
+                                    ...prevState,
+                                    error: false
+                                }
+                            })
+                        }}
+                    />
+                    <Button variant="contained"
+                        type="submit" color="primary" 
+                        className={classes.loginPage__button}
+                    >
+                        Verify OTP
+                    </Button>
+                </form>
+
+                <div className={classes.loginPage__tryanotherway}>
+                    <Button variant="text"
+                        type="submit" color="primary" 
+                        className={classes.loginPage__button}
+                        onClick={() => setTwostepmsg("")}
+                    >
+                        Back
+                    </Button>
+                </div>
+                
+            </div>
+        )
+    } else {
+        email_sms = null;
+    }
+
     return (
         <div className={classes.loginPage}>
             <div className={classes.loginPage__header}>
@@ -307,120 +695,18 @@ function LoginPage(props) {
                     </p>
                 }
 
+                {singlebasedlogin}
                 {
-                    twoAuth.length === 0
+                    twostepmsg.length === 0
                         ?
-                        <form ref={form} onSubmit={submitHandler} >
-                            <TextField variant="outlined"
-                                label="Email" type="email" name="email"
-                                className={classes.loginPage__input}
-                                onChange={inputFieldHandler}
-                                value={email.value}
-                                onBlur={validationHandler}
-                                error={email.error}
-                                helperText={email.helperText}
-                                onFocus={() => {
-                                    console.log("no focus called");
-                                    setErrormsg("");
-                                    setEmail(prevState => {
-                                        return {
-                                            ...prevState,
-                                            error: false
-                                        }
-                                    })
-                                }}
-                            />
-
-                            <TextField variant="outlined"
-                                label="Password" name="password"
-                                type={password.showPassword ? "password" : "text"} 
-                                className={classes.loginPage__input}
-                                onChange={inputFieldHandler}
-                                value={password.value}
-                                error={password.error}
-                                InputProps={{
-                                    endAdornment: 
-                                        <IconButton
-                                            style={{marginLeft: password.showPassword && "62px" }}
-                                            onClick={showPasswordHandler}
-                                            edge="end"
-                                        >
-                                            {password.showPassword ? <Visibility /> :<VisibilityOff/>}
-                                        </IconButton>
-                                }}
-
-                                onFocus={() => {
-                                    setPassword(prevState => {
-                                        return {
-                                            ...prevState,
-                                            error : false,
-                                        }
-                                    })
-                                }}
-                                
-                            />
-
-                            <Button variant="contained"
-                                type="submit" color="primary" disabled={ buttondisable || initialclick }
-                                className={classes.loginPage__button}
-                            >
-                                Sign In
-                            </Button>
-
-                        </form>
+                            twostepVerification
                         :
-                        <div style={{ width: "300px" }}>
-                            <p>
-                                {message}
-                            </p>
-                            <form onSubmit={otpcodeHandler}>
-                                <TextField
-                                    style={{width:"300px"}}
-                                    variant="outlined"
-                                    label="OTP Code" type="text" name={twoAuth}
-                                    className={classes.loginPage__input}
-                                    onChange={(event) => {
-                                        setOtpcode(prevState => {
-                                            return {
-                                                ...prevState,
-                                                value:event.target.value
-                                            }
-                                        })
-                                    }}
-                                    value={otpcode.value}
-                                    onBlur={()=>{}}
-                                    error={otpcode.error}
-                                    helperText={otpcode.helperText}
-                                    onFocus={() => {
-                                        console.log("no focus called");
-                                        
-                                        setOtpcode(prevState => {
-                                            return {
-                                                ...prevState,
-                                                error: false
-                                            }
-                                        })
-                                    }}
-                                />
-                                <Button variant="contained"
-                                    type="submit" color="primary" 
-                                    className={classes.loginPage__button}
-                                >
-                                    Verify OTP
-                                </Button>
-                            </form>
-                        </div>
-                        
-                        
-                }
+                            null
+                }   
+                {email_sms}
+                
             </div>
             <div className={classes.loginPage__footer}>
-                {/* <Button color="primary"
-                    className={classes.loginPage__forget}
-                    onClick ={props.openRegisterAction}
-                >
-                    Sign Up
-                </Button> */}
 
                 {
                     twoAuth.length === 0

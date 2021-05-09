@@ -55,7 +55,8 @@ const BodyTable = (props) => {
         >
             <HomePageBodyHeader 
                 header={props.header} 
-                buttonName={props.buttonName} 
+                buttonName={props.buttonName}
+                groupName={props.groupName}
                 title={props.title}
                 url={props.url}
             />

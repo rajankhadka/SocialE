@@ -49,7 +49,6 @@ function Setting(props) {
     // const [email_and_sms_two_factor_auth, setEmail_and_sms_two_factor_auth] = useState(false);
 
 
-
     //qrcode img
     const [qrcodeimg, setQrcodeimg] = useState("");
 
