@@ -128,7 +128,7 @@ const HomePageBodyHeader = (props) =>{
                                 textTransform: 'capitalize',
                                 marginLeft: "10px",
                             }}
-                            onClick = {campaignCreateHandler}
+                            // onClick = {}
                         >
                             {props.groupName}
                         </Button>
