@@ -11,6 +11,7 @@ import {  } from '@material-ui/icons';
 import BodyTable from '../../components/UI/BodyTable/BodyTable';
 
 import { Redirect,useHistory } from "react-router-dom";
+import TargetAudienceGroup from '../../components/TargetAudienceGroup/TargetAudienceGroup';
 
 function HomePage(props) {
 
@@ -33,6 +34,20 @@ function HomePage(props) {
         
     }, [])
 
+    //show create group
+    const [showGroup, setShowGroup] = useState(false);
+
+    //trigger on the show group
+    const showGroupONHandler = () => {
+        console.log("clicked!!!")
+        setShowGroup(true);
+    }
+
+    //trigger off the show group
+    const showGroupOFFhandler = () => {
+        setShowGroup(false);
+    }
+
     const homepageHistory = useHistory()
     return (
         <div className={classes.homePage}>
@@ -48,7 +63,19 @@ function HomePage(props) {
                     url="/home/create-campagin"
                     campaigndetailURL="/home/campaign"
                     data={campaign}
+                    showGroup={showGroup}
+                    showGroupONHandler={showGroupONHandler}
                 />
+
+                {
+                    showGroup
+                        ?
+                        <TargetAudienceGroup
+                            showGroupOFFhandler={showGroupOFFhandler}
+                        />
+                        :
+                            null
+                }
             </div>
         </div>
     )

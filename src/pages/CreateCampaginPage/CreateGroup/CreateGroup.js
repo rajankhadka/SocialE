@@ -49,7 +49,7 @@ function CreateGroup(props) {
                                     width: "50vh",
                                     borderColor: "rgba(0,0,0,0.2)",
                                     borderRadius: "5px",
-                                    height: "10vh",
+                                    height: "20vh",
                                     paddingLeft: "10px",
                                     paddingTop: "10px",
                                     boxSizing: "border-box",
@@ -63,7 +63,14 @@ function CreateGroup(props) {
                             {
                                 props.targetAudienceUserUpload.error.length > 0
                                     ?
-                                    <p style={{color:"red"}}>{props.targetAudienceUserUpload.error}</p>
+                                    <p
+                                        style={{
+                                            color: "red",
+                                            marginLeft: "-35vh",
+                                            marginBottom: "10px",
+                                            marginTop:"5px"
+                                        }}
+                                    >{props.targetAudienceUserUpload.error}</p>
                                     :
                                     null
                             }

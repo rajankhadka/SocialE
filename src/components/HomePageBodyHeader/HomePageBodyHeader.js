@@ -128,7 +128,7 @@ const HomePageBodyHeader = (props) =>{
                                 textTransform: 'capitalize',
                                 marginLeft: "10px",
                             }}
-                            // onClick = {}
+                            onClick = {props.showGroupONHandler}
                         >
                             {props.groupName}
                         </Button>

@@ -59,6 +59,8 @@ const BodyTable = (props) => {
                 groupName={props.groupName}
                 title={props.title}
                 url={props.url}
+                showGroup={props.showGroup}
+                showGroupONHandler={props.showGroupONHandler}
             />
 
             {bodyTable}
