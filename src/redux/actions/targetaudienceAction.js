@@ -30,3 +30,11 @@ export const addnewTargetAudience = (data) => {
         data: data,
     }
 }
+
+export const addnewGroup = (data) => {
+    console.log("new group --->", data);
+    return {
+        type: TargetAudience.GROUPADD,
+        data:data,
+    }
+}

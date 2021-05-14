@@ -1,7 +1,8 @@
 import { TargetAudience } from "../../actions/actionTypes";
 
 const initialState = {
-    availableAudience:[]
+    availableAudience: [],
+    groupName:[],
 }
 
 const targetaudienceReducers = (state = initialState, action) => {
@@ -10,12 +11,12 @@ const targetaudienceReducers = (state = initialState, action) => {
             let newdata = action.data.map((item) => {
                 return {
                     ...item,
-                    click : false
+                    click : true
                 }
             });
             return {
                 ...state,
-                availableAudience: newdata
+                availableAudience: [...state.availableAudience,...newdata]
             }
         
         case TargetAudience.CLICKAUDIENCE:
@@ -56,6 +57,12 @@ const targetaudienceReducers = (state = initialState, action) => {
                 availableAudience: state.availableAudience.concat(action.data),
             }
 
+        case TargetAudience.GROUPADD:
+            console.log("Group Reducers", action.data);
+            return {
+                ...state,
+                groupName: action.data
+            }
         
         default:
             return state

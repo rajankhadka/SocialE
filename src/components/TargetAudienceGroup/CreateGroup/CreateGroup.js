@@ -43,6 +43,7 @@ function CreateGroup(props) {
                             <>
                                 <label htmlFor="audienceInput">Email Ids : </label>
                             <textarea
+                                disabled={props.disable}
                                 id="audienceInput"
                                 style={{
                                     resize: "none",

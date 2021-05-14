@@ -3,7 +3,7 @@ import classes from "./HomePageBodyHeader.module.css"
 
 //material UI
 import { Button, TextField } from '@material-ui/core';
-import { Add, Search } from '@material-ui/icons';
+import { Add, Search,List } from '@material-ui/icons';
 
 //react router 
 import {useHistory} from "react-router-dom"
@@ -107,6 +107,7 @@ const HomePageBodyHeader = (props) =>{
             >
                 {
                     props.header !== 'Templates' &&
+                    // campaign header 
                     <div className={classes.homePage__body__bodyHeaderCompanyLeft}>
                         <Button variant="contained"
                             startIcon={<Add />}
@@ -121,6 +122,21 @@ const HomePageBodyHeader = (props) =>{
                             {props.buttonName}
                         </Button>
 
+
+                        {/* All group  */}
+                        <Button variant="text"
+                            startIcon={<List />}
+                            style={{
+                                // fontSize: 15,
+                                textTransform: 'capitalize',
+                                marginLeft: "10px",
+                            }}
+                            onClick = {props.showONAllGroupHandler}
+                        >
+                            {props.showAllGroup}
+                        </Button>
+
+                        {/* create group  */}
                         <Button variant="text"
                             startIcon={<Add />}
                             style={{

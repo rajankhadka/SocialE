@@ -61,6 +61,8 @@ const BodyTable = (props) => {
                 url={props.url}
                 showGroup={props.showGroup}
                 showGroupONHandler={props.showGroupONHandler}
+                showAllGroup={props.showAllGroup}
+                showONAllGroupHandler={props.showONAllGroupHandler}
             />
 
             {bodyTable}

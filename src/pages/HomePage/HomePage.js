@@ -12,6 +12,7 @@ import BodyTable from '../../components/UI/BodyTable/BodyTable';
 
 import { Redirect,useHistory } from "react-router-dom";
 import TargetAudienceGroup from '../../components/TargetAudienceGroup/TargetAudienceGroup';
+import ShowGroup from '../../components/TargetAudienceGroup/ShowGroup/ShowGroup';
 
 function HomePage(props) {
 
@@ -36,6 +37,7 @@ function HomePage(props) {
 
     //show create group
     const [showGroup, setShowGroup] = useState(false);
+    const [showAllGroup, setShowAllGroup] = useState(false);
 
     //trigger on the show group
     const showGroupONHandler = () => {
@@ -47,6 +49,15 @@ function HomePage(props) {
     const showGroupOFFhandler = () => {
         setShowGroup(false);
     }
+
+    //trigger on the show all group
+    const showONAllGroupHandler = () => {
+        console.log("show all group!!!");
+        setShowAllGroup(true);
+    };
+
+    //trigger off the show all group
+    const showOFFAllGroupHandler = () => setShowAllGroup(false);
 
     const homepageHistory = useHistory()
     return (
@@ -65,6 +76,8 @@ function HomePage(props) {
                     data={campaign}
                     showGroup={showGroup}
                     showGroupONHandler={showGroupONHandler}
+                    showAllGroup="All Groups"
+                    showONAllGroupHandler={showONAllGroupHandler}
                 />
 
                 {
@@ -75,6 +88,16 @@ function HomePage(props) {
                         />
                         :
                             null
+                }
+
+                {
+                    showAllGroup
+                        ?
+                        <ShowGroup
+                            showOFFAllGroupHandler={showOFFAllGroupHandler}
+                        />
+                        :
+                        null
                 }
             </div>
         </div>

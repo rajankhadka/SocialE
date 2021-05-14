@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { useHistory} from "react-router-dom";
 
 function HeaderTooltip(props) {
-
+    
     const headertooltipHistory = useHistory();
 
     const logoutHandler = () => {

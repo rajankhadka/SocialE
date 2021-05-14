@@ -5,10 +5,10 @@ import classes from "./TargetAudienceGroup.module.css";
 //3rd party libarary
 import validator from "validator";
 import { Button, TextField } from '@material-ui/core';
-import CreateGroup from '../../pages/CreateCampaginPage/CreateGroup/CreateGroup';
+import CreateGroup from './CreateGroup/CreateGroup';
 
 function TargetAudienceGroup(props) {
-
+    console.log("groupPreviewData", props.groupData);
     //success and error message
     const [showSuccessmsg, setShowSuccessmsg] = useState(false);
     const [showErrormsg, setShowErrormsg] = useState(false);
@@ -16,15 +16,15 @@ function TargetAudienceGroup(props) {
     //group information
     const [newAudience, setNewAudience] = useState({
         groupName: {
-            value: "",
+            value: props.groupData === undefined ? "" : props.groupData.group_name,
             err:"",
         },
         department: {
-            value: "",
+            value: props.groupData === undefined ? "" : props.groupData.department,
             err:"",
         },
         organization: {
-            value: "",
+            value: props.groupData === undefined ? "" : props.groupData.organization,
             err:"",
         }
 
@@ -295,6 +295,50 @@ function TargetAudienceGroup(props) {
         //     });
     }
 
+    let title = null;
+    let disable = false;
+
+    if (props.preview !== undefined && props.edit === undefined) {
+        title = props.preview;
+        disable = true
+
+    } else if (props.preview === undefined && props.edit !== undefined) {
+        title = props.edit;
+        disable = false
+    } else {
+        title = "Add New Audience";
+        disable = false;
+    }
+
+
+    //button
+    let button = null;
+    
+    if (props.preview !== undefined && props.edit === undefined) {
+        button = null;
+        
+    } else if (props.preview === undefined && props.edit !== undefined) {
+        button = (
+            <Button
+                className={classes.createCampaignBody__addnewAudience__input}
+                variant="contained"
+                type="submit"
+            >
+                Edit Group
+            </Button>
+        );
+    } else {
+        button = (
+            <Button
+                className={classes.createCampaignBody__addnewAudience__input}
+                variant="contained"
+                type="submit"
+            >
+                Create Group
+            </Button>
+        );
+    }
+
     return (
         <div className={classes.targetAudienceGroup}>
             <div className={classes.targetAudienceGroup__content}>
@@ -310,7 +354,7 @@ function TargetAudienceGroup(props) {
                             // color: addNewAudience ? "#EDEDED" : "#2bae66"
                         }}
                     >
-                        Add New Audience
+                        {title}
                     </div>
 
                     <Close
@@ -364,6 +408,7 @@ function TargetAudienceGroup(props) {
                             variant="outlined" size="small" label="Group Name" required
                             type="text"
                             onChange={newAudienceHandler}
+                            disabled = {disable}
                             value={newAudience.groupName.value}
                         />
 
@@ -372,8 +417,9 @@ function TargetAudienceGroup(props) {
                             className={classes.createCampaignBody__addnewAudience__input}
                             variant="outlined" size="small" label="Organization" required
                             type="text"
+                            disabled = {disable}
                             onChange={newAudienceHandler}
-                            value={newAudience.organization.value}
+                            value={ newAudience.organization.value}
                         />
 
                         <TextField
@@ -381,8 +427,9 @@ function TargetAudienceGroup(props) {
                             className={classes.createCampaignBody__addnewAudience__input}
                             variant="outlined" size="small" label="Department" required
                             type="text"
+                            disabled = {disable}
                             onChange={newAudienceHandler}
-                            value={newAudience.department.value}
+                            value={ newAudience.department.value}
                         />
 
                         <div className={classes.createCampaignBody__selectedField}>
@@ -391,6 +438,7 @@ function TargetAudienceGroup(props) {
                                     ?
                                     <CreateGroup
                                         uploadFieldActive={uploadFieldActive}
+                                        disable = {disable}
                                         setUploadFieldActiveInputHandler={setUploadFieldActiveInputHandler}
                                         setUploadFieldActiveUploadHandler={setUploadFieldActiveUploadHandler}
                                         targetAudienceUseremailhandler={targetAudienceUseremailhandler}
@@ -412,13 +460,7 @@ function TargetAudienceGroup(props) {
                             }
                         </div>
 
-                        <Button
-                            className={classes.createCampaignBody__addnewAudience__input}
-                            variant="contained"
-                            type="submit"
-                        >
-                            Create Group
-                        </Button>
+                        {button}
                     </form>
                     
                 </div>

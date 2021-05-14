@@ -19,41 +19,29 @@ import {
     availableTargetAudience,
     clickTargetAudience,
     disableTargetAudience,
-    addnewTargetAudience
+    addnewTargetAudience,
+    addnewGroup
 } from "../../redux/actions/targetaudienceAction";
-import CreateGroup from "./CreateGroup/CreateGroup";
+import GroupSelect from "./GroupSelect/GroupSelect";
 
-
-//3rd party library
-import validator from "validator"
 
 const CreateCampaginPage = (props) => {
 
     const [addNewAudience, setAddNewAudience] = useState(false);
     const [templateName, setTemplateName] = useState([]);
-    
+    const [groupData, setGroupData] = useState([]);
+
+    //selected Group
+    const [selected, setSelected] = useState([]);
+
+    const selectedhandleChange = event => {
+        console.log(event.target.value);
+        setSelected(event.target.value);
+        props.addnewGroupAction(event.target.value);
+    };
+
     useEffect(() => {
         console.log("useEffect");
-
-        //target user audience
-        // fetch("http://127.0.0.1:8000/targetuser/get/", {
-        //     "method": "GET",
-        //     "headers": {
-        //         "Authorization": `Token ${window.localStorage.getItem('token')}`,
-                
-        //     },
-        //     // "body": JSON.stringify({
-        //     //     id:2
-        //     // })
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         // console.log(data.payload);
-                
-        //         props.availableTargetAudienceAction(data.payload);
-        //     })
-        //     .catch(err => console.log(err));
-        
         //template name
 
         fetch("http://127.0.0.1:8000/template/resource/list/", {
@@ -83,9 +71,54 @@ const CreateCampaginPage = (props) => {
             })
             .catch(err => console.log(err));
         
+        //group name
+        fetch("http://127.0.0.1:8000/targetusergroup/get/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setGroupData(data);
+            })
+            .catch(err => console.log(err));
+        
     }, []);
 
-    //add new target audience
+
+    //fetching all group name target audience
+    useEffect(() => {
+        console.log("every time call");
+        console.log("groupName",props.groupName);
+
+        props.groupName.forEach((group) => {
+            fetch("http://127.0.0.1:8000/targetuser/get/", {
+                "method": "POST",
+                "headers": {
+                    "Authorization": `Token ${window.localStorage.getItem('token')}`,
+                    "Content-Type": "application/json"
+                },
+                "body": JSON.stringify({
+                    id: group
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("palyoad--->",data.payload);
+                    // targetAudienceUserfetch.push(...data.payload)
+                    props.availableTargetAudienceAction(data.payload);
+
+                })
+                .catch(err => console.log(err));
+        });
+
+        // console.log("all target user group is ", targetAudienceUserfetch);
+        // props.availableTargetAudienceAction(targetAudienceUserfetch);
+        
+    }, [props.groupName])
 
     //campaign value
     const [campaignValue, setCampaignValue] = useState({
@@ -216,382 +249,13 @@ const CreateCampaginPage = (props) => {
         }
     }
 
-    const [newAudience, setNewAudience] = useState({
-        groupName: {
-            value: "",
-            err:"",
-        },
-        department: {
-            value: "",
-            err:"",
-        },
-        organization: {
-            value: "",
-            err:"",
-        }
-
-    });
     
 
-    const newAudienceHandler = (event) => {
-        switch (event.target.name) {
-            case "audienceGroupName":
-                
-                setNewAudience(prevState => {
-                    return {
-                        ...prevState,
-                        groupName: {
-                            ...prevState.username,
-                            value: event.target.value
-                        }
-                    }
-                });
-                break;
-            
-            case "audienceOrganization":
-                setNewAudience(prevState => {
-                    return {
-                        ...prevState,
-                        organization: {
-                            ...prevState.email,
-                            value:event.target.value
-                        }
-                    }
-                });
-                break
-        
-            case "audienceDepartment":
-                setNewAudience(prevState => {
-                    return {
-                        ...prevState,
-                        department: {
-                            ...prevState.email,
-                            value:event.target.value
-                        }
-                    }
-                });
-                break
-            default:
-                return newAudience;
-        }
-    }
-
-
-    //targetAudience
-    const [targetAudienceUser, setTargetAudienceUser] = useState({
-        targetAudienceUserEmail: {
-            value: "",
-            valid:false,
-        },
-        targetAudienceUserUpload: {
-            value: null,
-            error: "",
-        }
-    });
-
-    //targetAudienceUseremailhandler
-    const targetAudienceUseremailhandler = (event) => {
-
-        setTargetAudienceUser(prevState => {
-            return {
-                ...prevState,
-                targetAudienceUserEmail: {
-                    value: event.target.value,
-                }
-            }
-        })
-
-    }
-
-    //targetAudienceUserUploadHandler
-    const targetAudienceUserUploadHandler = (event) => {
-        console.log(event.target.files[0]);
-        if (event.target.files[0].type.split("/")[1] === "csv") {
-            setTargetAudienceUser(prevState => {
-                return {
-                    ...prevState,
-                    targetAudienceUserUpload: {
-                        value: event.target.files[0],
-                        error:""
-                    }
-                }
-            })
-        } else {
-            setTargetAudienceUser(prevState => {
-                return {
-                    ...prevState,
-                    targetAudienceUserUpload: {
-                        value:null,
-                        error:"Invalid File"
-                    }
-                }
-                
-            })
-        }
-    }
-
-    //target audience create email second
-    const targetAudienceCreateAPIHandler = (groupData) => {
-
-        let validateEmailOnly = [];
-        let splitEmail = targetAudienceUser.targetAudienceUserEmail.value.split(";");
-
-        splitEmail.forEach(item => {
-            if (validator.isEmail(item)) {
-                validateEmailOnly.push(item);
-            }
-        });
-
-        console.log(validateEmailOnly);
-        
-
-        fetch("http://127.0.0.1:8000/targetuser/create/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization":`Token ${window.localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                id: groupData.group_id,
-                email:validateEmailOnly,
-            })
-        })
-            .then(response => response.json())
-            .then(audienceUserAdded => console.log(audienceUserAdded))
-            .catch(err => console.log(err))
-    }
-
-
-    //target audience create upload csv second
-
-    const targetAudienceUploadHandler = (groupData) => {
-        let formData = new FormData();
-        formData.append("file_name", targetAudienceUser.targetAudienceUserUpload.value)
-        formData.append("id", groupData.group_id)
-        
-        console.log(formData.get("id"));
-        console.log(formData.get("file_name"));
-
-        fetch("http://127.0.0.1:8000/targetuser/dump/", {
-            method: "POST",
-            headers: {
-                "Authorization": `Token ${window.localStorage.getItem('token')}`,
-                // "Content-Type":"multipart/form-data"
-            },
-            body:formData
-        })
-            .then(response => response.json())
-            .then(audienceUserAdded => console.log(audienceUserAdded))
-            .catch(err => console.log(err))
-        
-    }
-
-
-    const addnewAudienceHandler = (event) => {
-        event.preventDefault();
-        console.log("data submitted!!!")
-        // console.log(targetAudienceUser.targetAudienceUserEmail.value);
-
-        //first group create
-
-        if (!uploadFieldActive && targetAudienceUser.targetAudienceUserEmail.value.length > 0) {
-            console.log("user email")
-            fetch("http://127.0.0.1:8000/targetusergroup/create/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Token ${window.localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    group_name: newAudience.groupName.value,
-                    department: newAudience.department.value,
-                    organization: newAudience.organization.value,
-                })
-            })
-                .then(response => response.json())
-                .then(groupData => {
-                    
-                    //target audience create email
-                    targetAudienceCreateAPIHandler(groupData);
-
-                })
-                .catch(err => console.log(err));
-        } else if (uploadFieldActive && targetAudienceUser.targetAudienceUserUpload.value !== null) {
-            console.log("user csv")
-            fetch("http://127.0.0.1:8000/targetusergroup/create/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Token ${window.localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    group_name: newAudience.groupName.value,
-                    department: newAudience.department.value,
-                    organization: newAudience.organization.value,
-                })
-            })
-                .then(response => response.json())
-                .then(groupData => {
-                    console.log(groupData);
-                    targetAudienceUploadHandler(groupData)
-                })
-                .catch(err => console.log(err));
-            
-        }else {
-            console.log("invalid Field");
-        }
-        
-
-        // fetch("http://127.0.0.1:8000/targetuser/create/", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "Authorization": `Token ${window.localStorage.getItem('token')}`
-        //     },
-        //     body: JSON.stringify({
-        //         username: newAudience.username.value,
-        //         email: newAudience.email.value,
-        //     })
-        // })
-        //     .then(response => {
-        //         console.log(response.status);
-        //         if (response.status === 400) throw new Error("Invalid Data");
-        //         return response.json()
-        //     })
-        //     .then(data => {
-        //         console.log(data);
-        //         let newTargetAudience = {
-        //             id: data.target_user_id,
-        //             email: data.email,
-        //             username: data.target_username,
-        //             click: true
-        //         }
-        //         props.addnewTargetAudienceAction(newTargetAudience);
-        //         setShowSuccessmsg(true);
-        //         setShowErrormsg(false);
-        //         setCampaignTargetUser(prevState => prevState.concat(newTargetAudience.id))
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //         setShowSuccessmsg(false);
-        //         setShowErrormsg(true);
-        //     });
-    }
-
-    const [showSuccessmsg, setShowSuccessmsg] = useState(false);
-    const [showErrormsg, setShowErrormsg] = useState(false);
-
     let targetAudience = null;
-
-    //create group
-    const [uploadFieldActive, setUploadFieldActive] = useState(false);
-
-    const setUploadFieldActiveInputHandler = () => {
-        setUploadFieldActive(false);
-    }
-
-    const setUploadFieldActiveUploadHandler = () => {
-        setUploadFieldActive(true);
-    }
     
     if (addNewAudience) {
         targetAudience = (
-            <div className={classes.createCampaignBody__addnewAudience}>
-
-                {
-                    showSuccessmsg &&
-                    <div className={classes.createCampaignBody__addnewAudience__success}>
-                        <h5>New Audience Added !!!</h5>
-                        <Close
-                            fontSize="small"
-                            style={{
-                                cursor:"pointer"
-                            }}
-                            onClick={() => setShowSuccessmsg(false)}
-                        />
-                    </div>
-                }
-                
-                {
-                    showErrormsg &&
-                    <div className={classes.createCampaignBody__addnewAudience__error}>
-                        <h5>Invalid Data !!!</h5>
-                        <Close
-                            fontSize="small"
-                            style={{
-                                cursor:"pointer"
-                            }}
-                            onClick={() => setShowErrormsg(false)}
-                        />
-                    </div>
-                }
-
-                <form method="post" onSubmit={addnewAudienceHandler} encType="multipart/form-data">
-
-                    <TextField
-                        name="audienceGroupName"
-                        className={classes.createCampaignBody__addnewAudience__input}
-                        variant="outlined" size="small" label="Group Name" required
-                        type="text"
-                        onChange={newAudienceHandler}
-                        value={newAudience.groupName.value}
-                    />
-
-                    <TextField
-                        name="audienceOrganization"
-                        className={classes.createCampaignBody__addnewAudience__input}
-                        variant="outlined" size="small" label="Organization" required
-                        type="text"
-                        onChange={newAudienceHandler}
-                        value={newAudience.organization.value}
-                    />
-
-                    <TextField
-                        name="audienceDepartment"
-                        className={classes.createCampaignBody__addnewAudience__input}
-                        variant="outlined" size="small" label="Department" required
-                        type="text"
-                        onChange={newAudienceHandler}
-                        value={newAudience.department.value}
-                    />
-
-                     <div className={classes.createCampaignBody__selectedField}>
-                        {
-                            !uploadFieldActive
-                                ?
-                                <CreateGroup
-                                    uploadFieldActive={uploadFieldActive}
-                                    setUploadFieldActiveInputHandler={setUploadFieldActiveInputHandler}
-                                    setUploadFieldActiveUploadHandler={setUploadFieldActiveUploadHandler}
-                                    targetAudienceUseremailhandler={targetAudienceUseremailhandler}
-                                    targetAudienceUserEmailValue={targetAudienceUser.targetAudienceUserEmail.value}
-                                    targetAudienceUserUploadHandler={targetAudienceUserUploadHandler}
-                                    targetAudienceUserUpload={targetAudienceUser.targetAudienceUserUpload}
-                                />
-                                :
-                                <CreateGroup
-                                    uploadFieldActive={uploadFieldActive}
-                                    setUploadFieldActiveInputHandler={setUploadFieldActiveInputHandler}
-                                    setUploadFieldActiveUploadHandler={setUploadFieldActiveUploadHandler}
-                                    targetAudienceUseremailhandler={targetAudienceUseremailhandler}
-                                    ttargetAudienceUserEmailValue={targetAudienceUser.targetAudienceUserEmail.value}
-                                    targetAudienceUserUploadHandler={targetAudienceUserUploadHandler}
-                                    targetAudienceUserUpload={targetAudienceUser.targetAudienceUserUpload}
-                                />
-                                
-                        }
-                    </div>
-
-                    <Button
-                        className={classes.createCampaignBody__addnewAudience__input}
-                        variant="contained"
-                        type="submit"
-                    >
-                        Create Group
-                    </Button>
-                </form>
-                
-            </div>
+           null 
         )
     } else {
         targetAudience = (
@@ -600,7 +264,7 @@ const CreateCampaginPage = (props) => {
                 {
                     props.targetaudienceAvailable.map((item, index) => {
                         return (
-                            <div key={item.id} onClick={() => {
+                            <div key={`${item.id}key${index}`} onClick={() => {
                                 
                                 
                                 if (item.click) {
@@ -655,9 +319,10 @@ const CreateCampaginPage = (props) => {
                 "campaign_name": campaignValue.campaignName.value,
                 "campaign_title": campaignValue.campaignSubject.value,
                 "templateresource": campaignValue.selectTemplate.value,
-                "targetuser": campaignTargetUser,
+                // "targetuser": campaignTargetUser,
                 "start_date": campaignValue.campaignStartDate.value,
                 "end_date": campaignValue.campaignEndDate.value,
+                "targetusergroup":selected
             }),
         })
             .then(response => response.json())
@@ -734,7 +399,8 @@ const CreateCampaginPage = (props) => {
                                         labelId="selectTemplate"
                                         id="selectTemplate"
                                         value={campaignValue.selectTemplate.value}
-                                        onChange={campaignValueHandler }
+                                        onChange={campaignValueHandler}
+                                        
                                     >
                                         <option value="" />
                                         
@@ -745,6 +411,12 @@ const CreateCampaginPage = (props) => {
                                         {/* <option  value="TemplateName">TemplateName</option> */}
                                     </Select>
                                 </FormControl>
+
+                                <GroupSelect
+                                    groupData={groupData}
+                                    selectedhandleChange={selectedhandleChange}
+                                    selected={selected}
+                                />
                                 
                                 <label htmlFor="startDate">Start Date</label>
                                 <TextField
@@ -808,16 +480,7 @@ const CreateCampaginPage = (props) => {
                                     Available Targeted Audience
                                 </div>
 
-                                <div
-                                    className={classes.createCampaignBody__right__add}
-                                    onClick={() => setAddNewAudience(true)}
-                                    style={{
-                                        backgroundColor: addNewAudience ? "#2bae66" : "#EDEDED",
-                                        color: addNewAudience ? "#EDEDED" : "#2bae66"
-                                    }}
-                                >
-                                    Add New Audience
-                                </div>
+                                
 
                             </div>
 
@@ -842,6 +505,7 @@ const CreateCampaginPage = (props) => {
 const mapStateToProps = state => {
     return {
         targetaudienceAvailable: state.targetaudienceReducers.availableAudience,
+        groupName: state.targetaudienceReducers.groupName,
     }
 }
 
@@ -851,7 +515,8 @@ const mapDispatchtoProps = (dispatch) => {
         availableTargetAudienceAction: (data) => dispatch(availableTargetAudience(data)),
         clickTargetAudienceAction: (id) => dispatch(clickTargetAudience(id)),
         disableTargetAudienceAction: (id) => dispatch(disableTargetAudience(id)),
-        addnewTargetAudienceAction : (data) => dispatch(addnewTargetAudience(data)),
+        addnewTargetAudienceAction: (data) => dispatch(addnewTargetAudience(data)),
+        addnewGroupAction: (data) => dispatch(addnewGroup(data)),
     }
 }
 

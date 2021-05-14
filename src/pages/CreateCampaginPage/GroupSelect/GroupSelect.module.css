@@ -1,0 +1,11 @@
+.selectedGroupEdit {
+  overflow: scroll;
+}
+
+.selectedGroupEdit > p {
+  border: 1px solid red;
+  display: inline-block;
+  border-radius: 15px;
+  padding: 5px 10px 5px 10px;
+  font-size: 15px;
+}
