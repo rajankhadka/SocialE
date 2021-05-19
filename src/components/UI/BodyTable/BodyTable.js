@@ -36,7 +36,11 @@ const BodyTable = (props) => {
         );
     } else if (props.header === 'Templates' && props.templatePageToggle === "create") {
         bodyTable = <CreateTemplate />;
-    } else {
+    } else if (props.header === "Target Audience Groups") {
+        bodyTable = null;
+    }
+    
+    else {
         bodyTable = (
             <BodyTableBody
                 data={props.data}
@@ -63,6 +67,7 @@ const BodyTable = (props) => {
                 showGroupONHandler={props.showGroupONHandler}
                 showAllGroup={props.showAllGroup}
                 showONAllGroupHandler={props.showONAllGroupHandler}
+                showcreateGroupONhandler={props.showcreateGroupONhandler}
             />
 
             {bodyTable}

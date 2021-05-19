@@ -5,8 +5,6 @@ import classes from "./CreateGroup.module.css";
 function CreateGroup(props) {
 
     //active classes
-    
-    console.log(" create", props.targetAudienceUserUpload.error);
     return (
         <div className={classes.createGroup}>
             <div className={classes.createCampaignBody__right__header}>

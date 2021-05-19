@@ -109,7 +109,7 @@ const HomePageBodyHeader = (props) =>{
                     props.header !== 'Templates' &&
                     // campaign header 
                     <div className={classes.homePage__body__bodyHeaderCompanyLeft}>
-                        <Button variant="contained"
+                        <Button variant="text"
                             startIcon={<Add />}
                             style={{
                                 fontSize: 15,
@@ -117,37 +117,44 @@ const HomePageBodyHeader = (props) =>{
                                 fontWeight: 'lighter',
                                 marginLeft: "10px"
                             }}
-                            onClick = {campaignCreateHandler}
+                            onClick = {props.header === "Campaigns" ?   campaignCreateHandler : ()=>props.showcreateGroupONhandler()}
                         >
                             {props.buttonName}
                         </Button>
 
+                        
+                        {
+                            // props.header === "Campaigns" &&
+                                // <>
+                                //                 {/* All group  */}
+                                //     <Button variant="text"
+                                //         startIcon={<List />}
+                                //         style={{
+                                //             // fontSize: 15,
+                                //             textTransform: 'capitalize',
+                                //             marginLeft: "10px",
+                                //         }}
+                                //         onClick = {props.showONAllGroupHandler}
+                                //     >
+                                //         {props.showAllGroup}
+                                //     </Button>
 
-                        {/* All group  */}
-                        <Button variant="text"
-                            startIcon={<List />}
-                            style={{
-                                // fontSize: 15,
-                                textTransform: 'capitalize',
-                                marginLeft: "10px",
-                            }}
-                            onClick = {props.showONAllGroupHandler}
-                        >
-                            {props.showAllGroup}
-                        </Button>
+                                //     {/* create group  */}
+                                //     <Button variant="text"
+                                //         startIcon={<Add />}
+                                //         style={{
+                                //             // fontSize: 15,
+                                //             textTransform: 'capitalize',
+                                //             marginLeft: "10px",
+                                //         }}
+                                //         onClick = {props.showGroupONHandler}
+                                //     >
+                                //         {props.groupName}
+                                //     </Button>
+                                // </>
+                        }
 
-                        {/* create group  */}
-                        <Button variant="text"
-                            startIcon={<Add />}
-                            style={{
-                                // fontSize: 15,
-                                textTransform: 'capitalize',
-                                marginLeft: "10px",
-                            }}
-                            onClick = {props.showGroupONHandler}
-                        >
-                            {props.groupName}
-                        </Button>
+                        
                         
                     </div>
                 }

@@ -22,7 +22,7 @@ import {
     targetinfosidebar, templatesidebar,
     usermanagementsidebar,
     settingsidebar,
-    userprofilesidebar
+    userprofilesidebar,targetaudiencegroup
 } from "../../redux/actions/activesidebarAction";
 
 function SideBar(props) {
@@ -82,6 +82,25 @@ function SideBar(props) {
                     
                 </div>
 
+
+                {/* Group  */}
+                <div
+                    style={{
+                        borderRightWidth: props.activesidebarReducers.targetaudiencegroup && "5px",
+                        borderRightStyle: props.activesidebarReducers.targetaudiencegroup && "solid",
+                        borderRightColor : props.activesidebarReducers.targetaudiencegroup && "black"
+                    }}
+                    onClick={() => {
+                        props.targetaudiencegroupAction();
+                        sideBarHistory.push("/home/targetaudiencegroup")
+                    }}
+                >
+                    <Description style={{fontSize: 30}} />
+                    <h1>Group</h1>
+                    
+                </div>
+
+
                 {/* logs */}
                 <div
                     style={{
@@ -130,7 +149,7 @@ function SideBar(props) {
                     }}
                 
                 >
-                    <Group style={{fontSize: 30}}/>
+                    <AccountCircle style={{fontSize: 30}}/>
                     <h1>UserManagement</h1>
                 </div>
 
@@ -190,7 +209,9 @@ const mapDispatchToProps = dispatch => {
         targetinfosidebarAction: () => dispatch(targetinfosidebar()),
         usermanagementsidebarAction: () => dispatch(usermanagementsidebar()),
         settingsidebarAction: () => dispatch(settingsidebar()),
-        userprofilesidebarAction: () => dispatch(userprofilesidebar())
+        userprofilesidebarAction: () => dispatch(userprofilesidebar()),
+        targetaudiencegroupAction:() => dispatch(targetaudiencegroup()),
+
     }
 }
 

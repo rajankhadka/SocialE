@@ -17,6 +17,7 @@ import Setting from '../../pages/Setting/Setting';
 import Template001 from '../../template/Template001';
 import Template002 from '../../template/Template002';
 import Test from './Test';
+import TargetAudienceGroup from '../../pages/TargetAudienceGroup/TargetAudienceGroup';
 
 function App(props) {
   return (
@@ -32,6 +33,7 @@ function App(props) {
         <Route path="/home/user-management" exact component={UserManagementPage} />
         <Route path="/home/create-user" exact component={CreateUserPage} />
         <Route path="/home/setting" exact component={Setting} />
+        <Route path="/home/targetaudiencegroup" component={ TargetAudienceGroup}/>
 
         {/* template */}
         <Route path="/template/001" exact component={Template001} />

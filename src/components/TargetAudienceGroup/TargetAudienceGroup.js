@@ -8,7 +8,6 @@ import { Button, TextField } from '@material-ui/core';
 import CreateGroup from './CreateGroup/CreateGroup';
 
 function TargetAudienceGroup(props) {
-    console.log("groupPreviewData", props.groupData);
     //success and error message
     const [showSuccessmsg, setShowSuccessmsg] = useState(false);
     const [showErrormsg, setShowErrormsg] = useState(false);
@@ -230,6 +229,7 @@ function TargetAudienceGroup(props) {
                     
                     //target audience create email
                     targetAudienceCreateAPIHandler(groupData);
+                    props.createGroupClickedHandlerON();
 
                 })
                 .catch(err => console.log(err));

@@ -12,6 +12,12 @@ export const templatesidebar = () => {
     }
 }
 
+export const targetaudiencegroup = () => {
+    return {
+        type:sidebarActive.TARGETAUDIENCEGROUP
+    }
+}
+
 export const logssidebar = () => {
     return {
         type: sidebarActive.LOGS

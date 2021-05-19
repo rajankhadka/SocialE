@@ -7,7 +7,8 @@ const initialState = {
     tragetInfo: false,
     userManagement: false,
     setting: false,
-    userProfile : false,
+    userProfile: false,
+    targetaudiencegroup:false,
 }
 
 const activesidebarReducers = (state = initialState, action) => {
@@ -20,7 +21,8 @@ const activesidebarReducers = (state = initialState, action) => {
                 tragetInfo: false,
                 userManagement: false,
                 setting: false,
-                userProfile : false,
+                userProfile: false,
+                targetaudiencegroup:false,
             }
         
         case sidebarActive.TARGETINFO:
@@ -31,7 +33,20 @@ const activesidebarReducers = (state = initialState, action) => {
                 tragetInfo: true,
                 userManagement: false,
                 setting: false,
-                userProfile : false,
+                userProfile: false,
+                targetaudiencegroup:false,
+            }
+        
+        case sidebarActive.TARGETAUDIENCEGROUP:
+            return {
+                home: false,
+                template: false,
+                logs: false,
+                tragetInfo: false,
+                userManagement: false,
+                setting: false,
+                userProfile: false,
+                targetaudiencegroup:true,
             }
         
         case sidebarActive.LOGS:
@@ -42,7 +57,8 @@ const activesidebarReducers = (state = initialState, action) => {
                 tragetInfo: false,
                 userManagement: false,
                 setting: false,
-                userProfile : false,
+                userProfile: false,
+                targetaudiencegroup:false,
             }
         
         
@@ -54,7 +70,8 @@ const activesidebarReducers = (state = initialState, action) => {
                 tragetInfo: false,
                 userManagement: false,
                 setting: false,
-                userProfile : false,
+                userProfile: false,
+                targetaudiencegroup:false,
             }
         
         case sidebarActive.USERMANAGEMENT:
@@ -65,7 +82,8 @@ const activesidebarReducers = (state = initialState, action) => {
                 tragetInfo: false,
                 userManagement: true,
                 setting: false,
-                userProfile : false,
+                userProfile: false,
+                targetaudiencegroup:false,
             }
         
         case sidebarActive.USERPROFILE:
@@ -76,7 +94,8 @@ const activesidebarReducers = (state = initialState, action) => {
                 tragetInfo: false,
                 userManagement: false,
                 setting: false,
-                userProfile : true,
+                userProfile: true,
+                targetaudiencegroup:false,
             }
             
         case sidebarActive.SETTING:
@@ -88,6 +107,7 @@ const activesidebarReducers = (state = initialState, action) => {
                 userManagement: false,
                 setting: true,
                 userProfile: false,
+                targetaudiencegroup:false,
             }
 
     

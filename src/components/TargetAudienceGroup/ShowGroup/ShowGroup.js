@@ -16,13 +16,13 @@ function ShowGroup(props) {
 
     //trigger on the show group preview
     const showGroupONPreviewHandler = () => {
-        console.log("clicked!!!")
+        
         setShowCreateGroupPreview(true);
     }
 
     //trigger off the show group preview
     const showGroupOFFPreviewhandler = () => {
-        console.log("click show ")
+        
         setShowCreateGroupPreview(false);
     }
 
@@ -32,18 +32,20 @@ function ShowGroup(props) {
 
     //trigger on the show group preview
     const showGroupONEditHandler = () => {
-        console.log("clicked!!!")
+        
         setShowCreateGroupEdit(true);
     }
 
     //trigger off the show group preview
     const showGroupOFFEdithandler = () => {
-        console.log("click show ")
+        
         setShowCreateGroupEdit(false);
     }
 
+    const [deleteGroup, setDeleteGroup] = useState(false);
 
     useEffect(() => {
+        console.log("[Show Group]");
         fetch("http://127.0.0.1:8000/targetusergroup/get/", {
             method: "GET",
             headers: {
@@ -53,13 +55,15 @@ function ShowGroup(props) {
         })
             .then(response => response.json())
             .then(allGroup => {
-                // console.log(allGroup);
+                console.log(allGroup);
                 setAllGroup(allGroup);
             })
             .catch(err => console.log(err));
-    },[])
+    }, [deleteGroup])
+    
+    
 
-    let showAllGroup = null;
+    let showAllGroup = <h1>Loading...</h1>;
     if (allGroup.length > 0) {
         showAllGroup = allGroup.map(group => (
             <div className={classes.shrowGroup__body__row} key ={group.id}>
@@ -71,7 +75,7 @@ function ShowGroup(props) {
                     onClick={() => {
                         showGroupONPreviewHandler();
                         setGroupPreviewData(group);
-                        console.log("preview");
+                        
                         showGroupOFFEdithandler();
                     }}
                 >
@@ -85,7 +89,7 @@ function ShowGroup(props) {
 
                 <div className={classes.shrowGroup__body__edit}
                     onClick={() => {
-                        console.log("edit");
+                        
                         showGroupONEditHandler();
                         setGroupEditData(group);
                         showGroupOFFPreviewhandler();
@@ -103,6 +107,7 @@ function ShowGroup(props) {
                     onClick={() => console.log("delete")}
                 >
                     <Delete
+                        onClick={()=> setDeleteGroup(true)}
                         style={{
                             fontSize: 20,
                             color:"red"
@@ -145,6 +150,8 @@ function ShowGroup(props) {
                     {showAllGroup}
                 </div>
             </div>
+
+            
 
             {/* for preview group information */}
             {
