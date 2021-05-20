@@ -168,3 +168,16 @@
   /* align-items: center; */
   justify-content: space-between;
 }
+
+/* --------------------createCampaign__template------------- */
+.createCampaign__template {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.createCampaign__template__button {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}

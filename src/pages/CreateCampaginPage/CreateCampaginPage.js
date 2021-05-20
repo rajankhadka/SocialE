@@ -6,10 +6,12 @@ import Header from "../../components/Header/Header"
 import SideBar from "../../components/SideBar/SideBar"
 import {
     Button,
+    createMuiTheme,
     FormControl, InputLabel,
-    Select, TextField
+    
+    Select, TextField,ThemeProvider
 } from "@material-ui/core";
-import { Add, Check, Close } from "@material-ui/icons";
+import { Add, Check, Close,List, } from "@material-ui/icons";
 
 
 //redux
@@ -22,10 +24,35 @@ import {
     addnewTargetAudience,
     addnewGroup
 } from "../../redux/actions/targetaudienceAction";
+
+import { templatePageCreate,templatePageView } from "../../redux/actions/templatePageToggleAction";
+import {templatesidebar } from "../../redux/actions/activesidebarAction"
+
 import GroupSelect from "./GroupSelect/GroupSelect";
+
+//react router 
+import {useHistory } from "react-router-dom";
 
 
 const CreateCampaginPage = (props) => {
+
+    const createCampaignHistory = useHistory();
+
+    //createTemplatePageRouteHandler
+    const createTemplatePageRouteHandler = () => {
+        props.templatePageCreateAction();
+        createCampaignHistory.push("/home/templates");
+        props.templatesidebarAction();
+    }
+
+    const theme = createMuiTheme({
+        typography: {
+            fontFamily: 'sans-serif',
+            button: {
+                textTransform: 'capitalize',
+            }
+        }
+    });
 
     const [addNewAudience, setAddNewAudience] = useState(false);
     const [templateName, setTemplateName] = useState([]);
@@ -39,6 +66,9 @@ const CreateCampaginPage = (props) => {
         setSelected(event.target.value);
         props.addnewGroupAction(event.target.value);
     };
+
+    //choose Template
+    const [chooseTemplate, setChooseTemplate] = useState(false);
 
     useEffect(() => {
         console.log("useEffect");
@@ -119,6 +149,11 @@ const CreateCampaginPage = (props) => {
         // props.availableTargetAudienceAction(targetAudienceUserfetch);
         
     }, [props.groupName])
+
+
+    const chooseTemplateTriggerHandler = () => {
+        setChooseTemplate(true);
+    }
 
     //campaign value
     const [campaignValue, setCampaignValue] = useState({
@@ -201,16 +236,23 @@ const CreateCampaginPage = (props) => {
                 break;
             
             case "selectTemplate":
-                setCampaignValue(prevState => {
-                    return {
-                        ...prevState,
-                        selectTemplate: {
-                            value: event.target.value.toString(),
-                            length: event.target.value.length,
-                            valid : event.target.value.length > 0  ? true : false
-                        }
-                    }  
-                });
+
+                if (event.target.value === "create template") {
+                    createTemplatePageRouteHandler();
+                }
+                else {
+                   setCampaignValue(prevState => {
+                        return {
+                            ...prevState,
+                            selectTemplate: {
+                                value: event.target.value.toString(),
+                                length: event.target.value.length,
+                                valid : event.target.value.length > 0  ? true : false
+                            }
+                        }  
+                    }); 
+                }
+                
                 break;
             
             case "startDate":
@@ -249,6 +291,7 @@ const CreateCampaginPage = (props) => {
         }
     }
 
+    
     
 
     let targetAudience = null;
@@ -372,7 +415,7 @@ const CreateCampaginPage = (props) => {
                                     label="Campaign Name"
                                     value={campaignValue.campaignName.value}
                                     onChange={campaignValueHandler}
-                                    style={{  marginBottom: "10px",width:"250px"}}
+                                    style={{  marginBottom: "10px", width:"250px"}}
                                 />
 
                                 <TextField
@@ -381,15 +424,52 @@ const CreateCampaginPage = (props) => {
                                     label="Campaign Subject"
                                     value={campaignValue.campaignSubject.value}
                                     onChange={campaignValueHandler}
-                                    style={{  marginBottom: "10px",width:"250px"}}
+                                    style={{ marginBottom: "10px", width:"250px"}}
                                     />
 
-                                <TextField
+                                {/* <TextField
                                     variant="standard"
                                     label="Campaign Description" 
                                     multiline={true} rowsMax={4}
-                                    style={{  marginBottom: "10px",width:"250px"}}
-                                />
+                                    style={{  width:"250px"}}
+                                /> */}
+
+                                {/* select template  */}
+                                {/* <div className={classes.createCampaign__template}>
+                                    <label htmlFor="template">Template</label>
+                                    <div className={classes.createCampaign__template__button}>
+                                        <ThemeProvider theme={theme} >
+                                            <Button variant="text"
+                                                startIcon={<Add />}
+                                                style={{
+                                                    fontSize: 15,
+                                                    
+                                                    fontWeight: '400',
+                                                    marginLeft: "10px"
+                                                }}
+                                                onClick={createTemplatePageRouteHandler}
+                                            >
+                                                Create Template
+                                            </Button>
+                                        </ThemeProvider>
+                                        
+                                        <ThemeProvider theme={theme}>
+                                            
+                                            <Button variant="text"
+                                                startIcon={<List />}
+                                                style={{
+                                                    fontSize: 15,
+                                                    
+                                                    fontWeight: 'lighter',
+                                                    marginLeft: "10px"
+                                                }}
+                                                onClick={chooseTemplateTriggerHandler}
+                                            >
+                                                Choose Template
+                                            </Button>
+                                        </ThemeProvider>
+                                    </div>
+                                </div> */}
 
                                 <FormControl style={{width:"250px",marginBottom: "20px"}}>
                                     <InputLabel id="selectTemplate">Select Template</InputLabel>
@@ -403,28 +483,71 @@ const CreateCampaginPage = (props) => {
                                         
                                     >
                                         <option value="" />
+                                        <option  value="create template">Create Template</option>
                                         
                                         {
                                             templateName.map(item => <option key={item.id} value={item.id}> {item.template_name} </option>)
                                         }
 
-                                        {/* <option  value="TemplateName">TemplateName</option> */}
+                                        
                                     </Select>
                                 </FormControl>
 
-                                <GroupSelect
+                                {/* choose target audience group */}
+                                <div className={classes.createCampaign__template}>
+                                    <label htmlFor="template">Group</label>
+                                    <div className={classes.createCampaign__template__button}>
+                                        <ThemeProvider theme={theme} >
+                                            <Button variant="text"
+                                                startIcon={<Add />}
+                                                style={{
+                                                    fontSize: 15,
+                                                    
+                                                    fontWeight: '400',
+                                                    marginLeft: "10px"
+                                                }}
+                                                
+                                            >
+                                                Create Group
+                                            </Button>
+                                        </ThemeProvider>
+                                        
+                                        <ThemeProvider theme={theme}>
+                                            
+                                            <Button variant="text"
+                                                startIcon={<List />}
+                                                style={{
+                                                    fontSize: 15,
+                                                    
+                                                    fontWeight: 'lighter',
+                                                    marginLeft: "10px"
+                                                }}
+                                                
+                                            >
+                                                Choose Group
+                                            </Button>
+                                        </ThemeProvider>
+                                    </div>
+                                </div>
+                                
+
+
+                                
+
+                                {/* <GroupSelect
                                     groupData={groupData}
                                     selectedhandleChange={selectedhandleChange}
                                     selected={selected}
-                                />
+                                /> */}
                                 
                                 <label htmlFor="startDate">Start Date</label>
+
                                 <TextField
                                     variant="standard"
                                     type="date"
                                     id="startDate"
                                     name="startDate"
-                                    style={{ marginBottom: "20px" }}
+                                    style={{marginBottom:"10px" }}
                                     value={campaignValue.campaignStartDate.value}
                                     onChange={campaignValueHandler}
                                 />
@@ -517,6 +640,8 @@ const mapDispatchtoProps = (dispatch) => {
         disableTargetAudienceAction: (id) => dispatch(disableTargetAudience(id)),
         addnewTargetAudienceAction: (data) => dispatch(addnewTargetAudience(data)),
         addnewGroupAction: (data) => dispatch(addnewGroup(data)),
+        templatePageCreateAction: () => dispatch(templatePageCreate()),
+        templatesidebarAction: () => dispatch(templatesidebar()),
     }
 }
 
