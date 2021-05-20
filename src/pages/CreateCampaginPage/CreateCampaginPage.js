@@ -4,6 +4,8 @@ import classes from "./CreateCampaginPage.module.css";
 //importing components
 import Header from "../../components/Header/Header"
 import SideBar from "../../components/SideBar/SideBar"
+import TargetAudienceGroupComponent from "../../components/TargetAudienceGroup/TargetAudienceGroup";
+
 import {
     Button,
     createMuiTheme,
@@ -111,44 +113,23 @@ const CreateCampaginPage = (props) => {
         })
             .then(response => response.json())
             .then(data => {
+
                 console.log(data);
-                setGroupData(data);
+                let groupName = [];
+                groupName = data.map(group => {
+                    return {
+                        ...group,
+                        click : false
+                    }
+                } )
+                setGroupData(groupName);
             })
             .catch(err => console.log(err));
         
     }, []);
 
 
-    //fetching all group name target audience
-    useEffect(() => {
-        console.log("every time call");
-        console.log("groupName",props.groupName);
-
-        props.groupName.forEach((group) => {
-            fetch("http://127.0.0.1:8000/targetuser/get/", {
-                "method": "POST",
-                "headers": {
-                    "Authorization": `Token ${window.localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"
-                },
-                "body": JSON.stringify({
-                    id: group
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("palyoad--->",data.payload);
-                    // targetAudienceUserfetch.push(...data.payload)
-                    props.availableTargetAudienceAction(data.payload);
-
-                })
-                .catch(err => console.log(err));
-        });
-
-        // console.log("all target user group is ", targetAudienceUserfetch);
-        // props.availableTargetAudienceAction(targetAudienceUserfetch);
-        
-    }, [props.groupName])
+    
 
 
     const chooseTemplateTriggerHandler = () => {
@@ -291,12 +272,223 @@ const CreateCampaginPage = (props) => {
         }
     }
 
-    
-    
 
-    let targetAudience = null;
+    const campaignDataHandler = (event) => {
+        event.preventDefault();
+        console.log("create campaign", campaignValue.selectTemplate.value);
+        console.log("target audience", campaignTargetUser);
+
+        fetch("http://127.0.0.1:8000/campaign/create/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                "campaign_name": campaignValue.campaignName.value,
+                "campaign_title": campaignValue.campaignSubject.value,
+                "templateresource": campaignValue.selectTemplate.value,
+                // "targetuser": campaignTargetUser,
+                "start_date": campaignValue.campaignStartDate.value,
+                "end_date": campaignValue.campaignEndDate.value,
+                "targetusergroup":selected
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setCreateCampaignSuccess(true);
+                setCreateCampaignError(false);
+            })
+            .catch(err => console.log(err));
+
+    }
+
+    const [createCampaignSuccess, setCreateCampaignSuccess] = useState(false);
+    const [createCampaignError, setCreateCampaignError] = useState(false);
+
+    //target audience create group trigger
+    const [showcreateGroup, setShowcreateGroup] = useState(false);
+    const [createGroupClicked, setCreateGroupClicked] = useState(false);
+
+    const showcreateGroupOFFhandler = () => {
+        console.log("clicked!!!")
+        setShowcreateGroup(false);
+        setChooseGroupActive(chooseGroup || false);
+    }
+
+    //trigger ON the show create Group
+    const showcreateGroupONhandler = () => {
+        setShowcreateGroup(true);
+        setChooseGroupActive(false);
+    }
+
+    const createGroupClickedHandlerON = () => setCreateGroupClicked(true);
+    const createGroupClickedHandlerOFF = () => setCreateGroupClicked(false);
+
+
+    // called a useEffect ever time new target audience group is created
+
+    useEffect(() => {
+        console.log("new group created!!!");
+        fetch("http://127.0.0.1:8000/targetusergroup/get/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                let groupName = [];
+                groupName = data.map(group => {
+                    return {
+                        ...group,
+                        click : false
+                    }
+                } )
+                setGroupData(groupName);
+                createGroupClickedHandlerOFF();
+                showcreateGroupOFFhandler();
+            })
+        
+    }, [createGroupClicked]);
+
+    //available target audience group
+    const [chooseGroup, setChooseGroup] = useState(false);
+    const [chooseGroupActive, setChooseGroupActive] = useState(false);
+
+    const chooseTargetAudienceGroup = () => {
+        setChooseGroupActive(true);
+        setShowcreateGroup(false);
+        setChooseGroup(true);
+    }
+
+    const groupClickedHandler = (group) => {
+        if (group.click) {
+            let updateGroup = [];
+            updateGroup = groupData.map(g => {
+                if (g.id === group.id) {
+                    return {
+                        ...group,
+                        click: false
+                    }
+                }
+                return g
+            })
+            let removedselectedGroup = groupSelected.filter(id => id !== group.id);
+            setGroupSelected(removedselectedGroup);
+            console.log("[removed Group]", groupSelected);
+            setGroupData(updateGroup);
+
+        } else {
+            let updateGroup = [];
+            updateGroup = groupData.map(g => {
+                if (g.id === group.id) {
+                    return {
+                        ...group,
+                        click: true
+                    }
+                }
+                return g
+            })
+
+            console.log("[selected Group]", groupSelected);
+            setGroupSelected(prevState => {
+                return [...prevState,group.id]
+            })
+            setGroupData(updateGroup);
+            
+        }
+    }
+
+    let targetAudienceGroup = null;
+    if (chooseGroup) {
+        targetAudienceGroup = (
+            <>
+                {
+                    groupData.map((group, index) => {
+                        return (
+                            <div key={group.id}
+                                className={classes.createCampaignBody__right__availableGroup__body}
+                                onClick = {() => groupClickedHandler(group)}
+                            >
+                                <p className={classes.createCampaignBody__right__availableGroup__id}>{ index + 1}</p>
+                                <p
+                                    className={classes.createCampaignBody__right__availableGroup__groupName}
+                                >
+                                    {group.group_name}
+                                </p>
+                                
+                                {
+                                    group.click
+                                        ?
+                                    <p className={classes.createCampaignBody__right__availableGroup__add}>
+                                        <Check style={{ color: "green" }} />
+                                    </p>
+                                        :
+                                    <p className={classes.createCampaignBody__right__availableGroup__add}>
+                                        <Add style={{ color: "black" }} />
+                                    </p>
+                                }
+                            </div>
+                        )
+                    })
+                }
+            </>
+        )
+    } else {
+        targetAudienceGroup = null;
+    }
+
+    const [groupSelected, setGroupSelected] = useState([]);
+
+
+    //fetching all target audience after selecting group 
+    //fetching all group name target audience
+    useEffect(() => {
+        console.log("every time call");
+        console.log("groupName",props.groupName);
+
+        const targetAudienceEmail = [];
+        groupSelected.forEach((group) => {
+            fetch("http://127.0.0.1:8000/targetuser/get/", {
+                "method": "POST",
+                "headers": {
+                    "Authorization": `Token ${window.localStorage.getItem('token')}`,
+                    "Content-Type": "application/json"
+                },
+                "body": JSON.stringify({
+                    id: group
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log("---------------", group);
+                    // console.log("palyoad--->", data.payload);
+                    targetAudienceEmail.push(...data.payload)
+                    // targetAudienceUserfetch.push(...data.payload)
+                    
+                    // console.log("---------------");
+                    return targetAudienceEmail
+                })
+                .then(email => {
+                    // console.log("all target user group is ", email);
+                    props.availableTargetAudienceAction(email);
+                })
+                .catch(err => console.log(err));
+        });
+
+        
+        // props.availableTargetAudienceAction(targetAudienceUserfetch);
+        
+    }, [groupSelected.length])
+
+
+    //showing all target audience group USER
+     let targetAudience = null;
     
-    if (addNewAudience) {
+    if (!(groupSelected.length > 0) && !chooseGroup) {
         targetAudience = (
            null 
         )
@@ -347,39 +539,7 @@ const CreateCampaginPage = (props) => {
         )
     }
 
-    const campaignDataHandler = (event) => {
-        event.preventDefault();
-        console.log("create campaign", campaignValue.selectTemplate.value);
-        console.log("target audience", campaignTargetUser);
 
-        fetch("http://127.0.0.1:8000/campaign/create/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Token ${window.localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                "campaign_name": campaignValue.campaignName.value,
-                "campaign_title": campaignValue.campaignSubject.value,
-                "templateresource": campaignValue.selectTemplate.value,
-                // "targetuser": campaignTargetUser,
-                "start_date": campaignValue.campaignStartDate.value,
-                "end_date": campaignValue.campaignEndDate.value,
-                "targetusergroup":selected
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setCreateCampaignSuccess(true);
-                setCreateCampaignError(false);
-            })
-            .catch(err => console.log(err));
-
-    }
-
-    const [createCampaignSuccess, setCreateCampaignSuccess] = useState(false);
-    const [createCampaignError, setCreateCampaignError] = useState(false);
 
     return(
         <div className={classes.homePage}>
@@ -434,42 +594,7 @@ const CreateCampaginPage = (props) => {
                                     style={{  width:"250px"}}
                                 /> */}
 
-                                {/* select template  */}
-                                {/* <div className={classes.createCampaign__template}>
-                                    <label htmlFor="template">Template</label>
-                                    <div className={classes.createCampaign__template__button}>
-                                        <ThemeProvider theme={theme} >
-                                            <Button variant="text"
-                                                startIcon={<Add />}
-                                                style={{
-                                                    fontSize: 15,
-                                                    
-                                                    fontWeight: '400',
-                                                    marginLeft: "10px"
-                                                }}
-                                                onClick={createTemplatePageRouteHandler}
-                                            >
-                                                Create Template
-                                            </Button>
-                                        </ThemeProvider>
-                                        
-                                        <ThemeProvider theme={theme}>
-                                            
-                                            <Button variant="text"
-                                                startIcon={<List />}
-                                                style={{
-                                                    fontSize: 15,
-                                                    
-                                                    fontWeight: 'lighter',
-                                                    marginLeft: "10px"
-                                                }}
-                                                onClick={chooseTemplateTriggerHandler}
-                                            >
-                                                Choose Template
-                                            </Button>
-                                        </ThemeProvider>
-                                    </div>
-                                </div> */}
+                                
 
                                 <FormControl style={{width:"250px",marginBottom: "20px"}}>
                                     <InputLabel id="selectTemplate">Select Template</InputLabel>
@@ -502,11 +627,11 @@ const CreateCampaginPage = (props) => {
                                                 startIcon={<Add />}
                                                 style={{
                                                     fontSize: 15,
-                                                    
+                                                    backgroundColor: showcreateGroup && "#2bae66",
                                                     fontWeight: '400',
                                                     marginLeft: "10px"
                                                 }}
-                                                
+                                                onClick={()=> showcreateGroupONhandler()}
                                             >
                                                 Create Group
                                             </Button>
@@ -518,11 +643,11 @@ const CreateCampaginPage = (props) => {
                                                 startIcon={<List />}
                                                 style={{
                                                     fontSize: 15,
-                                                    
+                                                    backgroundColor: chooseGroupActive && "#2bae66",
                                                     fontWeight: 'lighter',
                                                     marginLeft: "10px"
                                                 }}
-                                                
+                                                onClick= {chooseTargetAudienceGroup}
                                             >
                                                 Choose Group
                                             </Button>
@@ -585,37 +710,92 @@ const CreateCampaginPage = (props) => {
                                     Create Campaign
                                 </Button>
                             </form>
+                            
+                            {
+                                showcreateGroup && 
+                                <TargetAudienceGroupComponent
+                                    showGroupOFFhandler={showcreateGroupOFFhandler}
+                                    createGroupClickedHandlerON={createGroupClickedHandlerON}
+                                />
+                            }
+
                         </div>
                        
                         {/* right part  */}
 
                         <div className={classes.createCampaignBody__body__right}>
                             
-                            <div className={classes.createCampaignBody__right__header}>
-                                <div
-                                    className={classes.createCampaignBody__right__available}
-                                    onClick={() => setAddNewAudience(false)}
-                                    style={{
-                                        backgroundColor: !addNewAudience ? "#2bae66" : "#EDEDED",
-                                        color: !addNewAudience ? "#EDEDED" : "#2bae66"
-                                    }}
-                                >
-                                    Available Targeted Audience
+                            {/* available target audience group  */}
+
+                            {
+                                chooseGroup &&  
+                                <div className={classes.createCampaignBody__right__availableGroup}>
+
+                                    <div className={classes.createCampaignBody__right__header}>
+                                        <div
+                                            className={classes.createCampaignBody__right__available}
+                                            onClick={() => setAddNewAudience(false)}
+                                            style={{
+                                                backgroundColor: !addNewAudience ? "#2bae66" : "#EDEDED",
+                                                color: !addNewAudience ? "#EDEDED" : "#2bae66"
+                                            }}
+                                        >
+                                            Available Targeted Group
+                                        </div>
+
+                                        
+
+                                    </div>
+
+                                    <div className={classes.createCampaignBody__right__body}>
+
+                                        {
+                                        targetAudienceGroup  
+                                        }
+
+                                        
+                                    </div>
+                                    </div>
+                            }
+
+                            {/* available target audience */}
+
+                            {
+                                (chooseGroup && groupSelected.length > 0) && 
+                                <div className={classes.createCampaignBody__right__availableAudience}>
+
+                                    <div className={classes.createCampaignBody__right__header}>
+                                        <div
+                                            className={classes.createCampaignBody__right__available}
+                                            onClick={() => setAddNewAudience(false)}
+                                            style={{
+                                                backgroundColor: !addNewAudience ? "#2bae66" : "#EDEDED",
+                                                color: !addNewAudience ? "#EDEDED" : "#2bae66"
+                                            }}
+                                        >
+                                            Available Targeted Audience
+                                        </div>
+
+                                        
+
+                                    </div>
+
+                                    <div className={classes.createCampaignBody__right__body}>
+                                        <input type="text"
+                                            className={classes.createCampaignBody__right__body__addAudience}
+                                            placeholder="Add New Email..."
+                                        />
+                                        {
+                                        targetAudience  
+                                        }
+
+                                        
+                                    </div>
                                 </div>
-
-                                
-
-                            </div>
-
-                            <div className={classes.createCampaignBody__right__body}>
-
-                                {
-                                  targetAudience  
-                                }
-
-                                
-                            </div>
-
+                            }
+                            
+                            
+                            
                         </div>
                    </div>
                 </div>

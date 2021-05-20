@@ -16,7 +16,7 @@ const targetaudienceReducers = (state = initialState, action) => {
             });
             return {
                 ...state,
-                availableAudience: [...state.availableAudience,...newdata]
+                availableAudience: [...newdata]
             }
         
         case TargetAudience.CLICKAUDIENCE:
