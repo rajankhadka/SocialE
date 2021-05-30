@@ -54,7 +54,7 @@ const targetaudienceReducers = (state = initialState, action) => {
         case TargetAudience.ADDNEWAUDIENCE:
             return {
                 ...state,
-                availableAudience: state.availableAudience.concat(action.data),
+                availableAudience: state.availableAudience.concat({...action.data}),
             }
 
         case TargetAudience.GROUPADD:

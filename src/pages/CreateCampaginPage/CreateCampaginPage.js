@@ -1,6 +1,10 @@
 import React,{useState,useEffect} from "react";
 import classes from "./CreateCampaginPage.module.css";
 
+//uuid
+import { v4 as uuidv4} from "uuid";
+import validator from "validator";
+
 //importing components
 import Header from "../../components/Header/Header"
 import SideBar from "../../components/SideBar/SideBar"
@@ -498,6 +502,7 @@ const CreateCampaginPage = (props) => {
                
                 {
                     props.targetaudienceAvailable.map((item, index) => {
+                        console.log(item);
                         return (
                             <div key={`${item.id}key${index}`} onClick={() => {
                                 
@@ -540,6 +545,10 @@ const CreateCampaginPage = (props) => {
     }
 
 
+    //new target audience added manually
+    const [newTargetAudience, setNewTargetAudience] = useState("");
+    const [newTargetAudienceError, setNewTargetAudienceError] = useState(false);
+    const [newTargetAudienceSuccess, setNewTargetAudienceSuccess] = useState(false);
 
     return(
         <div className={classes.homePage}>
@@ -781,10 +790,34 @@ const CreateCampaginPage = (props) => {
                                     </div>
 
                                     <div className={classes.createCampaignBody__right__body}>
+                                        {newTargetAudienceError && <p style={{ color: "red" }}>Invalid Email!!!</p>}
+                                        {newTargetAudienceSuccess &&  <p style={{color:"green"}}>Succeefully Email Added!!!</p>}
                                         <input type="text"
+                                            onKeyPress={(event) => {
+                                                if (event.key === "Enter") {
+                                                    if (validator.isEmail(newTargetAudience)) {
+                                                        props.addnewTargetAudienceAction({ id: uuidv4(), email: newTargetAudience, click: true });
+                                                        setNewTargetAudienceError(false);
+                                                        setNewTargetAudience("");
+                                                        setNewTargetAudienceSuccess(true);
+                                                    }
+                                                    else {
+                                                        setNewTargetAudienceError(true);
+                                                        setNewTargetAudienceSuccess(false);
+                                                    }
+                                                    
+                                                }
+                                            }}
                                             className={classes.createCampaignBody__right__body__addAudience}
                                             placeholder="Add New Email..."
+                                            value={newTargetAudience}
+                                            onChange={(event) => {
+                                                setNewTargetAudience(event.target.value);
+                                                setNewTargetAudienceSuccess(false);
+                                                setNewTargetAudienceError(false);
+                                            }}
                                         />
+
                                         {
                                         targetAudience  
                                         }

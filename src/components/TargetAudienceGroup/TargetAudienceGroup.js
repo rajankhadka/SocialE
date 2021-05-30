@@ -1,5 +1,5 @@
 import { Close } from '@material-ui/icons';
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import classes from "./TargetAudienceGroup.module.css";
 
 //3rd party libarary
@@ -8,6 +8,44 @@ import { Button, TextField } from '@material-ui/core';
 import CreateGroup from './CreateGroup/CreateGroup';
 
 function TargetAudienceGroup(props) {
+
+    useEffect(() => {
+        console.log("[target audience group components]");
+        const fetchdata = async () => {
+
+            if (props.groupData) {
+               const data = await fetch('http://127.0.0.1:8000/targetuser/get/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Token ${window.localStorage.getItem('token')}`,
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify({
+                        id:props.groupData.id
+                    })
+                })
+                const result = await data.json();
+                let emails = '';
+                result.payload.forEach(item => {
+                    emails+=`${item.email};`
+                })
+
+                setTargetAudienceUser(prevState => {
+                    return {
+                        ...prevState,
+                        targetAudienceUserEmail: {
+                            ...prevState.targetAudienceUserEmail,
+                            value:emails
+                        }
+                    }
+                })
+
+            }    
+        }
+
+        fetchdata();
+    },[])
+
     //success and error message
     const [showSuccessmsg, setShowSuccessmsg] = useState(false);
     const [showErrormsg, setShowErrormsg] = useState(false);
@@ -96,7 +134,6 @@ function TargetAudienceGroup(props) {
                 }
             }
         })
-
     }
 
     //targetAudienceUserUploadHandler
@@ -229,7 +266,8 @@ function TargetAudienceGroup(props) {
                     
                     //target audience create email
                     targetAudienceCreateAPIHandler(groupData);
-                    props.createGroupClickedHandlerON();
+                    (props.groupData === undefined) && props.createGroupClickedHandlerON();
+                    props.groupData && props.editandpreviewTriggerHandler()
 
                 })
                 .catch(err => console.log(err));
@@ -258,41 +296,6 @@ function TargetAudienceGroup(props) {
             console.log("invalid Field");
         }
         
-
-        // fetch("http://127.0.0.1:8000/targetuser/create/", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "Authorization": `Token ${window.localStorage.getItem('token')}`
-        //     },
-        //     body: JSON.stringify({
-        //         username: newAudience.username.value,
-        //         email: newAudience.email.value,
-        //     })
-        // })
-        //     .then(response => {
-        //         console.log(response.status);
-        //         if (response.status === 400) throw new Error("Invalid Data");
-        //         return response.json()
-        //     })
-        //     .then(data => {
-        //         console.log(data);
-        //         let newTargetAudience = {
-        //             id: data.target_user_id,
-        //             email: data.email,
-        //             username: data.target_username,
-        //             click: true
-        //         }
-        //         props.addnewTargetAudienceAction(newTargetAudience);
-        //         setShowSuccessmsg(true);
-        //         setShowErrormsg(false);
-        //         setCampaignTargetUser(prevState => prevState.concat(newTargetAudience.id))
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //         setShowSuccessmsg(false);
-        //         setShowErrormsg(true);
-        //     });
     }
 
     let title = null;
@@ -310,6 +313,138 @@ function TargetAudienceGroup(props) {
         disable = false;
     }
 
+    //edit part
+
+    const editTargetAudienceEmailPart = (id) => {
+        let validateEmailOnly = [];
+        let splitEmail = targetAudienceUser.targetAudienceUserEmail.value.split(";");
+
+        splitEmail.forEach(item => {
+            if (validator.isEmail(item)) {
+                validateEmailOnly.push(item);
+            }
+        });
+
+        console.log(validateEmailOnly);
+        
+
+        fetch("http://127.0.0.1:8000/targetuser/create/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization":`Token ${window.localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                id: id,
+                email:validateEmailOnly,
+            })
+        })
+            .then(response => response.json())
+            .then(audienceUserAdded => {
+                console.log(audienceUserAdded);
+                setShowSuccessmsg(true);
+                setShowErrormsg(false);
+                props.groupEditHandler();
+                props.showGroupOFFhandler();
+            })
+            .catch(err => console.log(err))
+
+    }
+
+   
+
+
+    const editTargetAudienceCSVPart = (id) => {
+        let formData = new FormData();
+        formData.append("file_name", targetAudienceUser.targetAudienceUserUpload.value)
+        formData.append("id", id)
+        
+        console.log(formData.get("id"));
+        console.log(formData.get("file_name"));
+
+        fetch("http://127.0.0.1:8000/targetuser/dump/", {
+            method: "POST",
+            headers: {
+                "Authorization": `Token ${window.localStorage.getItem('token')}`,
+                // "Content-Type":"multipart/form-data"
+            },
+            body:formData
+        })
+            .then(response => response.json())
+            .then(audienceUserAdded => {
+                console.log(audienceUserAdded);
+                setShowSuccessmsg(true);
+                setShowErrormsg(false);
+                props.groupEditHandler();
+                props.showGroupOFFhandler();
+            })
+            .catch(err => console.log(err))
+        
+    }
+
+    const editGroupHandler = () => {
+        
+        if (!uploadFieldActive && targetAudienceUser.targetAudienceUserEmail.value.length > 0) {
+            console.log("user email")
+            fetch("http://127.0.0.1:8000/targetusergroup/update/", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${window.localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    id: props.groupData.id,
+                    group_name: newAudience.groupName.value,
+                    department: newAudience.department.value,
+                    organization: newAudience.organization.value,
+                    user: props.groupData.user
+                })
+            })
+                .then(response => response.json())
+                .then(groupData => {
+                    
+                    //target audience create email
+                    editTargetAudienceEmailPart(props.groupData.id)
+
+                })
+                .catch(err => console.log(err));
+        } else if (uploadFieldActive && targetAudienceUser.targetAudienceUserUpload.value !== null) {
+            console.log("user csv")
+            fetch("http://127.0.0.1:8000/targetusergroup/update/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${window.localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    id: props.groupData.id,
+                    group_name: newAudience.groupName.value,
+                    department: newAudience.department.value,
+                    organization: newAudience.organization.value,
+                    user: props.groupData.user
+                })
+            })
+                .then(response => response.json())
+                .then(groupData => {
+                    
+                    editTargetAudienceCSVPart(props.groupData.id)
+                })
+                .catch(err => console.log(err));
+            
+        }else {
+            console.log("invalid Field");
+        }
+        
+    }
+
+
+     const editGroupClickHandler = (event) => {
+        event.preventDefault();
+         editGroupHandler();
+        // editTargetAudienceEmailPart(props.groupData.id);
+        // editTargetAudienceCSVPart(props.groupData.id);
+         
+    }
 
     //button
     let button = null;
@@ -323,6 +458,7 @@ function TargetAudienceGroup(props) {
                 className={classes.createCampaignBody__addnewAudience__input}
                 variant="contained"
                 type="submit"
+                onClick={editGroupClickHandler}
             >
                 Edit Group
             </Button>
@@ -442,9 +578,10 @@ function TargetAudienceGroup(props) {
                                         setUploadFieldActiveInputHandler={setUploadFieldActiveInputHandler}
                                         setUploadFieldActiveUploadHandler={setUploadFieldActiveUploadHandler}
                                         targetAudienceUseremailhandler={targetAudienceUseremailhandler}
-                                        targetAudienceUserEmailValue={targetAudienceUser.targetAudienceUserEmail.value}
+                                        targetAudienceUserEmailValue={ targetAudienceUser.targetAudienceUserEmail.value}
                                         targetAudienceUserUploadHandler={targetAudienceUserUploadHandler}
                                         targetAudienceUserUpload={targetAudienceUser.targetAudienceUserUpload}
+                                        
                                     />
                                     :
                                     <CreateGroup

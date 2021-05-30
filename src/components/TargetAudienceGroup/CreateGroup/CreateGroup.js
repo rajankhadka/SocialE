@@ -1,9 +1,13 @@
 import { FormControl, InputLabel, TextareaAutosize, TextField } from '@material-ui/core';
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import classes from "./CreateGroup.module.css";
 
 function CreateGroup(props) {
 
+    // useEffect(() => {
+        
+    // })
+    
     //active classes
     return (
         <div className={classes.createGroup}>

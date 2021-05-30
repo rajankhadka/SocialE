@@ -94,7 +94,7 @@
   /* background-color: aqua; */
 }
 
-.homePage__body__bodyTableBody > .homePage__body__bodyTableBodyRow:hover {
+.homePage__body__bodyTableBodyRow:hover {
   background-color: #ededed;
 }
 
@@ -167,4 +167,75 @@
   .sendEmail__body {
     width: 95%;
   }
+}
+
+.DeleteButton {
+  background-color: rgba(236, 48, 48, 0.765); /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.DeleteNotButton {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 20px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.DeleteNotButton:hover,
+.DeleteButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.org_Name {
+  flex: 0.5;
+  /* background-color: #4caf50; */
+}
+
+.org_line {
+  margin-top: 15px;
+  width: 60%;
+  height: 1px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+}
+
+.org_down {
+  margin-top: 10px;
+  flex: 0.1;
+  /* background-color: #4caf50; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 70px;
+  border-radius: 60%;
+}
+
+.org_down:hover {
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.span {
+  margin-left: 5px;
+  font-size: 0.5em;
 }

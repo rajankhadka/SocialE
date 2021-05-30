@@ -50,6 +50,7 @@ function TargetAudienceGroup(props) {
                             <TargetAudienceGroupComponent
                                 showGroupOFFhandler={showcreateGroupOFFhandler}
                                 createGroupClickedHandlerON={createGroupClickedHandlerON}
+                                
                             />
                             :
                                 null
