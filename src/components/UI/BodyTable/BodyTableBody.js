@@ -1,9 +1,16 @@
-import { Button, IconButton } from '@material-ui/core';
-import { Close, Delete, Edit, Send, Visibility } from '@material-ui/icons';
-import React,{useState} from 'react'
+import { Button, FormControl, IconButton, InputLabel, Select, TextField } from '@material-ui/core';
+import { Close, Delete, Edit, Group, Send, Visibility } from '@material-ui/icons';
+import React,{useState,useContext} from 'react'
+import { SpecificCampaignDetailContext } from '../../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';
+import EditCampaignDetail from '../../EditCampaign/EditCampaignDetail';
+import Model from '../../Model/Model';
 import classes from "./BodyTableBody.module.css";
+import { template } from "../../../api/template/template";
+import CampaignTargetAudienceGroup from '../../CampaignTargetAudienceGroup/CampaignTargetAudienceGroup';
 
 function BodyTableBody(props) {
+
+    const [campaignDetail, setCampaignDetail] = useContext(SpecificCampaignDetailContext);
 
     let body = null;
 
@@ -14,6 +21,18 @@ function BodyTableBody(props) {
     const [sendemailSubject, setSendemailSubject] = useState("");
 
     const [sendemailBody, setSendemailBody] = useState("");
+
+    const [campaignEditSelected, setCampaignEditSelected] = useState(false);
+
+    const campaignEditOff = () => setCampaignEditSelected(false);
+
+    //user campaign target audience group
+    const [showgroupModal, setShowgroupModal] = useState(false);
+
+    //group modal hanlder
+    const showgroupmodaloffHandler = () => setShowgroupModal(false);
+    const showgroupmodalonHandler = () => setShowgroupModal(true);
+
 
     switch (props.title) {
         case "Campaign":
@@ -49,8 +68,26 @@ function BodyTableBody(props) {
                         </div>
 
                         <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton>
+                            <IconButton
+                                onClick={() => {
+                                    console.log(element);
+                                    setCampaignEditSelected(true);
+                                    setCampaignDetail(element);
+                                }}
+                            >
                                 <Edit style={{ fontSize: 15, color: "green" }} />
+                            </IconButton>
+                        </div>
+
+
+                        <div className={classes.homePage__body__bodyTable__edit}>
+                            <IconButton
+                                onClick={() => {
+                                    showgroupmodalonHandler();
+                                    setCampaignDetail(element);
+                                }}
+                            >
+                                <Group style={{ fontSize: 15, color: "green" }} />
                             </IconButton>
                         </div>
 
@@ -82,7 +119,7 @@ function BodyTableBody(props) {
         console.log(sendemailBody);
         console.log(campaignId);
 
-        fetch("http://127.0.0.1:8000/template/send/", {
+        fetch(template.templatesend, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -126,6 +163,10 @@ function BodyTableBody(props) {
 
                 <div className={classes.homePage__body__bodyTable__edit}>
                     <h4>Edit</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__edit}>
+                    <h4>Group</h4>
                 </div>
 
                 <div className={classes.homePage__body__bodyTable__delete}>
@@ -193,7 +234,24 @@ function BodyTableBody(props) {
                 </div>
             }
 
-            
+            {
+                campaignEditSelected
+                &&
+                <Model>
+                    <EditCampaignDetail campaignEditOff={ campaignEditOff}/>
+                </Model>
+            }
+
+
+            {
+                showgroupModal &&
+                <Model>
+                    <CampaignTargetAudienceGroup
+                        showgroupmodaloffHandler={showgroupmodaloffHandler}
+                        campaignDetail={campaignDetail}
+                    />
+                </Model>
+            }
 
             
         </div>

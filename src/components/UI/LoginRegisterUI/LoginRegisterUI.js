@@ -16,24 +16,6 @@ import { useHistory ,Redirect} from "react-router-dom";
 function LoginRegisterUI(props) {
     
     const loginregisteruiHistory = useHistory();
-    
-
-    // console.log(props.showForgetPasswordState)
-    // console.log("loginregisterui--->", props)
-    // console.log("loginregisteruiHistory---->", loginregisteruiHistory);
-    //registerPage Enable
-    // let showregister = (
-    //     <>
-            
-    //     </>
-    // )
-    // if (props.showRegisterState) {
-    //     showregister =(
-    //         <div className={classes.loginregisterUI__registerModal}>
-    //             <RegisterPage />
-    //         </div>
-    //     )
-    // }
 
     //forgetpassword Enable
     let showforgetpassword = (

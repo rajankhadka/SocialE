@@ -2,7 +2,7 @@ import React,{useState,useRef} from 'react';
 import classes from "./LoginPage.module.css";
 
 //material UI
-import { ClassSharp, Lock, Visibility, VisibilityOff } from '@material-ui/icons';
+import {  Lock, Visibility, VisibilityOff } from '@material-ui/icons';
 import { Button, IconButton, TextField } from '@material-ui/core';
 
 //implementating redux
@@ -16,6 +16,7 @@ import validator from 'validator';
 
 //react-router
 import { useHistory } from "react-router-dom";
+import { signinApi } from '../../api/signin/signin';
 
 
 
@@ -129,7 +130,7 @@ function LoginPage(props) {
     const submitHandler = (event) => {
         event.preventDefault();
         setErrormsg("");
-        fetch("http://127.0.0.1:8000/signin/", {
+        fetch(signinApi.sigin, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -146,7 +147,7 @@ function LoginPage(props) {
                 console.log(token);
 
                 //get phoneNumber
-                fetch("http://127.0.0.1:8000/pnumber/", {
+                fetch(signinApi.phonenumberget, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -175,11 +176,10 @@ function LoginPage(props) {
                     })
                 } else {
                     
-                    console.log("loginhistory--->", loginHistory);
                     setButtondisable(false);
 
                     //checking the auth method
-                    fetch("http://127.0.0.1:8000/status/auth/", {
+                    fetch(signinApi.chech2fstatus, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -190,7 +190,7 @@ function LoginPage(props) {
                         .then(data => {
                             console.log(data);
                             if (data.totp_two_factor_auth) {
-                                fetch("http://127.0.0.1:8000/signin/2f/", {
+                                fetch(signinApi.sigin2f, {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
@@ -272,7 +272,7 @@ function LoginPage(props) {
         event.preventDefault();
         console.log(props.token);
         if (twoAuth === 'totp') {
-            fetch("http://127.0.0.1:8000/signin/totp/", {
+            fetch(signinApi.signintotp, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -311,7 +311,7 @@ function LoginPage(props) {
                 .catch(err => console.log(err));
         } else {
             console.log(otpcode.value);
-            fetch("http://127.0.0.1:8000/verify/otp/", {
+            fetch(signinApi.verifyotp, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -443,7 +443,7 @@ function LoginPage(props) {
 
     const twostepverificationHandler = () => {
 
-        fetch("http://127.0.0.1:8000/status/auth/", {
+        fetch(signinApi.chech2fstatus, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -455,7 +455,7 @@ function LoginPage(props) {
                 console.log("from twostephandler", data)
                 //if two step is not google authenticator
                 if (!data.totp_two_factor_auth) {
-                    fetch("http://127.0.0.1:8000/signin/2f/", {
+                    fetch(signinApi.sigin2f, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -471,7 +471,7 @@ function LoginPage(props) {
                         })
                         .catch(err => console.log(err))
                 } else {
-                    fetch("http://127.0.0.1:8000/mail/", {
+                    fetch(signinApi.sendotpmail, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

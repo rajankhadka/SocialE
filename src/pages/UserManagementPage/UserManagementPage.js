@@ -12,6 +12,7 @@ import BodyTable from '../../components/UI/BodyTable/BodyTable';
 
 //react router 
 import {} from 'react-router-dom';
+import { SpecificCampaignDetailProvider } from '../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';
 
 
 
@@ -21,12 +22,16 @@ function UserManagementPage(props) {
             <Header />
             <div className={classes.usermanagementPage__body}>
                 <SideBar />
-                <BodyTable 
-                    header="User Management" 
-                    buttonName = "Create User"
-                     title="User" 
-                     url="/home/create-user"
-                />
+
+                <SpecificCampaignDetailProvider>
+                    <BodyTable 
+                        header="User Management" 
+                        buttonName = "Create User"
+                        title="User" 
+                        url="/home/create-user"
+                    />
+                </SpecificCampaignDetailProvider>
+                
                 
             </div>
         </div>

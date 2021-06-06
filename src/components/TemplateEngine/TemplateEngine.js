@@ -1,4 +1,3 @@
-import { Button } from '@material-ui/core';
 import React, { useRef,useState} from 'react'
 import classes  from "./TemplateEngine.module.css";
 import TemplateEngineBody from './TemplateEngineBody/TemplateEngineBody';
@@ -301,35 +300,6 @@ function TemplateEngine(props) {
                         >
                             Preview Template
                         </a>
-                        
-                        {/* {
-                            modifyTemplate
-                                ?
-                                    <></>
-
-                                :
-                                    <Button
-                                        variant="contained"
-                                        style={{ textTransform: "capitalize" }}
-                                        onClick={modifyTemplateHandler}
-                                        
-                                    >
-                                        Modify Template
-                                    </Button>
-
-                        } */}
-                    
-
-                        {/* {
-                            newTemplate.length > 0 &&
-                            <a style={{ color: "white" }}
-                                href={`${props.iframerender}?template_name=${newTemplate}`} target="_blank"
-                                rel="noreferrer"
-                            >
-                                new Template
-                            </a>
-                        }
-                         */}
 
                     </div>
                 }

@@ -5,6 +5,7 @@ import classes from "./BodyTableGroup.module.css";
 
 import Modal from "../../../Model/Model";
 import TargetAudienceGroup from '../../../TargetAudienceGroup/TargetAudienceGroup';
+import { targetAudienceApi } from '../../../../api/targetAudience/targetAudience';
 function BodyTableGroup(props) {
 
     const [groupLength, setGroupLength] = useState(0);
@@ -26,7 +27,7 @@ function BodyTableGroup(props) {
     useEffect(() => {
         console.log("[Body Table Group components]");
         
-        fetch("http://127.0.0.1:8000/targetusergroup/get/", {
+        fetch(targetAudienceApi.targetusergroupget, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

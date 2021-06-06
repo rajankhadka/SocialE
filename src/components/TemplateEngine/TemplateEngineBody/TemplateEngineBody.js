@@ -6,6 +6,7 @@ import classes from "./TemplateEngineBody.module.css";
 
 //redux
 import { connect } from "react-redux";
+import { template } from '../../../api/template/template';
 
 function TemplateEngineBody(props) {
 
@@ -110,7 +111,7 @@ function TemplateEngineBody(props) {
 
         console.log("props.iframerender-->", props.iframerender);
 
-        fetch("http://127.0.0.1:8000/template/resource/create/", {
+        fetch(template.templateresourcecreate, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

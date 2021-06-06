@@ -6,6 +6,7 @@ import classes from "./TargetAudienceGroup.module.css";
 import validator from "validator";
 import { Button, TextField } from '@material-ui/core';
 import CreateGroup from './CreateGroup/CreateGroup';
+import { targetAudienceApi } from '../../api/targetAudience/targetAudience';
 
 function TargetAudienceGroup(props) {
 
@@ -14,7 +15,7 @@ function TargetAudienceGroup(props) {
         const fetchdata = async () => {
 
             if (props.groupData) {
-               const data = await fetch('http://127.0.0.1:8000/targetuser/get/', {
+               const data = await fetch(targetAudienceApi.targetuserget, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Token ${window.localStorage.getItem('token')}`,
@@ -190,7 +191,7 @@ function TargetAudienceGroup(props) {
         console.log(validateEmailOnly);
         
 
-        fetch("http://127.0.0.1:8000/targetuser/create/", {
+        fetch(targetAudienceApi.targetusercreate, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -221,7 +222,7 @@ function TargetAudienceGroup(props) {
         console.log(formData.get("id"));
         console.log(formData.get("file_name"));
 
-        fetch("http://127.0.0.1:8000/targetuser/dump/", {
+        fetch(targetAudienceApi.targetuserdump, {
             method: "POST",
             headers: {
                 "Authorization": `Token ${window.localStorage.getItem('token')}`,
@@ -249,7 +250,7 @@ function TargetAudienceGroup(props) {
 
         if (!uploadFieldActive && targetAudienceUser.targetAudienceUserEmail.value.length > 0) {
             console.log("user email")
-            fetch("http://127.0.0.1:8000/targetusergroup/create/", {
+            fetch(targetAudienceApi.targetusergroupcreate, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -273,7 +274,7 @@ function TargetAudienceGroup(props) {
                 .catch(err => console.log(err));
         } else if (uploadFieldActive && targetAudienceUser.targetAudienceUserUpload.value !== null) {
             console.log("user csv")
-            fetch("http://127.0.0.1:8000/targetusergroup/create/", {
+            fetch(targetAudienceApi.targetusergroupcreate, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -328,7 +329,7 @@ function TargetAudienceGroup(props) {
         console.log(validateEmailOnly);
         
 
-        fetch("http://127.0.0.1:8000/targetuser/create/", {
+        fetch(targetAudienceApi.targetusercreate, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -362,7 +363,7 @@ function TargetAudienceGroup(props) {
         console.log(formData.get("id"));
         console.log(formData.get("file_name"));
 
-        fetch("http://127.0.0.1:8000/targetuser/dump/", {
+        fetch(targetAudienceApi.targetuserdump, {
             method: "POST",
             headers: {
                 "Authorization": `Token ${window.localStorage.getItem('token')}`,
@@ -386,7 +387,7 @@ function TargetAudienceGroup(props) {
         
         if (!uploadFieldActive && targetAudienceUser.targetAudienceUserEmail.value.length > 0) {
             console.log("user email")
-            fetch("http://127.0.0.1:8000/targetusergroup/update/", {
+            fetch(targetAudienceApi.targetusergroupupdate, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -410,7 +411,7 @@ function TargetAudienceGroup(props) {
                 .catch(err => console.log(err));
         } else if (uploadFieldActive && targetAudienceUser.targetAudienceUserUpload.value !== null) {
             console.log("user csv")
-            fetch("http://127.0.0.1:8000/targetusergroup/update/", {
+            fetch(targetAudienceApi.targetusergroupupdate, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

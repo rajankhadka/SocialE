@@ -9,6 +9,7 @@ import BodyTable from "../../components/UI/BodyTable/BodyTable";
 //redux
 import { connect } from "react-redux";
 import { closeTooltip } from "../../redux/actions/showToolTipAction";
+import { SpecificCampaignDetailProvider } from "../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext";
 
 const TemplatePage = props => {
     
@@ -19,12 +20,16 @@ const TemplatePage = props => {
             <div className={classes.homePage__body}>
                 <SideBar />
                 
-                <BodyTable
-                    header="Templates" 
-                    buttonName = "Create New Template" 
-                    title="Template"
-                    url="/home/create-template"
-                />
+                <SpecificCampaignDetailProvider>
+
+                    <BodyTable
+                        header="Templates" 
+                        buttonName = "Create New Template" 
+                        title="Template"
+                        url="/home/create-template"
+                    />
+                </SpecificCampaignDetailProvider>
+                
                 
             </div>
         </div>

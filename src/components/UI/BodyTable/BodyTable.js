@@ -2,8 +2,6 @@ import React from "react";
 import classes from "./BodyTable.module.css";
 
 //material UI
-import {  IconButton,  } from '@material-ui/core';
-import {  Edit, Send, Delete } from '@material-ui/icons';
 
 //importing components
 import HomePageBodyHeader from "../../HomePageBodyHeader/HomePageBodyHeader";

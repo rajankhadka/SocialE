@@ -3,6 +3,7 @@ import Model from '../../Model/Model';
 import classes from "./ShowGroup.module.css";
 import { Close, Delete, Edit, Visibility } from '@material-ui/icons';
 import TargetAudienceGroup from '../TargetAudienceGroup';
+import { targetAudienceApi } from '../../../api/targetAudience/targetAudience';
 
 function ShowGroup(props) {
 
@@ -46,7 +47,7 @@ function ShowGroup(props) {
 
     useEffect(() => {
         console.log("[Show Group]");
-        fetch("http://127.0.0.1:8000/targetusergroup/get/", {
+        fetch(targetAudienceApi.targetusergroupget, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

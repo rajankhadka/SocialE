@@ -1,7 +1,6 @@
-import classes from './GroupSelect.module.css';
-import { Button, Checkbox, FormControl, Input, ListItemText, MenuItem, Select } from '@material-ui/core'
-import React,{useState,useEffect} from 'react'
-import { Close } from '@material-ui/icons';
+import { Button, Checkbox, FormControl, ListItemText, MenuItem, Select } from '@material-ui/core'
+import React,{useState} from 'react'
+
 
 function GroupSelect(props) {
 
@@ -19,18 +18,6 @@ function GroupSelect(props) {
     
     return (
         <div>
-            {/* <div className={classes.selectedGroupEdit}
-                style={{
-                    width: "40vh",
-                    height: "10vh",
-                    backgroundColor:"silver"
-                }}
-            >
-                <p>Hello <Close style={{ fontSize: "15px" }} /> </p>
-                <p>Hello this is my name <Close style={{ fontSize: "15px" }} /> </p>
-                <p>Hello <Close style={{ fontSize: "15px" }} /> </p>
-                <p>Hello <Close style={{fontSize:"15px"}}/> </p>
-            </div> */}
             <FormControl>
 
                 <Button id="openMenu" onClick={handleOpen} variant="text"

@@ -3,7 +3,6 @@ import classes from "./Header.module.css";
 
 //material UI
 import { Avatar } from '@material-ui/core';
-import {  } from '@material-ui/icons';
 import HeaderTooltip from '../HeaderTooltip/HeaderTooltip';
 
 //redux

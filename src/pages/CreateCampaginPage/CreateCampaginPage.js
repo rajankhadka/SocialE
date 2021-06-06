@@ -31,14 +31,17 @@ import {
     addnewGroup
 } from "../../redux/actions/targetaudienceAction";
 
-import { templatePageCreate,templatePageView } from "../../redux/actions/templatePageToggleAction";
+import { templatePageCreate } from "../../redux/actions/templatePageToggleAction";
 import {templatesidebar } from "../../redux/actions/activesidebarAction"
 
-import GroupSelect from "./GroupSelect/GroupSelect";
 
 //react router 
 import {useHistory } from "react-router-dom";
+import { template } from "../../api/template/template";
 
+//api
+import {targetAudienceApi} from "../../api/targetAudience/targetAudience"
+import { campaignApi } from "../../api/campaign/campaign";
 
 const CreateCampaginPage = (props) => {
 
@@ -80,7 +83,7 @@ const CreateCampaginPage = (props) => {
         console.log("useEffect");
         //template name
 
-        fetch("http://127.0.0.1:8000/template/resource/list/", {
+        fetch(template.resource_list, {
             "method": "GET",
             "headers": {
                 "Authorization": `Token ${window.localStorage.getItem('token')}`
@@ -108,7 +111,7 @@ const CreateCampaginPage = (props) => {
             .catch(err => console.log(err));
         
         //group name
-        fetch("http://127.0.0.1:8000/targetusergroup/get/", {
+        fetch(targetAudienceApi.targetusergroupget , {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -282,7 +285,7 @@ const CreateCampaginPage = (props) => {
         console.log("create campaign", campaignValue.selectTemplate.value);
         console.log("target audience", campaignTargetUser);
 
-        fetch("http://127.0.0.1:8000/campaign/create/", {
+        fetch(campaignApi.campaigncreate, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -335,7 +338,7 @@ const CreateCampaginPage = (props) => {
 
     useEffect(() => {
         console.log("new group created!!!");
-        fetch("http://127.0.0.1:8000/targetusergroup/get/", {
+        fetch(targetAudienceApi.targetusergroupget, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -456,7 +459,7 @@ const CreateCampaginPage = (props) => {
 
         const targetAudienceEmail = [];
         groupSelected.forEach((group) => {
-            fetch("http://127.0.0.1:8000/targetuser/get/", {
+            fetch(targetAudienceApi.targetuserget, {
                 "method": "POST",
                 "headers": {
                     "Authorization": `Token ${window.localStorage.getItem('token')}`,
@@ -759,12 +762,12 @@ const CreateCampaginPage = (props) => {
                                     <div className={classes.createCampaignBody__right__body}>
 
                                         {
-                                        targetAudienceGroup  
+                                            targetAudienceGroup  
                                         }
 
                                         
                                     </div>
-                                    </div>
+                                </div>
                             }
 
                             {/* available target audience */}

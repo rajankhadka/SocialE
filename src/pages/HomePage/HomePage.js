@@ -13,13 +13,15 @@ import BodyTable from '../../components/UI/BodyTable/BodyTable';
 import { Redirect,useHistory } from "react-router-dom";
 import TargetAudienceGroup from '../../components/TargetAudienceGroup/TargetAudienceGroup';
 import ShowGroup from '../../components/TargetAudienceGroup/ShowGroup/ShowGroup';
+import { SpecificCampaignDetailProvider } from '../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';
+import { campaignApi } from '../../api/campaign/campaign';
 
 function HomePage(props) {
 
     const [campaign, setCampaign] = useState([]);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/campaign/get/", {
+        fetch(campaignApi.campaigngetlist, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -66,19 +68,24 @@ function HomePage(props) {
             <Header />
             <div className={classes.homePage__body}>
                 <SideBar />
-                <BodyTable 
-                    header="Campaigns" 
-                    buttonName="Add New Campaign"
-                    groupName="Create Group"
-                    title="Campaign" 
-                    url="/home/create-campagin"
-                    campaigndetailURL="/home/campaign"
-                    data={campaign}
-                    showGroup={showGroup}
-                    showGroupONHandler={showGroupONHandler}
-                    showAllGroup="All Groups"
-                    showONAllGroupHandler={showONAllGroupHandler}
-                />
+
+                <SpecificCampaignDetailProvider>
+
+                    <BodyTable 
+                        header="Campaigns" 
+                        buttonName="Add New Campaign"
+                        groupName="Create Group"
+                        title="Campaign" 
+                        url="/home/create-campagin"
+                        campaigndetailURL="/home/campaign"
+                        data={campaign}
+                        showGroup={showGroup}
+                        showGroupONHandler={showGroupONHandler}
+                        showAllGroup="All Groups"
+                        showONAllGroupHandler={showONAllGroupHandler}
+                    />
+                </SpecificCampaignDetailProvider>
+                
 
                 {
                     showGroup
