@@ -1,7 +1,8 @@
 import classes from './CampaignTargetAudienceGroup.module.css'
 import React, { useState,useRef, useEffect} from 'react'
-import { Close } from '@material-ui/icons'
+import { Add, Check, Close } from '@material-ui/icons'
 import { targetAudienceApi } from '../../api/targetAudience/targetAudience';
+import userEvent from '@testing-library/user-event';
 
 function CampaignTargetAudienceGroup(props) {
     // console.log('props', props);
@@ -16,6 +17,8 @@ function CampaignTargetAudienceGroup(props) {
 
     //group name
     const [targetAudienceGroup, setTargetAudienceGroup] = useState(null);
+    const [targetAudienceGroupAll, setTargetAudienceGroupAll] = useState(null);
+    const [targetAudienceGroupEdit, setTargetAudienceGroupEdit] = useState([]);
 
     //target audience name
     const [targetAudienceName, setTargetAudienceName] = useState(null);
@@ -46,10 +49,36 @@ function CampaignTargetAudienceGroup(props) {
         })
             .then(res => res.json())
             .then(data => {
+
+                //edit group part
+
+                // console.log(props.campaignDetail);
+                // console.log(data);
+
+                let activeGroup = data.filter(item => props.campaignDetail.targetusergroup.includes(item.id));
+                let notactiveGroup = data.filter(item => !props.campaignDetail.targetusergroup.includes(item.id));
+            
+
+                activeGroup = activeGroup.map(group => {
+                    return {
+                        ...group,
+                        click: true
+                    }
+                });
+
+                notactiveGroup = notactiveGroup.map(group => {
+                    return {
+                        ...group,
+                        click: false
+                    }
+                });
+
+                setTargetAudienceGroupEdit(activeGroup.concat(notactiveGroup));
+
                 data.forEach(group => {
+
                     props.campaignDetail.targetusergroup.forEach(groupid => {
                         if (groupid === group.id) {
-
                             //group name
                             setTargetAudienceGroup(prevState => {
                                 if (prevState) {
@@ -95,16 +124,17 @@ function CampaignTargetAudienceGroup(props) {
                                     
                                     
                                 });
-                        }
+                        } 
                     })
                 });
             })
             .catch(err => console.log(err));
+        return () => {
+            setTargetAudienceGroup(null);
+            setTargetAudienceName(null);
+            setTargetusermail(null);
+        }
     },[props.campaignDetail.campaign_name])
-
-    // console.log(targetAudienceGroup);
-    // console.log(targetAudienceName);
-    // console.log(targetusermail);
 
     let targetUserNameDisplay = null;
     
@@ -121,6 +151,70 @@ function CampaignTargetAudienceGroup(props) {
             ))
         }
     }
+
+    //selecting the avalaible group only
+    let targetUserGroupNameEdit = null;
+    if (targetAudienceGroupEdit.length > 0) {
+
+        targetUserGroupNameEdit = targetAudienceGroupEdit.map((group, index) => (
+            <div className={classes.groupName} key={index}>
+                <p>{index+1}. </p>
+                <p className={classes.groupname__p}>{group.group_name}</p>
+                {
+                   group.click
+                        ?
+
+                        <p className={classes.createCampaignBody__right__availableGroup__add}>
+                            <Check
+                                style={{ color: "green" }}
+                                onClick={() => {
+                                    setTargetAudienceGroupEdit(targetAudienceGroupEdit.map(targetGroup => {
+                                        if (targetGroup.id === group.id) {
+                                            return {
+                                                ...targetGroup,
+                                                click: false
+                                            }
+                                        } else {
+                                            return {
+                                                ...targetGroup,
+                                            }
+                                        }
+                                    }))
+                                }}
+                            />
+                        </p>
+                        :
+
+                        <p className={classes.createCampaignBody__right__availableGroup__add}>
+                            <Add
+                                style={{ color: "black" }}
+                                onClick={() => {
+                                    setTargetAudienceGroupEdit(targetAudienceGroupEdit.map(targetGroup => {
+                                        if (targetGroup.id === group.id) {
+                                            return {
+                                                ...targetGroup,
+                                                click: true
+                                            }
+                                        } else {
+                                            return {
+                                                ...targetGroup,
+                                            }
+                                        }
+                                    }))
+                                }}
+                            />
+                        </p> 
+                }
+            </div>
+        ))
+    }
+
+    // console.log(props.campaignDetail);
+    // console.log(targetAudienceGroup);
+    // console.log(targetAudienceName);
+    // console.log(targetusermail);
+    // console.log(targetAudienceGroupAll);
+    // console.log(targetAudienceGroupEdit);
 
     return (
         <div className={classes.campaignTargetAudienceGroup}>
@@ -169,8 +263,22 @@ function CampaignTargetAudienceGroup(props) {
                 {/* view group */}
                 {
                     vieweditToggle
-                        ? <p>Edit Group</p>
+                        ?
+
+                        // edit group 
+                        <div className={classes.body__content__view}>
+                            
+                            {/* group name */}
+                            <div className={classes.body__left__group}>
+                                <p>Groups</p>
+                                {
+                                    targetUserGroupNameEdit
+                                }
+                            </div>
+                        </div>
                         :
+
+                        // view group 
                         <div className={classes.body__content__view}>
                             {/* group name  */}
                             <div className={classes.body__left__group}>

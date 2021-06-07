@@ -80,7 +80,6 @@ const CreateCampaginPage = (props) => {
     const [chooseTemplate, setChooseTemplate] = useState(false);
 
     useEffect(() => {
-        console.log("useEffect");
         //template name
 
         fetch(template.resource_list, {
@@ -128,7 +127,7 @@ const CreateCampaginPage = (props) => {
                         ...group,
                         click : false
                     }
-                } )
+                })
                 setGroupData(groupName);
             })
             .catch(err => console.log(err));
@@ -454,8 +453,6 @@ const CreateCampaginPage = (props) => {
     //fetching all target audience after selecting group 
     //fetching all group name target audience
     useEffect(() => {
-        console.log("every time call");
-        console.log("groupName",props.groupName);
 
         const targetAudienceEmail = [];
         groupSelected.forEach((group) => {
@@ -471,16 +468,10 @@ const CreateCampaginPage = (props) => {
             })
                 .then(response => response.json())
                 .then(data => {
-                    // console.log("---------------", group);
-                    // console.log("palyoad--->", data.payload);
                     targetAudienceEmail.push(...data.payload)
-                    // targetAudienceUserfetch.push(...data.payload)
-                    
-                    // console.log("---------------");
                     return targetAudienceEmail
                 })
                 .then(email => {
-                    // console.log("all target user group is ", email);
                     props.availableTargetAudienceAction(email);
                 })
                 .catch(err => console.log(err));
@@ -505,7 +496,6 @@ const CreateCampaginPage = (props) => {
                
                 {
                     props.targetaudienceAvailable.map((item, index) => {
-                        console.log(item);
                         return (
                             <div key={`${item.id}key${index}`} onClick={() => {
                                 
@@ -516,7 +506,6 @@ const CreateCampaginPage = (props) => {
 
                                 } else {
                                     props.clickTargetAudienceAction(item.id);
-                                    console.log("item", item);
                                     setCampaignTargetUser(prevState => prevState.concat(item.id))
                                 }
                                 // console.log(item.id);
@@ -667,16 +656,6 @@ const CreateCampaginPage = (props) => {
                                     </div>
                                 </div>
                                 
-
-
-                                
-
-                                {/* <GroupSelect
-                                    groupData={groupData}
-                                    selectedhandleChange={selectedhandleChange}
-                                    selected={selected}
-                                /> */}
-                                
                                 <label htmlFor="startDate">Start Date</label>
 
                                 <TextField
@@ -822,7 +801,8 @@ const CreateCampaginPage = (props) => {
                                         />
 
                                         {
-                                        targetAudience  
+
+                                            targetAudience  
                                         }
 
                                         

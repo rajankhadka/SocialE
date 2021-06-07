@@ -67,3 +67,12 @@
 .groupName > p {
   margin-right: 10px;
 }
+
+.groupname__p {
+  flex: 0.9;
+}
+
+.createCampaignBody__right__availableGroup__add {
+  flex: 0.1;
+  cursor: pointer;
+}
