@@ -2,9 +2,14 @@ import classes from './CampaignTargetAudienceGroup.module.css'
 import React, { useState,useRef, useEffect} from 'react'
 import { Add, Check, Close } from '@material-ui/icons'
 import { targetAudienceApi } from '../../api/targetAudience/targetAudience';
-import userEvent from '@testing-library/user-event';
+import { v4 as uuidv4 } from 'uuid';
+import validator from 'validator';
 
 function CampaignTargetAudienceGroup(props) {
+
+    const [addTargetAudience, setAddTargetAudience] = useState([]);
+    const [usernameValue, setUsernameValue] = useState('');
+    const [errorEmail, setErrorEmail] = useState(false);
     // console.log('props', props);
 
     //view and edit group active classes
@@ -17,14 +22,21 @@ function CampaignTargetAudienceGroup(props) {
 
     //group name
     const [targetAudienceGroup, setTargetAudienceGroup] = useState(null);
-    const [targetAudienceGroupAll, setTargetAudienceGroupAll] = useState(null);
+
+    //edit part 
     const [targetAudienceGroupEdit, setTargetAudienceGroupEdit] = useState([]);
 
     //target audience name
     const [targetAudienceName, setTargetAudienceName] = useState(null);
     
+    //edit part
+    const [activeUserNameSaved, setActiveUserNameSaved] = useState([]);
+    const [targetAudienceNameEdit, setTargetAudienceNameEdit] = useState([]);
+    
     //target user mail
     const [targetusermail, setTargetusermail] = useState(null);
+
+
 
     useEffect(() => {
         // console.log(props.campaignDetail.target_users_mail_list.length);
@@ -33,9 +45,11 @@ function CampaignTargetAudienceGroup(props) {
         if (props.campaignDetail.target_users_mail_list.length > 0) {
             
             props.campaignDetail.target_users_mail_list.split(',').forEach(m => {
-                mail.push(m.slice(1, (m.length - 1)))
+                mail.push({ id:uuidv4() ,email: m.slice(1, (m.length - 1)), click: true })
             });
             setTargetusermail(mail);
+            setTargetAudienceNameEdit([...mail]);
+            setActiveUserNameSaved([...mail]);
         } else {
             setTargetusermail([]);
         }
@@ -57,8 +71,6 @@ function CampaignTargetAudienceGroup(props) {
 
                 let activeGroup = data.filter(item => props.campaignDetail.targetusergroup.includes(item.id));
                 let notactiveGroup = data.filter(item => !props.campaignDetail.targetusergroup.includes(item.id));
-            
-
                 activeGroup = activeGroup.map(group => {
                     return {
                         ...group,
@@ -74,6 +86,7 @@ function CampaignTargetAudienceGroup(props) {
                 });
 
                 setTargetAudienceGroupEdit(activeGroup.concat(notactiveGroup));
+
 
                 data.forEach(group => {
 
@@ -101,17 +114,28 @@ function CampaignTargetAudienceGroup(props) {
                             })
                                 .then(res => res.json())
                                 .then(targetdata => {
+                                    
                                     if (targetdata.payload.length > 0) {
-                                       targetdata.payload.forEach(targetAudience => {
+                                        
+                                        targetdata.payload.forEach(targetAudience => {
+                                            
+                                            setActiveUserNameSaved(prevState => {
+                                                return [...prevState, { email: targetAudience.email, click: true,id:uuidv4() }];
+                                            })
+
+                                            setTargetAudienceNameEdit(prevState => {
+                                                return [...prevState, { email: targetAudience.email, click: true,id:uuidv4() }];
+                                            })
+
                                             setTargetAudienceName(prevState => {
                                                 if (prevState) {
-                                                    return [...prevState,targetAudience.email];
+                                                    return [...prevState, { email: targetAudience.email, click: true }];
                                                 } else {
-                                                    return [targetAudience.email];
+                                                    return [{ email: targetAudience.email, click: true }];
                                                 }
                                             })
 
-                                        }) 
+                                        })
                                     } else {
                                         setTargetAudienceName(prevState => {
                                             if (prevState) {
@@ -124,7 +148,7 @@ function CampaignTargetAudienceGroup(props) {
                                     
                                     
                                 });
-                        } 
+                        }
                     })
                 });
             })
@@ -134,7 +158,57 @@ function CampaignTargetAudienceGroup(props) {
             setTargetAudienceName(null);
             setTargetusermail(null);
         }
-    },[props.campaignDetail.campaign_name])
+    }, [props.campaignDetail.campaign_name]);
+
+
+    // group name trigger
+    const [trigger, setTrigger] = useState(false);
+
+
+    //call every time when group selected or deselected
+    useEffect(() => {
+        // console.log('object');
+        // console.log(targetAudienceGroupEdit);
+        // console.log(targetAudienceNameEdit);
+        let newTargetUser = [];
+        targetAudienceGroupEdit.forEach(group => {
+            if (group.click) {
+                fetch(targetAudienceApi.targetuserget, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Token ${window.localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: group.id
+                    })
+                })
+                    .then(res => res.json())
+                    .then(targetdata => {
+                        
+                        if (targetdata.payload.length > 0) {
+                            targetdata.payload.forEach(targetAudience => {
+                                newTargetUser.push({ email: targetAudience.email, click: true, id: uuidv4() })
+                            })
+                        }
+                        setActiveUserNameSaved(newTargetUser.concat(targetusermail.concat(addTargetAudience)));
+                        setTargetAudienceNameEdit(newTargetUser.concat(targetusermail.concat(addTargetAudience)));
+                    })
+                    .catch(err => console.log(err));
+            }
+        })
+
+    }, [trigger]);
+
+    //all selected username only
+    const [userNameTrigger, setUserNameTrigger] = useState(false);
+    
+    //save only active username
+    useEffect(() => {
+        let activeUsernameonly = targetAudienceNameEdit.filter(user => user.click);
+        setActiveUserNameSaved([...activeUsernameonly,...addTargetAudience]);
+        
+    }, [userNameTrigger])
 
     let targetUserNameDisplay = null;
     
@@ -146,7 +220,7 @@ function CampaignTargetAudienceGroup(props) {
             targetUserNameDisplay = joinTargetUserEmail.map((email, index) => (
                 <div className={classes.groupName} key={index}>
                     <p>{index+1}. </p>
-                    <p>{email}</p>
+                    <p>{email.email}</p>
                 </div>
             ))
         }
@@ -168,6 +242,7 @@ function CampaignTargetAudienceGroup(props) {
                             <Check
                                 style={{ color: "green" }}
                                 onClick={() => {
+                                    setTrigger(!trigger);
                                     setTargetAudienceGroupEdit(targetAudienceGroupEdit.map(targetGroup => {
                                         if (targetGroup.id === group.id) {
                                             return {
@@ -189,6 +264,7 @@ function CampaignTargetAudienceGroup(props) {
                             <Add
                                 style={{ color: "black" }}
                                 onClick={() => {
+                                    setTrigger(!trigger);
                                     setTargetAudienceGroupEdit(targetAudienceGroupEdit.map(targetGroup => {
                                         if (targetGroup.id === group.id) {
                                             return {
@@ -206,6 +282,67 @@ function CampaignTargetAudienceGroup(props) {
                         </p> 
                 }
             </div>
+        ))
+    }
+
+
+    //edit part target audience group name only
+    let targetAudienceUserNameEdit = null;
+    if (targetAudienceNameEdit.length > 0) {
+        targetAudienceUserNameEdit = targetAudienceNameEdit.map((user, index) => (
+            <div className={classes.groupName} key={index}>
+                <p>{index + 1}. </p>
+                <p className={classes.groupname__p}>{user.email}</p>
+                {
+                   user.click
+                        ?
+
+                        <p className={classes.createCampaignBody__right__availableGroup__add}>
+                            <Check
+                                style={{ color: "green" }}
+                                onClick={() => {
+                                    // console.log(user);
+                                    setUserNameTrigger(!userNameTrigger)
+                                    setTargetAudienceNameEdit(targetAudienceNameEdit.map(targetUser => {
+                                        if (user.id === targetUser.id) {
+                                            return {
+                                                ...targetUser,
+                                                click: false
+                                            }
+                                        } else {
+                                            return {
+                                                ...targetUser,
+                                            }
+                                        }
+                                    }))
+                                }}
+                            />
+                        </p>
+                        :
+
+                        <p className={classes.createCampaignBody__right__availableGroup__add}>
+                            <Add
+                                style={{ color: "black" }}
+                                onClick={() => {
+                                    setUserNameTrigger(!userNameTrigger)
+                                    setTargetAudienceNameEdit(targetAudienceNameEdit.map(targetUser => {
+                                        if (user.id === targetUser.id) {
+                                            return {
+                                                ...targetUser,
+                                                click: true
+                                            }
+                                        } else {
+                                            return {
+                                                ...targetUser,
+                                            }
+                                        }
+                                    }))
+                                }}
+                            />
+                        </p> 
+                }
+            </div>
+            
         ))
     }
 
@@ -269,19 +406,63 @@ function CampaignTargetAudienceGroup(props) {
                         <div className={classes.body__content__view}>
                             
                             {/* group name */}
-                            <div className={classes.body__left__group}>
+                            <div className={[classes.body__left__group,classes.boder__right].join(' ')}>
                                 <p>Groups</p>
                                 {
                                     targetUserGroupNameEdit
                                 }
                             </div>
+                            
+                            <div className={[classes.body__left__group,classes.margin__left].join(' ')}>
+                                <p>Target Users</p>
+
+                                {
+                                    errorEmail &&
+                                    <p className={classes.errorEmail}>Invalid Email Id</p>
+                                }
+
+                                <input
+                                    className={classes.input}
+                                    type='text'
+                                    placeholder='Add Email...'
+                                    value={usernameValue}
+                                    onChange={(event) => {
+                                        setErrorEmail(false);
+                                        setUsernameValue(event.target.value);
+                                    }}
+
+                                    onKeyPress={(event) => {
+                                        if (event.key === 'Enter') {
+                                            if (validator.isEmail(usernameValue)) {
+                                                setErrorEmail(false);
+                                                setAddTargetAudience(prevState => [...prevState,{ id: uuidv4(), click: true, email: usernameValue }])
+                                                setActiveUserNameSaved(prevState => {
+                                                    return [...prevState, { id: uuidv4(), click: true, email: usernameValue }]
+                                                });
+
+                                                setTargetAudienceNameEdit(prevState => {
+                                                    return [...prevState, { id: uuidv4(), click: true, email: usernameValue }]
+                                                });
+                                                setUsernameValue(''); 
+                                            } else {
+                                                setErrorEmail(true);
+                                            }
+                                            
+                                        }
+                                    }}
+                                />
+                                {
+                                    targetAudienceUserNameEdit
+                                }
+                            </div>
+
                         </div>
                         :
 
                         // view group 
                         <div className={classes.body__content__view}>
                             {/* group name  */}
-                            <div className={classes.body__left__group}>
+                            <div className={[classes.body__left__group,classes.boder__right].join(' ')}>
                                 <p>Groups</p>
                                 {
                                     targetAudienceGroup &&
@@ -295,7 +476,7 @@ function CampaignTargetAudienceGroup(props) {
                             </div>
 
                             {/* user name */}
-                            <div className={classes.body__left__group}>
+                            <div className={[classes.body__left__group,classes.margin__left].join(' ')}>
                                 <p>Target Users</p>
                                 {
                                     targetUserNameDisplay

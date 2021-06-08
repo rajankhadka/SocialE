@@ -1,0 +1,73 @@
+.campaignPreview {
+  display: flex;
+  width: 40%;
+  height: 60vh;
+  background-color: white;
+  border-radius: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  height: 5vh;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.header p {
+  margin-left: 30px;
+}
+
+/* body ---------- */
+.body {
+  width: 90%;
+  height: 55vh;
+  /* background-color: aqua; */
+  margin-top: 10px;
+  overflow: scroll;
+}
+
+.campaign__name {
+  display: flex;
+  width: 100%;
+  /* background-color: bisque; */
+  /* margin-bottom: 10px; */
+}
+
+.name__key {
+  flex: 0.5;
+  /* background-color: yellowgreen; */
+}
+
+.name__value {
+  flex: 0.5;
+  /* background-color: aquamarine; */
+}
+
+.groups__key {
+  display: flex;
+  width: 100%;
+  height: 15vh;
+  /* background-color: azure; */
+  align-items: center;
+}
+
+.groups__value {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 15vh;
+  /* background-color: aqua; */
+  overflow: scroll;
+}
+
+.groupName {
+  display: flex;
+  width: 100%;
+}
+
+.groupName > p {
+  margin-right: 10px;
+}

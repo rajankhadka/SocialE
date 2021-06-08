@@ -7,6 +7,7 @@ import Model from '../../Model/Model';
 import classes from "./BodyTableBody.module.css";
 import { template } from "../../../api/template/template";
 import CampaignTargetAudienceGroup from '../../CampaignTargetAudienceGroup/CampaignTargetAudienceGroup';
+import CampaignPreview from '../../CampaignPreview/CampaignPreview';
 
 function BodyTableBody(props) {
 
@@ -33,6 +34,12 @@ function BodyTableBody(props) {
     const showgroupmodaloffHandler = () => setShowgroupModal(false);
     const showgroupmodalonHandler = () => setShowgroupModal(true);
 
+    //preview campaign 
+    const [previewModalShow, setPreviewModalShow] = useState(false);
+
+    //preview campaign handler
+    const showpreviewmodaloffHandler = () => setPreviewModalShow(false);
+    const showpreviewmodalonHandler = () => setPreviewModalShow(true);
 
     switch (props.title) {
         case "Campaign":
@@ -98,7 +105,12 @@ function BodyTableBody(props) {
                         </div>
 
                         <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton>
+                            <IconButton
+                                onClick={() => {
+                                    showpreviewmodalonHandler();
+                                    setCampaignDetail(element);
+                                }}
+                            >
                                 <Visibility style={{ fontSize: 15, color: "green" }} />
                             </IconButton>
                         </div>
@@ -249,6 +261,16 @@ function BodyTableBody(props) {
                     <CampaignTargetAudienceGroup
                         showgroupmodaloffHandler={showgroupmodaloffHandler}
                         campaignDetail={campaignDetail}
+                    />
+                </Model>
+            }
+
+            {
+                previewModalShow &&
+                <Model>
+                    <CampaignPreview
+                        campaignDetail={campaignDetail}
+                        showpreviewmodaloffHandler={showpreviewmodaloffHandler}
                     />
                 </Model>
             }
