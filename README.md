@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -93,3 +94,7 @@ You will need the following installed on your computer.
   > python manage.py createsuperuser
 - Runserver
   > python manage.py runserver
+=======
+# SocialE-frontend
+SocialE Frontend 
+>>>>>>> 4f70f6eb6fd64f1caa66e85ff6a0e96f3ebdf73e
