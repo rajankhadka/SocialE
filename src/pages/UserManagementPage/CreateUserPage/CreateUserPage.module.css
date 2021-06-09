@@ -1,0 +1,24 @@
+createuserPage .createuserPage {
+  height: 100vh;
+}
+
+.createuserPage__body {
+  display: flex;
+  height: 92vh;
+}
+
+/* -----------------------createuserPageBody----------------------------- */
+.createuserPageBody {
+  flex: 0.83;
+  padding-left: 20px;
+}
+
+.createuserPageBodyHeader {
+  margin-bottom: 20px;
+}
+
+
+/* ------------------------------------createuserPageBody__body----------------------- */
+.createuserPageBody__body {
+  display: flex;
+}

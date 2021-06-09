@@ -1,0 +1,24 @@
+.templateEngine__body__body {
+  background-color: #f4f4f4;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.templateEngine__body__body__content {
+  background-color: white;
+  height: 45vh;
+  width: 95%;
+}
+
+.createTemplate {
+  /* background-color: aqua; */
+  display: flex;
+  /* justify-content: space-evenly; */
+  margin-top: 10px;
+}
+
+.createTemplate__newTemplate {
+  margin-right: 400px;
+}

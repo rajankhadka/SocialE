@@ -1,0 +1,227 @@
+.homePage {
+  height: 100vh;
+}
+
+.homePage__body {
+  display: flex;
+  height: 92vh;
+}
+
+/* -----------------------createCampaignBody----------------------------- */
+.createCampaignBody {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.createCampaignBodyHeader {
+  margin-bottom: 10px;
+}
+
+.createCampaignBody__body {
+  display: flex;
+}
+
+.createCampaignBody__body__left > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.createCampaignBody__body__right {
+  display: flex;
+  /* justify-content: center; */
+  margin-left: 50px;
+  flex: 1;
+  margin-right: 20px;
+  flex-direction: row;
+  /* background-color: aqua; */
+}
+/* 
+.createCampaignBody__body__right > p {
+  margin-bottom: 20px;
+} */
+
+/* ---------------------right--------------- */
+
+/* available target audience group */
+
+.createCampaignBody__right__availableGroup {
+  flex: 0.4;
+
+  margin-right: 10px;
+}
+
+.createCampaignBody__right__availableGroup__body {
+  display: flex;
+  cursor: pointer;
+}
+.createCampaignBody__right__availableGroup__id {
+  flex: 0.15;
+}
+.createCampaignBody__right__availableGroup__groupName {
+  margin-left: 10px;
+
+  flex: 0.8;
+}
+
+.createCampaignBody__right__availableGroup__add {
+  flex: 0.1;
+
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+/* available target audience */
+.createCampaignBody__right__availableAudience {
+  flex: 0.6;
+  /* background-color: blueviolet; */
+}
+
+/* -------------------right header --------------- */
+.createCampaignBody__right__header {
+  width: 100%;
+  height: 5vh;
+  background-color: #2bae66;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.createCampaignBody__right__header > div {
+  /* background-color: aqua; */
+  flex: 1;
+  padding-left: 10px;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.createCampaignBody__right__available {
+  cursor: pointer;
+}
+
+.createCampaignBody__right__add {
+  cursor: pointer;
+}
+
+/* ------------------right body ------------------ */
+.createCampaignBody__right__body {
+  /* width: 60%; */
+  display: flex;
+  flex-direction: column;
+  height: 57vh;
+  overflow-y: scroll;
+
+  /* background-color: aqua; */
+}
+
+.createCampaignBody__right__body > div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.createCampaignBody__right__body__addAudience {
+  margin: 10px;
+  padding: 5px;
+  font-size: 15px;
+  padding-left: 10px;
+}
+
+.createCampaignBody__id {
+  flex: 0.05;
+  /* background-color: aqua; */
+}
+
+.createCampaignBody__email {
+  flex: 0.9;
+  /* background-color: aquamarine; */
+}
+
+.createCampaignBody__add {
+  flex: 0.05;
+  cursor: pointer;
+  margin-right: 20px;
+  /* background-color: bisque; */
+}
+
+/* ------------------------ add new audience ----------------------- */
+.createCampaignBody__addnewAudience {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.createCampaignBody__addnewAudience__success {
+  display: flex;
+  margin-top: 10px;
+  color: #2bae66;
+  background-color: aliceblue;
+  width: 300px;
+  height: 5vh;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.createCampaignBody__addnewAudience__error {
+  display: flex;
+  margin-top: 10px;
+  color: red;
+  background-color: aliceblue;
+  width: 300px;
+  height: 5vh;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.createCampaignBody__addnewAudience > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.createCampaignBody__addnewAudience
+  > form
+  > .createCampaignBody__addnewAudience__input {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+  width: 50vh;
+  box-sizing: border-box;
+}
+
+/* -------------success and invalid msg------------- */
+
+.createCampaign__success {
+  width: 200px;
+  background-color: #ededed;
+  color: #2bae66;
+  height: 5vh;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+
+.createCampaign__invalid {
+  width: 200px;
+  background-color: #ededed;
+  color: red;
+  height: 5vh;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+
+/* --------------------createCampaign__template------------- */
+.createCampaign__template {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.createCampaign__template__button {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}

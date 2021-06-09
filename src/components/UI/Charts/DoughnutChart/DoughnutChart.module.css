@@ -1,0 +1,11 @@
+.doughnut {
+  display: flex;
+
+  box-sizing: border-box;
+}
+
+.doughnut__left {
+  width: 300px;
+  height: 200px;
+  /* background-color: blue; */
+}

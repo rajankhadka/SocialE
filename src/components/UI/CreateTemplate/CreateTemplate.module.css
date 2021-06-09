@@ -1,0 +1,8 @@
+.createTemplate {
+  margin-left: 10px;
+}
+
+.createTemplate__header {
+  display: flex;
+  align-items: center;
+}

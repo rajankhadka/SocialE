@@ -1,0 +1,76 @@
+.targetAudienceGroup__content {
+  width: 30%;
+  height: 70vh;
+  background-color: whitesmoke;
+}
+
+/* ----------header----------- */
+.createCampaignBody__right__header {
+  width: 100%;
+  height: 5vh;
+  background-color: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* -------------------right header --------------- */
+.createCampaignBody__right__header > div {
+  /* background-color: aqua; */
+  flex: 0.5;
+  padding-left: 10px;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+}
+
+.createCampaignBody__right__available {
+  cursor: pointer;
+}
+
+.createCampaignBody__right__add {
+  cursor: pointer;
+}
+
+/* --------------------body-------------------- */
+
+.shrowGroup__body {
+  height: 65vh;
+  overflow-y: scroll;
+}
+
+.shrowGroup__body__row {
+  display: flex;
+  padding-top: 5px;
+  /* justify-content: center; */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.shrowGroup__body__row:hover {
+  background-color: #cccccc;
+}
+
+.shrowGroup__body__name {
+  margin-left: 5px;
+  /* background-color: bisque; */
+  flex: 0.99;
+}
+
+.shrowGroup__body__name,
+.shrowGroup__body__preview,
+.shrowGroup__body__edit,
+.shrowGroup__body__delete {
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.shrowGroup__body__name > p {
+  font-size: 15px;
+}
+
+.shrowGroup__body__preview,
+.shrowGroup__body__edit,
+.shrowGroup__body__delete {
+  margin-top: 10px;
+  cursor: pointer;
+}

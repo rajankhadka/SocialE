@@ -1,0 +1,172 @@
+.homePage__body__body {
+  flex: 1;
+  z-index: 9;
+  margin-top: 10px;
+}
+
+.homePage__body__bodyTable {
+  margin-top: 20px;
+  height: 70vh;
+}
+
+/* ---------------------------table header-------------------- */
+
+.homePage__body__bodyTableHeader {
+  display: flex;
+  cursor: pointer;
+}
+/* ----------------------name------------------------ */
+.homePage__body__bodyTable__name {
+  padding-left: 10px;
+  flex: 0.3;
+}
+
+.homePage__body__bodyTable__name > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ----------------------create------------------------ */
+.homePage__body__bodyTable__create {
+  flex: 0.2;
+}
+
+.homePage__body__bodyTable__create > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ------------------------------unique open---------------------- */
+.homePage__body__bodyTable__uniqueOpen {
+  flex: 0.2;
+}
+
+.homePage__body__bodyTable__uniqueOpen > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* -----------------------------send------------------------- */
+.homePage__body__bodyTable__send {
+  flex: 0.1;
+}
+
+.homePage__body__bodyTable__send > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ---------------------------------edit------------------------- */
+.homePage__body__bodyTable__edit {
+  flex: 0.1;
+}
+
+.homePage__body__bodyTable__edit > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ------------------------------------delete--------------------------- */
+.homePage__body__bodyTable__delete {
+  flex: 0.1;
+}
+
+.homePage__body__bodyTable__delete > h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* ----------------------------------------tablebody row------------------------- */
+
+.homePage__body__bodyTableBody {
+  height: 65vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  cursor: pointer;
+}
+
+.homePage__body__bodyTableBodyRow {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  align-items: center;
+  /* background-color: aqua; */
+}
+
+.homePage__body__bodyTableBody > .homePage__body__bodyTableBodyRow:hover {
+  background-color: #ededed;
+}
+
+/* ---------------------send email---------------------- */
+
+.homePage__sendEmail {
+  background-color: aqua;
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.3);
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.homePage__sendEmail__body {
+  width: 50%;
+  height: 70vh;
+  background-color: #ededed;
+}
+
+.homePage__sendEmail__body__header {
+  margin-top: 10px;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.homePage__sendEmail__body__header > h5 {
+  margin-left: 10px;
+}
+
+/* ---------------send email --------body --------content--------- */
+
+.homePage__sendEmail__body__body {
+  margin-left: 10px;
+}
+
+.homePage__sendEmail__content > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.sendEmail__subject {
+  width: 100vh;
+  height: 5vh;
+  margin-bottom: 10px;
+}
+
+.sendEmail__body {
+  width: 100vh;
+  height: 35vh;
+  margin-bottom: 10px;
+  resize: none;
+}
+
+@media only screen and (max-width: 1000px) {
+  .homePage__sendEmail__body {
+    height: 65vh;
+  }
+
+  .sendEmail__subject {
+    width: 95%;
+  }
+
+  .sendEmail__body {
+    width: 95%;
+  }
+}
+
+/* --------------------------campaignEdit-------------------- */

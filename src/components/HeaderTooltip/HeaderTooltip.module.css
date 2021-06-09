@@ -1,0 +1,39 @@
+.headerTooltip__content {
+  /* visibility: visible; */
+  visibility: hidden;
+  background-color: #ededed;
+  position: absolute;
+  top: 130%;
+  right: 10%;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
+}
+
+.headerTooltip__content > p {
+  display: flex;
+  align-items: center;
+  height: 35px;
+  font-weight: 400;
+  font-size: 12px !important;
+  width: 100%;
+}
+
+.headerTooltip__content > p:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.headerTooltip__content::after {
+  position: absolute;
+  top: -15%;
+  left: 63%;
+  content: " ";
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent rgba(0, 0, 0, 0.5) transparent;
+}
