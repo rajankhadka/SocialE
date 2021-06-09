@@ -6,6 +6,8 @@ import { useHistory,useLocation } from "react-router-dom";
 //redux
 import { connect } from "react-redux";
 
+const NAVIGATOR = window.navigator;
+
 function Template001(props) {
 
     const location = useLocation();
@@ -15,8 +17,42 @@ function Template001(props) {
     let template_name = searchParams1.get(`http://localhost:3000/template/001?template_name`);
     console.log(template_name);
 
+    //fetching all user agent
+    const userAgentfunction = () => {
+
+        const userAgentData = {
+            appcodeName: NAVIGATOR.appCodeName,
+            appName : NAVIGATOR.appName,
+            appVersion : NAVIGATOR.appVersion,
+            userAgent : NAVIGATOR.userAgent,
+            userAgentData : NAVIGATOR.userAgentData,
+            vendor : NAVIGATOR.vendor,
+            platform :NAVIGATOR.platform,
+            deviceMemory : NAVIGATOR.deviceMemory,
+            
+        }
+        return userAgentData;
+    }
+
     useEffect(() => {
         console.log(document.title);
+        document.title = 'template 001'
+
+        //user agent data
+        console.log(userAgentfunction());
+
+        //fetching ip address and location 
+        fetch('https://ipgeolocation.abstractapi.com/v1/?api_key=c45b67797f8f462ebbe9d79f4f47a1c2', {
+            method:'GET'
+        })
+        .then(response => {
+            return (response.json());
+        })
+        .then(data => console.log(data))
+        .catch(error => {
+            console.log(error);
+        });
+
         fetch(`http://127.0.0.1:8000/template/resource/retrieve/?template_name=${template_name}`, {
             
             
