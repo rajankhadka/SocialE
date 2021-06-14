@@ -7,6 +7,7 @@ import SideBar from "../../components/SideBar/SideBar";
 import BodyTable from '../../components/UI/BodyTable/BodyTable';
 import TargetAudienceGroupComponent from "../../components/TargetAudienceGroup/TargetAudienceGroup";
 import BodyTableGroup from '../../components/UI/BodyTable/BodyTableGroup/BodyTableGroup';
+import Modal from "../../components/Model/Model";
 
 function TargetAudienceGroup(props) {
     const [showcreateGroup, setShowcreateGroup] = useState(false);
@@ -47,11 +48,16 @@ function TargetAudienceGroup(props) {
                     {
                         showcreateGroup
                             ?
-                            <TargetAudienceGroupComponent
-                                showGroupOFFhandler={showcreateGroupOFFhandler}
-                                createGroupClickedHandlerON={createGroupClickedHandlerON}
-                                
-                            />
+
+                            <Modal>
+                                <TargetAudienceGroupComponent
+                                    showGroupOFFhandler={showcreateGroupOFFhandler}
+                                    createGroupClickedHandlerON={createGroupClickedHandlerON}
+                                    
+                                />
+                            </Modal>
+
+                            
                             :
                                 null
                     }

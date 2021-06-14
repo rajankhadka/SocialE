@@ -212,7 +212,8 @@ function BodyTableBody(props) {
                                 <form onSubmit={sendEmailHandler}>
                                     <label htmlFor="subject">Subject :</label>
                                     <input name="subject"
-                                        type="text" className={classes.sendEmail__subject}
+                                        type="text"
+                                        className={classes.sendEmail__subject}
                                         required={true}
                                         value={sendemailSubject}
                                         onChange={(event) => setSendemailSubject(event.target.value)}
@@ -227,6 +228,7 @@ function BodyTableBody(props) {
                                     
                                     <Button variant="contained"
                                         style={{
+                                            width:'97%',
                                             backgroundColor: "green",
                                             marginRight: "10px", marginTop: "10px"
                                         }}

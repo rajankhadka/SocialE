@@ -67,7 +67,7 @@ function CampaignPreview(props) {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    id: groupid
+                                    group_id: groupid
                                 })
                             })
                                 .then(res => res.json())

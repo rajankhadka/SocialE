@@ -22,7 +22,7 @@ function TargetAudienceGroup(props) {
                         'Content-Type':'application/json'
                     },
                     body: JSON.stringify({
-                        id:props.groupData.id
+                        group_id:props.groupData.id
                     })
                 })
                 const result = await data.json();
@@ -198,7 +198,7 @@ function TargetAudienceGroup(props) {
                 "Authorization":`Token ${window.localStorage.getItem('token')}`
             },
             body: JSON.stringify({
-                id: groupData.group_id,
+                group_id: groupData.group_id,
                 email:validateEmailOnly,
             })
         })
@@ -336,7 +336,7 @@ function TargetAudienceGroup(props) {
                 "Authorization":`Token ${window.localStorage.getItem('token')}`
             },
             body: JSON.stringify({
-                id: id,
+                group_id: id,
                 email:validateEmailOnly,
             })
         })
@@ -476,6 +476,7 @@ function TargetAudienceGroup(props) {
         );
     }
 
+    console.log('groups', props.type);
     return (
         <div className={classes.targetAudienceGroup}>
             <div className={classes.targetAudienceGroup__content}>
@@ -574,6 +575,7 @@ function TargetAudienceGroup(props) {
                                 !uploadFieldActive
                                     ?
                                     <CreateGroup
+                                        groupType = {props.type}   //preview // edit //create
                                         uploadFieldActive={uploadFieldActive}
                                         disable = {disable}
                                         setUploadFieldActiveInputHandler={setUploadFieldActiveInputHandler}
@@ -586,6 +588,7 @@ function TargetAudienceGroup(props) {
                                     />
                                     :
                                     <CreateGroup
+                                        groupType = {props.type}   //preview // edit //create
                                         uploadFieldActive={uploadFieldActive}
                                         setUploadFieldActiveInputHandler={setUploadFieldActiveInputHandler}
                                         setUploadFieldActiveUploadHandler={setUploadFieldActiveUploadHandler}

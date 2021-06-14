@@ -25,19 +25,26 @@ function CreateTemplate(props) {
     //template
     const [selectTemplate, setSelectTemplate] = useState("");
     const [templateName, setTemplateName] = useState("");
-    const [optionvalue, setOptionValue] = useState([]);
     const [iframerender, setIframerender] = useState("");
 
     const IframerenderHandler = (event) => {
-        const templatedata = templateData.filter(item => event.target.value === item.url);
-        console.log(event.target.value);
-        const url = `${event.target.value}`;
-        setSelectTemplate(event.target.value);
-        setIframerender(url);
-        // setIframerender(event.target.value);
-        console.log(templatedata[0].templateName);
-        setTemplateName(templatedata[0].templateName);
-        props.shownewtemplateAction(url);
+
+        if (event.target.value.length > 0) {
+            const templatedata = templateData.filter(item => event.target.value === item.url);
+            console.log(event.target.value);
+            const url = `${event.target.value}`;
+            setSelectTemplate(event.target.value);
+            setIframerender(url);
+            // setIframerender(event.target.value);
+            console.log(templatedata[0].templateName);
+            setTemplateName(templatedata[0].templateName);
+            props.shownewtemplateAction(url);
+        } else {
+            setSelectTemplate(event.target.value);
+            setTemplateName(event.target.value);
+            setIframerender(event.target.value);
+        }
+        
     }
 
     //createCampaign
@@ -69,9 +76,9 @@ function CreateTemplate(props) {
                 </FormControl>
 
                 {
-                    templateName.length > 0 && 
+                    selectTemplate.length > 0 && 
                     <div className={classes.createTemplate__header__preview}>
-                        <IconButton onClick={() => window.open(`${iframerender}?template_name=${templateName}`)}>
+                        <IconButton onClick={() => window.open(`${iframerender}`)}>
                             <Visibility />
                         </IconButton>
                     </div>

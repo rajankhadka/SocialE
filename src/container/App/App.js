@@ -18,6 +18,7 @@ import Template001 from '../../template/Template001';
 import Template002 from '../../template/Template002';
 import Test from './Test';
 import TargetAudienceGroup from '../../pages/TargetAudienceGroup/TargetAudienceGroup';
+import PageNotFound from '../../hoc/PageNotFound';
 
 function App(props) {
   return (
@@ -36,11 +37,17 @@ function App(props) {
         <Route path="/home/targetaudiencegroup" component={ TargetAudienceGroup}/>
 
         {/* template */}
-        <Route path="/template/001" exact component={Template001} />
-        <Route path="/template/002" exact component={Template002} />
+
+        {/* raw template */}
+        <Route path="/template/001/" exact component={Template001} />
+        <Route path="/template/002/" exact component={Template002} />
+
+        
+        <Route path="/template/001/:uuid/:campaignid/:tempNam" exact component={Template001} />
+        <Route path="/template/002/:uuid/:campaignid/:tempName" exact component={Template002} />
 
         {/* test */}
-        <Route path="/test/:id" exact component={Test} />
+        <Route path="*" component={PageNotFound} />
       </Switch>
       
     </Router>

@@ -1,6 +1,9 @@
+import { BASEURL} from "../baseurl";
+
 const campaignApi = {
-    'campaigncreate': 'http://socialiehost.herokuapp.com/campaign/create/',
-    'campaigngetlist':'http://socialiehost.herokuapp.com/campaign/getlist/'
+    'campaigncreate': BASEURL+'campaign/create/',
+    'campaigngetlist': BASEURL+'campaign/getlist/',
+    'campaignsend': BASEURL+'campaign/send/',
 }
 
 export { campaignApi };

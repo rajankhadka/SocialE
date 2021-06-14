@@ -230,12 +230,22 @@
   border-radius: 60%;
 }
 
-.org_down:hover {
+/* .org_down:hover {
   border: 1px solid black;
   border-radius: 50%;
-}
+} */
 
 .span {
   margin-left: 5px;
   font-size: 0.5em;
 }
+
+/* .homePage__body__bodyTableBodyRow:hover {
+  background-color: rgba(237, 237, 237, 0.5);
+} */
+
+/* .allgroup {
+  background-color: #4caf50;
+  height: 40vh;
+  overflow: scroll;
+} */

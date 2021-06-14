@@ -36,6 +36,7 @@ function CampaignTargetAudienceGroup(props) {
     //target user mail
     const [targetusermail, setTargetusermail] = useState(null);
 
+    console.log(targetAudienceApi.targetusergroupget);
 
 
     useEffect(() => {
@@ -109,7 +110,7 @@ function CampaignTargetAudienceGroup(props) {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    id: groupid
+                                    group_id: groupid
                                 })
                             })
                                 .then(res => res.json())
@@ -180,7 +181,7 @@ function CampaignTargetAudienceGroup(props) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        id: group.id
+                        group_id: group.id
                     })
                 })
                     .then(res => res.json())
