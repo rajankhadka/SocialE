@@ -41,6 +41,16 @@ const BodyTable = (props) => {
     else {
         bodyTable = (
             <BodyTableBody
+                // edit campaign
+                campaignEditTrigger={props.campaignEditTrigger}
+                campaignEditTriggerHanlderOFF={props.campaignEditTriggerHanlderOFF}
+                campaignEditTriggerHanlderON={props.campaignEditTriggerHanlderON}
+
+                // delete campaign
+                campaignDeleteTrigger={props.campaignDeleteTrigger}
+                campaignDeleteTriggerHandlerOFF={props.campaignDeleteTriggerHandlerOFF}
+                campaignDeleteTriggerHandlerON={props.campaignDeleteTriggerHandlerON}
+
                 data={props.data}
                 title={props.title}
                 routeURLHandler={routeURLHandler}

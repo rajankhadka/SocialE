@@ -39,13 +39,14 @@
 
 .body__audienceName {
   width: 100%;
-  height: 40vh;
+  height: 35vh;
 
   overflow: scroll;
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
+  /* background-color: #2bae66; */
 }
 
 .audienceName {

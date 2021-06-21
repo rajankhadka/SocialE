@@ -12,7 +12,7 @@ const NAVIGATOR = window.navigator;
 function Template001(props) {
     const params = useParams();
 
-    // console.log('params', params);
+    console.log('params', params);
     // console.log("location", location);
     // let searchParams1 = new URLSearchParams(window.location.href);
     // console.log(searchParams1.get(`http://localhost:3000/template/001?template_name`));
@@ -44,18 +44,6 @@ function Template001(props) {
         //user agent data
         console.log(userAgentfunction());
 
-        //fetching ip address and location 
-        fetch(template.templateIPtracing, {
-            method: 'GET'
-        })
-            .then(response => {
-                return (response.json());
-            })
-            .then(data => console.log(data))
-            .catch(error => {
-                console.log(error);
-            });
-
         //validating target audience and campaign id and fetching template resources
         fetch(template.templateValidateandresource, {
             method: 'POST',
@@ -81,6 +69,40 @@ function Template001(props) {
                         }
                     });
                     setError(false);
+
+                        //fetching ip address and location 
+                    fetch(template.templateIPtracing, {
+                        method: 'GET'
+                    })
+                        .then(response => {
+                            return (response.json());
+                        })
+                        .then(data => {
+                            console.log(data);
+                            // send all user agent data
+                            fetch(template.useragentData, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': `Token ${window.localStorage.getItem('token')}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    campaign_id: params.campaignid,
+                                    target_user_uuid: params.uuid,
+                                    user_agent_data: {
+                                        location: data,
+                                        useragentData: userAgentfunction()
+                                    }
+                                })
+                            })
+                                .then(res => res.json())
+                                .then(useragentData => console.log(useragentData))
+                                .catch(err => console.log(err));
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+
                 } else {
                     setError(true);
                 }

@@ -7,6 +7,7 @@ import Modal from "../../../Model/Model";
 import TargetAudienceGroup from '../../../TargetAudienceGroup/TargetAudienceGroup';
 import { targetAudienceApi } from '../../../../api/targetAudience/targetAudience';
 import TargetAudienceAddGroup from '../../../TargetAudienceAddGroup/TargetAudienceAddGroup';
+
 function BodyTableGroup(props) {
 
     const [groupLength, setGroupLength] = useState(0);
@@ -402,15 +403,13 @@ function BodyTableGroup(props) {
             {
                 deleteGroup &&
                 <Modal>
-                    <div style={{
-                        backgroundColor: 'white'
-                        , width: '50%', display: 'flex',
-                        flexDirection: 'column', alignItems: 'center',
-                        height: '15vh',
+                    <div className={classes.deleteGroup} style={{
+                        width: '40%', display: 'flex',
+                        flexDirection: 'column', alignItems: 'center'
 
                     }}>
-                        <p >Are You Sure!!!</p>
-                        <div style={{marginTop:'15px'}}>
+                        <p style={{paddingTop:'10px',paddingBottom:'10px'}} >Are You Sure!!!</p>
+                        <div style={{marginTop:'15px',paddingBottom:'20px'}}>
                             <button
                                 className={classes.DeleteButton}
                                 onClick={() => {
@@ -434,11 +433,10 @@ function BodyTableGroup(props) {
                         
                     </div>
                     
-
                 </Modal>
             }
 
-            {/* add target audience  */}
+            {/* add /edit target audience  */}
 
             {
                 showAddTargetAudience &&

@@ -98,8 +98,8 @@ function CampaignPreview(props) {
 
     },[props.campaignDetail.campaign_name])
 
-    console.log(groupName);
-    console.log(targetAudienceName);
+    // console.log(groupName);
+    // console.log(targetAudienceName);
 
     return (
         <div className={classes.campaignPreview}>

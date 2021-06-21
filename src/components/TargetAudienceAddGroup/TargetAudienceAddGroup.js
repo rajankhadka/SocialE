@@ -7,7 +7,7 @@ import validator from 'validator';
 
 function TargetAudienceAddGroup(props) {
 
-    // console.log('object', props.groupData);
+    console.log('object', props.groupData);
 
     //input value
     const [inputValue, setInputValue] = useState('');
@@ -61,13 +61,37 @@ function TargetAudienceAddGroup(props) {
                 }
 
                 if (!flag) {
-                    setTargetAudienceName(prevState => {
-                        return [...prevState, { id: uuidv4(), email: inputValue, click: true }]
-                    });
-                    setSuccessmsg(true);
-                    setErrormsg(false);
-                    setInputValue('');
-                    setError('');
+                    fetch(targetAudienceApi.targetusercreate, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Token ${window.localStorage.getItem('token')}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "group_id": props.groupData.id,
+                            "email": [inputValue]
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status) {
+                                setTargetAudienceName(prevState => {
+                                    return [...prevState, { id: uuidv4(), email: inputValue, click: true }]
+                                });
+                                setSuccessmsg(true);
+                                setErrormsg(false);
+                                setInputValue('');
+                                setError('');
+                            } else {
+                                setSuccessmsg(false);
+                                setErrormsg(true);
+                                setError('Can\'t saved!!!');
+                            }
+                            
+                        })
+                        .catch(err => console.log(err));
+
+
                 } else {
                     setSuccessmsg(false);
                     setErrormsg(true);
@@ -106,7 +130,13 @@ function TargetAudienceAddGroup(props) {
             <div className={classes.body}>
                 
                 <div className={classes.groupName}>
-                    <p>{ props.groupData.group_name}</p>
+                    <p>{props.groupData.group_name}
+                        <span
+                            style={{
+                                fontSize:'0.7em'
+                            }}
+                        > (Group Name)</span>
+                    </p>
                 </div>
                 
                 <div className={classes.body__content}>
@@ -160,20 +190,21 @@ function TargetAudienceAddGroup(props) {
                                                         color: "green",
                                                         marginTop:'10'
                                                     }}
-                                                    onClick={() => {
-                                                        setTargetAudienceName(targetAudienceName.map(targetaudience => {
-                                                            if (audience.id === targetaudience.id) {
-                                                                return {
-                                                                    ...targetaudience,
-                                                                    click:false
-                                                                }
-                                                            } else {
-                                                                return {
-                                                                    ...targetaudience,
-                                                                }
-                                                            }
-                                                        }))
-                                                    }}
+                                                    //disabling the check button
+                                                    // onClick={() => {
+                                                    //     setTargetAudienceName(targetAudienceName.map(targetaudience => {
+                                                    //         if (audience.id === targetaudience.id) {
+                                                    //             return {
+                                                    //                 ...targetaudience,
+                                                    //                 click:false
+                                                    //             }
+                                                    //         } else {
+                                                    //             return {
+                                                    //                 ...targetaudience,
+                                                    //             }
+                                                    //         }
+                                                    //     }))
+                                                    // }}
                                                         
                                                 />
                                             </div>

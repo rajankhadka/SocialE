@@ -1,6 +1,6 @@
 import { Button, FormControl, IconButton, InputLabel, Select, TextField } from '@material-ui/core';
 import { Close, Delete, Edit, Group, Send, Visibility } from '@material-ui/icons';
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import { SpecificCampaignDetailContext } from '../../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';
 import EditCampaignDetail from '../../EditCampaign/EditCampaignDetail';
 import Model from '../../Model/Model';
@@ -74,19 +74,22 @@ function BodyTableBody(props) {
                             </IconButton>
                         </div>
 
+                        {/* campaign edit */}
                         <div className={classes.homePage__body__bodyTable__edit}>
                             <IconButton
                                 onClick={() => {
                                     console.log(element);
-                                    setCampaignEditSelected(true);
+                                    // setCampaignEditSelected(true);
                                     setCampaignDetail(element);
+                                    props.campaignEditTriggerHanlderON()
                                 }}
                             >
                                 <Edit style={{ fontSize: 15, color: "green" }} />
                             </IconButton>
                         </div>
 
-
+                        
+                        {/* group edit */}
                         <div className={classes.homePage__body__bodyTable__edit}>
                             <IconButton
                                 onClick={() => {
@@ -98,8 +101,14 @@ function BodyTableBody(props) {
                             </IconButton>
                         </div>
 
+                        {/* campaign delete */}
                         <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton>
+                            <IconButton
+                                onClick={() => {
+                                    props.campaignDeleteTriggerHandlerON()
+                                    setCampaignDetail(element);
+                                }}
+                            >
                                 <Delete style={{ fontSize: 15, color: "red" }} />
                             </IconButton>
                         </div>
@@ -196,6 +205,7 @@ function BodyTableBody(props) {
                 {body}
             </div>
             
+            {/* send mail  */}
                
             {
                 showSendEmail &&
@@ -248,15 +258,18 @@ function BodyTableBody(props) {
                 </div>
             }
 
+            {/* campaign info edit  */}
+
             {
-                campaignEditSelected
+                props.campaignEditTrigger
                 &&
                 <Model>
-                    <EditCampaignDetail campaignEditOff={ campaignEditOff}/>
+                    <EditCampaignDetail campaignEditTriggerHanlderOFF={props.campaignEditTriggerHanlderOFF}/>
                 </Model>
             }
 
 
+            {/* campaign target audience  */}
             {
                 showgroupModal &&
                 <Model>
@@ -267,6 +280,7 @@ function BodyTableBody(props) {
                 </Model>
             }
 
+            {/* campaign preview  */}
             {
                 previewModalShow &&
                 <Model>
@@ -277,6 +291,41 @@ function BodyTableBody(props) {
                 </Model>
             }
 
+            {
+                props.campaignDeleteTrigger &&
+
+                <Model>
+                    <div className={classes.deleteGroup} style={{
+                        width: '40%', display: 'flex',
+                        flexDirection: 'column', alignItems: 'center'
+
+                    }}>
+                        <p style={{paddingTop:'10px',paddingBottom:'10px'}} >Are You Sure!!!</p>
+                        <div style={{marginTop:'15px',paddingBottom:'20px'}}>
+                            <button
+                                className={classes.DeleteButton}
+                                onClick={() => {
+                                    props.campaignDeleteTriggerHandlerOFF();
+                                }}
+                            >
+                                Yes
+                                 
+                            </button>
+                            <button
+                                className={classes.DeleteNotButton}
+                                onClick={() => {
+                                    props.campaignDeleteTriggerHandlerOFF();
+                                }}
+                            >
+                                No
+                            </button>
+                        </div>
+                        
+                    </div>
+                    
+
+                </Model>
+            }
             
         </div>
     )

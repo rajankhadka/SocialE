@@ -20,6 +20,20 @@ function HomePage(props) {
 
     const [campaign, setCampaign] = useState([]);
 
+    //edit campaigntrigger
+    const [campaignEditTrigger, setCampaignEditTrigger] = useState(false);
+
+    //edit campaigntrigger handler
+    const campaignEditTriggerHanlderOFF = () => setCampaignEditTrigger(false);
+    const campaignEditTriggerHanlderON = () => setCampaignEditTrigger(true);
+
+    //delete campaigntrigger
+    const [campaignDeleteTrigger, setCampaignDeleteTrigger] = useState(false);
+
+    //delete campaigntrigger handler
+    const campaignDeleteTriggerHandlerOFF = () => setCampaignDeleteTrigger(false);
+    const campaignDeleteTriggerHandlerON = () => setCampaignDeleteTrigger(true);
+
     useEffect(() => {
         fetch(campaignApi.campaigngetlist, {
             method: "GET",
@@ -35,7 +49,7 @@ function HomePage(props) {
             })
             .catch(err => console.log(err));
         
-    }, [])
+    }, [campaignEditTrigger,campaignDeleteTrigger]);
 
     //show create group
     const [showGroup, setShowGroup] = useState(false);
@@ -71,7 +85,18 @@ function HomePage(props) {
 
                 <SpecificCampaignDetailProvider>
 
-                    <BodyTable 
+                    <BodyTable
+                        
+                        // edit campaign
+                        campaignEditTrigger={campaignEditTrigger}
+                        campaignEditTriggerHanlderOFF={campaignEditTriggerHanlderOFF}
+                        campaignEditTriggerHanlderON={campaignEditTriggerHanlderON}
+
+                        // delete campaign
+                        campaignDeleteTrigger={campaignDeleteTrigger}
+                        campaignDeleteTriggerHandlerOFF={campaignDeleteTriggerHandlerOFF}
+                        campaignDeleteTriggerHandlerON={campaignDeleteTriggerHandlerON}
+                        
                         header="Campaigns" 
                         buttonName="Add New Campaign"
                         groupName="Create Group"
@@ -107,6 +132,7 @@ function HomePage(props) {
                         null
                 }
             </div>
+
         </div>
     )
 }

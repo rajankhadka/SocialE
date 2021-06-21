@@ -7,10 +7,13 @@ import validator from 'validator';
 
 function CampaignTargetAudienceGroup(props) {
 
+    // if (props.campaignDetail) {
+        // console.log('props', (props.campaignDetail.target_users_mail_list));
+    // }
     const [addTargetAudience, setAddTargetAudience] = useState([]);
     const [usernameValue, setUsernameValue] = useState('');
     const [errorEmail, setErrorEmail] = useState(false);
-    // console.log('props', props);
+    
 
     //view and edit group active classes
     //if false ---> view group
@@ -36,8 +39,6 @@ function CampaignTargetAudienceGroup(props) {
     //target user mail
     const [targetusermail, setTargetusermail] = useState(null);
 
-    console.log(targetAudienceApi.targetusergroupget);
-
 
     useEffect(() => {
         // console.log(props.campaignDetail.target_users_mail_list.length);
@@ -45,10 +46,14 @@ function CampaignTargetAudienceGroup(props) {
         let mail = [];
         if (props.campaignDetail.target_users_mail_list.length > 0) {
             
-            props.campaignDetail.target_users_mail_list.split(',').forEach(m => {
-                mail.push({ id:uuidv4() ,email: m.slice(1, (m.length - 1)), click: true })
-            });
-            setTargetusermail(mail);
+            // const data = (JSON.stringify(props.campaignDetail.target_users_mail_list));
+            // const json = JSON.parse(data);
+            console.log(props.campaignDetail.target_users_mail_list);
+            // props.campaignDetail.target_users_mail_list.split(',').forEach(m => {
+            //     mail.push({ id:uuidv4() ,email: m.slice(1, (m.length - 1)), click: true })
+            // });
+            
+            // setTargetusermail([...props.campaignDetail.target_users_mail_list]);
             setTargetAudienceNameEdit([...mail]);
             setActiveUserNameSaved([...mail]);
         } else {
@@ -398,7 +403,7 @@ function CampaignTargetAudienceGroup(props) {
                     </div>
                 </div>
                 
-                {/* view group */}
+                {/* view / edit group */}
                 {
                     vieweditToggle
                         ?

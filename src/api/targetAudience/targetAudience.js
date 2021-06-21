@@ -6,7 +6,8 @@ const targetAudienceApi = {
     'targetusercreate': BASEURL+'targetuser/create/',
     'targetuserdump': BASEURL+'targetuser/dump/',
     'targetusergroupcreate': BASEURL+'targetusergroup/create/',
-    'targetusergroupupdate':BASEURL+'targetusergroup/update/'
+    'targetusergroupupdate': BASEURL + 'targetusergroup/update/',
+    'targetusergroupdelete': BASEURL + ''
 }
 
 export { targetAudienceApi };

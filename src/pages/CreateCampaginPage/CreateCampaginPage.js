@@ -9,6 +9,7 @@ import validator from "validator";
 import Header from "../../components/Header/Header"
 import SideBar from "../../components/SideBar/SideBar"
 import TargetAudienceGroupComponent from "../../components/TargetAudienceGroup/TargetAudienceGroup";
+import Modal from "../../components/Model/Model";
 
 import {
     Button,
@@ -294,41 +295,51 @@ const CreateCampaginPage = (props) => {
 
     const campaignDataHandler = (event) => {
         event.preventDefault();
-        console.log("create campaign", campaignValue.selectTemplate.value);
-        console.log(props.targetaudienceAvailable);
-        console.log(campaignTargetUser.length);
+        // console.log("create campaign", campaignValue.selectTemplate.value);
+        // console.log(props.targetaudienceAvailable);
+        // console.log(campaignTargetUser.length);
 
         //filtering all data that are selected only
 
         let allSelectedTargetAudiences = props.targetaudienceAvailable.filter(targetAudience => targetAudience.click === true);
 
+        allSelectedTargetAudiences = allSelectedTargetAudiences.map(targetAudience => {
+            return {
+                email: targetAudience.email,
+                targetusergroup: targetAudience.targetusergroup,
+                id:targetAudience.id
+            }
+        })
+
         console.log(allSelectedTargetAudiences);
         console.log(groupSelected);
 
       
-        // fetch(campaignApi.campaigncreate, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "Authorization": `Token ${window.localStorage.getItem('token')}`
-        //     },
-        //     body: JSON.stringify({
-        //         "campaign_name": campaignValue.campaignName.value,
-        //         "campaign_title": campaignValue.campaignSubject.value,
-        //         "templateresource": campaignValue.selectTemplate.value,
-        //         "start_date": campaignValue.campaignStartDate.value,
-        //         "end_date": campaignValue.campaignEndDate.value,
-        //         // "targetusergroup":selected
+        fetch(campaignApi.campaigncreate, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${window.localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                "campaign_name": campaignValue.campaignName.value,
+                "campaign_title": campaignValue.campaignSubject.value,
+                "templateresource": campaignValue.selectTemplate.value,
+                "start_date": campaignValue.campaignStartDate.value,
+                "end_date": campaignValue.campaignEndDate.value,
+                // "targetusergroup":selected
+                "targetusergroup": groupSelected,
+                "target_user_mail_list":allSelectedTargetAudiences
 
-        //     }),
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log(data);
-        //         setCreateCampaignSuccess(true);
-        //         setCreateCampaignError(false);
-        //     })
-        //     .catch(err => console.log(err));
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setCreateCampaignSuccess(true);
+                setCreateCampaignError(false);
+            })
+            .catch(err => console.log(err));
 
     }
 
@@ -725,11 +736,14 @@ const CreateCampaginPage = (props) => {
                             </form>
                             
                             {
-                                showcreateGroup && 
-                                <TargetAudienceGroupComponent
-                                    showGroupOFFhandler={showcreateGroupOFFhandler}
-                                    createGroupClickedHandlerON={createGroupClickedHandlerON}
-                                />
+                                showcreateGroup &&
+                                <Modal>
+                                    <TargetAudienceGroupComponent
+                                        showGroupOFFhandler={showcreateGroupOFFhandler}
+                                        createGroupClickedHandlerON={createGroupClickedHandlerON}
+                                    />
+                                </Modal>
+                                
                             }
 
                         </div>
