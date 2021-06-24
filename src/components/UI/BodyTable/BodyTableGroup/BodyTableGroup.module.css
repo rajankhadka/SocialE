@@ -169,11 +169,17 @@
   }
 }
 
+/* ---------------deleteGroup---------- */
+.deleteGroup {
+  border-radius: 7px;
+  background-color: rgba(255, 255, 255, 1);
+}
+
 .DeleteButton {
-  background-color: rgba(236, 48, 48, 0.765); /* Green */
+  background-color: #961a22; /* red */
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 10px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -182,13 +188,14 @@
   cursor: pointer;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
+  border-radius: 10px;
 }
 
 .DeleteNotButton {
-  background-color: #4caf50; /* Green */
+  background-color: #2c9848; /* Green */
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 10px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -197,6 +204,7 @@
   cursor: pointer;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
+  border-radius: 10px;
 }
 
 .DeleteNotButton:hover,
@@ -230,12 +238,22 @@
   border-radius: 60%;
 }
 
-.org_down:hover {
+/* .org_down:hover {
   border: 1px solid black;
   border-radius: 50%;
-}
+} */
 
 .span {
   margin-left: 5px;
   font-size: 0.5em;
 }
+
+/* .homePage__body__bodyTableBodyRow:hover {
+  background-color: rgba(237, 237, 237, 0.5);
+} */
+
+/* .allgroup {
+  background-color: #4caf50;
+  height: 40vh;
+  overflow: scroll;
+} */

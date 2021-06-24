@@ -1,3 +1,9 @@
+@media (min-width: 600px) and (max-width: 800px) {
+  .textarea {
+    width: 50vh;
+  }
+}
+
 .createCampaignBody__right__header {
   display: flex;
   margin-top: -15px;
@@ -41,6 +47,10 @@
 .createCampaignBody__addnewAudience__input {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
-  width: 45vh;
+  width: 45%;
   box-sizing: border-box;
+}
+
+.textarea {
+  width: 50vh;
 }

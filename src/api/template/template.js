@@ -1,7 +1,12 @@
+import {BASEURL } from '../baseurl';
+
 const template = {
-    'resource_list': 'https://socialiehost.herokuapp.com/template/resource/list/',
-    'templateresourcecreate': 'https://socialiehost.herokuapp.com/template/resource/create/',
-    'templatesend':'http://socialiehost.herokuapp.com/campaign/send/',
+    'resource_list': BASEURL+'template/resource/list/',
+    'templateresourcecreate': BASEURL+'template/resource/create/',
+    'templatesend': BASEURL+'campaign/send/',
+    'templateValidateandresource': BASEURL+'campaign/validate/template/',
+    'templateIPtracing': 'https://ipgeolocation.abstractapi.com/v1/?api_key=c45b67797f8f462ebbe9d79f4f47a1c2',
+    'useragentData':BASEURL+'campaign/ua_data/',
 }
 
 export { template };

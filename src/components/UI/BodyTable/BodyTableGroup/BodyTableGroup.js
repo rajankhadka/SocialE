@@ -1,11 +1,13 @@
 import { IconButton } from '@material-ui/core';
-import { Delete, Edit, KeyboardArrowDown, KeyboardArrowUp, Visibility } from '@material-ui/icons';
+import { Delete, Edit, Group, KeyboardArrowDown, KeyboardArrowUp, Visibility } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import classes from "./BodyTableGroup.module.css";
 
 import Modal from "../../../Model/Model";
 import TargetAudienceGroup from '../../../TargetAudienceGroup/TargetAudienceGroup';
 import { targetAudienceApi } from '../../../../api/targetAudience/targetAudience';
+import TargetAudienceAddGroup from '../../../TargetAudienceAddGroup/TargetAudienceAddGroup';
+
 function BodyTableGroup(props) {
 
     const [groupLength, setGroupLength] = useState(0);
@@ -105,6 +107,11 @@ function BodyTableGroup(props) {
     const [deleteGroup, setDeleteGroup] = useState(false);
 
 
+    // add target audience 
+    const [showAddTargetAudience, setShowAddTargetAudience] = useState(false);
+
+    const showAddTargetAudienceONHandler = () => setShowAddTargetAudience(true);
+    const showAddTargetAudienceOFFHandler = () => setShowAddTargetAudience(false);
 
     // -----------------------------------
     
@@ -185,36 +192,56 @@ function BodyTableGroup(props) {
     if (specificOrgGroup.length > 0) {
         groupOrgName = (
             specificOrgGroup.map(element => (
-                    <div className={classes.homePage__body__bodyTableBodyRow} key={element.id}>
-                        <div className={classes.homePage__body__bodyTable__name}>
+
+                <div
+                    className={classes.homePage__body__bodyTableBodyRow}
+                    key={element.id}
+                    style={{backgroundColor:'#EDEDED'}}
+                >
+                    <div className={classes.homePage__body__bodyTable__name}>
                         <p>{element.group_name}<span className={classes.span }>(group)</span></p>
-                        </div>
+                    </div>
+
+                    <div className={classes.homePage__body__bodyTable__create}>
+                        <p>{element.organization}<span className={classes.span }>(org)</span></p>
+                    </div>
 
                         <div className={classes.homePage__body__bodyTable__create}>
-                            <p>{element.organization}<span className={classes.span }>(org)</span></p>
-                        </div>
-
-                         <div className={classes.homePage__body__bodyTable__create}>
-                            <p>{element.department}<span className={classes.span }>(dep)</span></p>
-                        </div>
+                        <p>{element.department}<span className={classes.span }>(dep)</span></p>
+                    </div>
 
 
-                        <div className={classes.homePage__body__bodyTable__edit}>
+                    <div className={classes.homePage__body__bodyTable__edit}>
+                    <IconButton
+                        onClick={() => {
+                            showGroupONEditHandler();
+                            setGroupEditData(element);
+                            showGroupOFFPreviewhandler();
+                            // console.log(element);
+                            editandpreviewTriggerHandler();
+                            // console.log(editandpreviewTrigger);
+                            
+                        }}>
+                            <Edit style={{ fontSize: 15, color: "blue" }} />
+                        </IconButton>
+                    </div>
+                    
+                    {/* add group target audience edit */}
+                    <div className={classes.homePage__body__bodyTable__edit}>
                         <IconButton
                             onClick={() => {
-                                showGroupONEditHandler();
-                                setGroupEditData(element);
-                                showGroupOFFPreviewhandler();
-                                // console.log(element);
-                                editandpreviewTriggerHandler();
-                                // console.log(editandpreviewTrigger);
-                                
-                            }}>
-                                <Edit style={{ fontSize: 15, color: "blue" }} />
-                            </IconButton>
-                        </div>
-                        
-                        <div className={classes.homePage__body__bodyTable__edit}>
+                                console.log('edit target audience group')
+                                // showGroupONPreviewHandler();
+                                setGroupPreviewData(element);
+                                showAddTargetAudienceONHandler();
+                            }}
+                        >
+                            <Group style={{ fontSize: 15, color: "green" }} />
+                        </IconButton>
+                    </div>
+
+
+                    <div className={classes.homePage__body__bodyTable__edit}>
                         <IconButton
                             onClick={() => {
                                 showGroupONPreviewHandler();
@@ -222,25 +249,25 @@ function BodyTableGroup(props) {
                                 showGroupOFFEdithandler();
                             }}
                         >
-                                <Visibility style={{ fontSize: 15, color: "green" }} />
-                            </IconButton>
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton
-                                onClick={() => {
-                                    console.log("groupDelete")
-                                    console.log(element)
-                                    setDeleteGroup(true);
-                                    setGroupPreviewData(element);
-                                }}
-                            >
-                                <Delete style={{ fontSize: 15, color: "red" }} />
-                            </IconButton>
-                        </div>
-
-                        
+                            <Visibility style={{ fontSize: 15, color: "green" }} />
+                        </IconButton>
                     </div>
+
+                    <div className={classes.homePage__body__bodyTable__edit}>
+                        <IconButton
+                            onClick={() => {
+                                console.log("groupDelete")
+                                console.log(element)
+                                setDeleteGroup(true);
+                                setGroupPreviewData(element);
+                            }}
+                        >
+                            <Delete style={{ fontSize: 15, color: "red" }} />
+                        </IconButton>
+                    </div>
+
+                    
+                </div>
             ))
         )
     }
@@ -248,10 +275,18 @@ function BodyTableGroup(props) {
 
     if (organizationName.length > 0) {
         organization = organizationName.map((org, index) => (
-            <div key={index}>
+            <div key={index}
+                style={{
+                    backgroundColor: org.click && '#EDEDED',
+                    
+                }}>
                 <div
                     id={org.org}    
-                    style={{paddingLeft:'10px',justifyContent:'space-between'}}
+                    style={{
+                        paddingLeft: '10px',
+                        justifyContent: 'space-between',
+                        border:org.click &&'1px solid black',
+                    }}
                     className={classes.homePage__body__bodyTableBodyRow }
                     onClick={(event) => {
                         // console.log(org);
@@ -260,7 +295,7 @@ function BodyTableGroup(props) {
                     }}
                 >
                     <p className={classes.org_Name}>{ org.org}</p>
-                    <div className={classes.org_line} />
+                    {/* <div className={classes.org_line} /> */}
                     <div className={classes.org_down}>
                         {
                             org.click
@@ -275,9 +310,17 @@ function BodyTableGroup(props) {
                 </div>
 
                 {/* specificOrgGroup */}
+
+                {/* scrollable height is maintained in here */}
                 {
-                    org.click &&  groupOrgName
+                    org.click &&  
+                    <div className={classes.allgroup}>
+                        {
+                            groupOrgName
+                        }
+                    </div>
                 }
+                
             </div>
             
 
@@ -316,33 +359,6 @@ function BodyTableGroup(props) {
     return (
         <div className={classes.homePage__body__bodyTable}>
 
-            {/* ----------------------------table Header-------------------------- */}
-            {/* <div className={classes.homePage__body__bodyTableHeader}>
-                <div className={classes.homePage__body__bodyTable__name}>
-                    <h4>{props.title}</h4>
-                </div>
-
-                <div className={classes.homePage__body__bodyTable__create}>
-                    <h4> Organization</h4>
-                </div>
-
-                <div className={classes.homePage__body__bodyTable__create}>
-                    <h4> Department</h4>
-                </div>
-
-                <div className={classes.homePage__body__bodyTable__edit}>
-                    <h4>Edit</h4>
-                </div>
-
-                <div className={classes.homePage__body__bodyTable__edit}>
-                    <h4>Preview</h4>
-                </div>
-
-                <div className={classes.homePage__body__bodyTable__edit}>
-                    <h4>Delete</h4>
-                </div>
-            </div> */}
-
              {/* -----------------------------table body-------------------------------------- */}
             
             <div className={classes.homePage__body__bodyTableBody}>
@@ -356,10 +372,9 @@ function BodyTableGroup(props) {
                 showCreateGroupPreview &&
                 <Modal>
                     <TargetAudienceGroup
-                        preview = "Preview Group"
+                        type = "Preview Group"
                         showGroupOFFhandler={showGroupOFFPreviewhandler}
                         groupData={groupPreviewData}
-                        
 
                     />
                 </Modal>
@@ -371,6 +386,7 @@ function BodyTableGroup(props) {
                 <Modal>
                     <TargetAudienceGroup
                         // preview="Edit Group"
+                        type = "Edit Group"
                         edit = "Edit Group"
                         showGroupOFFhandler={showGroupOFFEdithandler}
                         groupData={groupEditData}
@@ -387,15 +403,13 @@ function BodyTableGroup(props) {
             {
                 deleteGroup &&
                 <Modal>
-                    <div style={{
-                        backgroundColor: 'white'
-                        , width: '50%', display: 'flex',
-                        flexDirection: 'column', alignItems: 'center',
-                        height: '15vh',
+                    <div className={classes.deleteGroup} style={{
+                        width: '40%', display: 'flex',
+                        flexDirection: 'column', alignItems: 'center'
 
                     }}>
-                        <p >Are You Sure!!!</p>
-                        <div style={{marginTop:'15px'}}>
+                        <p style={{paddingTop:'10px',paddingBottom:'10px'}} >Are You Sure!!!</p>
+                        <div style={{marginTop:'15px',paddingBottom:'20px'}}>
                             <button
                                 className={classes.DeleteButton}
                                 onClick={() => {
@@ -419,8 +433,20 @@ function BodyTableGroup(props) {
                         
                     </div>
                     
-
                 </Modal>
+            }
+
+            {/* add /edit target audience  */}
+
+            {
+                showAddTargetAudience &&
+                <Modal>
+                    <TargetAudienceAddGroup
+                        showAddTargetAudienceOFFHandler={showAddTargetAudienceOFFHandler}
+                        groupData = {groupPreviewData}
+                    />
+                </Modal>
+                
             }
             
         </div>

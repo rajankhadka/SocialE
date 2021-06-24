@@ -1,10 +1,13 @@
+import { BASEURL } from '../baseurl';
+
 const targetAudienceApi = {
-    'targetusergroupget': 'https://socialiehost.herokuapp.com/targetusergroup/get/',
-    'targetuserget': 'https://socialiehost.herokuapp.com/targetuser/get/',
-    'targetusercreate': 'https://socialiehost.herokuapp.com/targetuser/create/',
-    'targetuserdump': 'https://socialiehost.herokuapp.com/targetuser/dump/',
-    'targetusergroupcreate': 'https://socialiehost.herokuapp.com/targetusergroup/create/',
-    'targetusergroupupdate':'https://socialiehost.herokuapp.com/targetusergroup/update/'
+    'targetusergroupget': BASEURL+'targetusergroup/get/',
+    'targetuserget': BASEURL+'targetuser/get/',
+    'targetusercreate': BASEURL+'targetuser/create/',
+    'targetuserdump': BASEURL+'targetuser/dump/',
+    'targetusergroupcreate': BASEURL+'targetusergroup/create/',
+    'targetusergroupupdate': BASEURL + 'targetusergroup/update/',
+    'targetusergroupdelete': BASEURL + ''
 }
 
 export { targetAudienceApi };

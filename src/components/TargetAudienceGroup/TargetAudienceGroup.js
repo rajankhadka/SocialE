@@ -22,7 +22,7 @@ function TargetAudienceGroup(props) {
                         'Content-Type':'application/json'
                     },
                     body: JSON.stringify({
-                        id:props.groupData.id
+                        group_id:props.groupData.id
                     })
                 })
                 const result = await data.json();
@@ -55,15 +55,18 @@ function TargetAudienceGroup(props) {
     const [newAudience, setNewAudience] = useState({
         groupName: {
             value: props.groupData === undefined ? "" : props.groupData.group_name,
-            err:"",
+            err: false,
+            errmsg:''
         },
         department: {
             value: props.groupData === undefined ? "" : props.groupData.department,
-            err:"",
+            err: false,
+            errmsg:''
         },
         organization: {
             value: props.groupData === undefined ? "" : props.groupData.organization,
-            err:"",
+            err: false,
+            errmsg:''
         }
 
     });
@@ -198,7 +201,7 @@ function TargetAudienceGroup(props) {
                 "Authorization":`Token ${window.localStorage.getItem('token')}`
             },
             body: JSON.stringify({
-                id: groupData.group_id,
+                group_id: groupData.group_id,
                 email:validateEmailOnly,
             })
         })
@@ -302,90 +305,30 @@ function TargetAudienceGroup(props) {
     let title = null;
     let disable = false;
 
-    if (props.preview !== undefined && props.edit === undefined) {
-        title = props.preview;
+    if (props.type === 'Preview Group') {
+        title = props.type;
         disable = true
 
-    } else if (props.preview === undefined && props.edit !== undefined) {
-        title = props.edit;
+    } else if (props.type === 'Edit Group') {
+        title = props.type;
         disable = false
     } else {
         title = "Add New Audience";
         disable = false;
     }
 
+    console.log('props', props);
+
     //edit part
-
-    const editTargetAudienceEmailPart = (id) => {
-        let validateEmailOnly = [];
-        let splitEmail = targetAudienceUser.targetAudienceUserEmail.value.split(";");
-
-        splitEmail.forEach(item => {
-            if (validator.isEmail(item)) {
-                validateEmailOnly.push(item);
-            }
-        });
-
-        console.log(validateEmailOnly);
-        
-
-        fetch(targetAudienceApi.targetusercreate, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization":`Token ${window.localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                id: id,
-                email:validateEmailOnly,
-            })
-        })
-            .then(response => response.json())
-            .then(audienceUserAdded => {
-                console.log(audienceUserAdded);
-                setShowSuccessmsg(true);
-                setShowErrormsg(false);
-                props.groupEditHandler();
-                props.showGroupOFFhandler();
-            })
-            .catch(err => console.log(err))
-
-    }
-
-   
-
-
-    const editTargetAudienceCSVPart = (id) => {
-        let formData = new FormData();
-        formData.append("file_name", targetAudienceUser.targetAudienceUserUpload.value)
-        formData.append("id", id)
-        
-        console.log(formData.get("id"));
-        console.log(formData.get("file_name"));
-
-        fetch(targetAudienceApi.targetuserdump, {
-            method: "POST",
-            headers: {
-                "Authorization": `Token ${window.localStorage.getItem('token')}`,
-                // "Content-Type":"multipart/form-data"
-            },
-            body:formData
-        })
-            .then(response => response.json())
-            .then(audienceUserAdded => {
-                console.log(audienceUserAdded);
-                setShowSuccessmsg(true);
-                setShowErrormsg(false);
-                props.groupEditHandler();
-                props.showGroupOFFhandler();
-            })
-            .catch(err => console.log(err))
-        
-    }
 
     const editGroupHandler = () => {
         
-        if (!uploadFieldActive && targetAudienceUser.targetAudienceUserEmail.value.length > 0) {
+        console.log(newAudience.groupName.value.length);
+
+        if ((newAudience.groupName.value.length > 0) &&
+            (newAudience.department.value.length > 0) &&
+            (newAudience.organization.value.length > 0)
+        ) {
             console.log("user email")
             fetch(targetAudienceApi.targetusergroupupdate, {
                 method: "PUT",
@@ -403,45 +346,80 @@ function TargetAudienceGroup(props) {
             })
                 .then(response => response.json())
                 .then(groupData => {
-                    
+                    setNewAudience({
+                        groupName: {
+                            value: '',
+                            err: false,
+                            errmsg:''
+                        },
+                        department: {
+                            value: '',
+                            err: false,
+                            errmsg:''
+                        },
+                        organization: {
+                            value: '',
+                            err: false,
+                            errmsg:''
+                        }
+                    })
+                    console.log(groupData);
+                    setShowSuccessmsg(false);
+                    setShowErrormsg(true);
+                    props.groupEditHandler();
+                    props.showGroupOFFhandler();
                     //target audience create email
-                    editTargetAudienceEmailPart(props.groupData.id)
+                    // editTargetAudienceEmailPart(props.groupData.id)
 
                 })
                 .catch(err => console.log(err));
-        } else if (uploadFieldActive && targetAudienceUser.targetAudienceUserUpload.value !== null) {
-            console.log("user csv")
-            fetch(targetAudienceApi.targetusergroupupdate, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Token ${window.localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    id: props.groupData.id,
-                    group_name: newAudience.groupName.value,
-                    department: newAudience.department.value,
-                    organization: newAudience.organization.value,
-                    user: props.groupData.user
+        } else {
+            if (newAudience.groupName.value.length <= 0) {
+                setNewAudience(prevState => {
+                    return {
+                        ...prevState,
+                        groupName: {
+                            ...prevState.groupName,
+                            err: true,
+                            errmsg:'required !!!'
+                        }
+                    }
                 })
-            })
-                .then(response => response.json())
-                .then(groupData => {
-                    
-                    editTargetAudienceCSVPart(props.groupData.id)
+            }
+            if (newAudience.department.value.length <= 0) {
+                setNewAudience(prevState => {
+                    return {
+                        ...prevState,
+                        department: {
+                            ...prevState.department,
+                            err: true,
+                            errmsg:'required !!!'
+                        }
+                    }
                 })
-                .catch(err => console.log(err));
-            
-        }else {
-            console.log("invalid Field");
+            }
+            if (newAudience.organization.value.length <= 0){
+                setNewAudience(prevState => {
+                    return {
+                        ...prevState,
+                        organization: {
+                            ...prevState.organization,
+                            err: true,
+                            errmsg:'required !!!'
+                        }
+                    }
+                })
+            }
         }
+
+        
         
     }
 
 
      const editGroupClickHandler = (event) => {
         event.preventDefault();
-         editGroupHandler();
+        editGroupHandler();
         // editTargetAudienceEmailPart(props.groupData.id);
         // editTargetAudienceCSVPart(props.groupData.id);
          
@@ -450,10 +428,10 @@ function TargetAudienceGroup(props) {
     //button
     let button = null;
     
-    if (props.preview !== undefined && props.edit === undefined) {
+    if (props.type === 'Preview Group') {
         button = null;
         
-    } else if (props.preview === undefined && props.edit !== undefined) {
+    } else if (props.type === 'Edit Group') {
         button = (
             <Button
                 className={classes.createCampaignBody__addnewAudience__input}
@@ -476,6 +454,7 @@ function TargetAudienceGroup(props) {
         );
     }
 
+    console.log('groups', props.type);
     return (
         <div className={classes.targetAudienceGroup}>
             <div className={classes.targetAudienceGroup__content}>
@@ -547,6 +526,8 @@ function TargetAudienceGroup(props) {
                             onChange={newAudienceHandler}
                             disabled = {disable}
                             value={newAudience.groupName.value}
+                            error={newAudience.groupName.err}
+                            helperText={newAudience.groupName.errmsg}
                         />
 
                         <TextField
@@ -556,7 +537,9 @@ function TargetAudienceGroup(props) {
                             type="text"
                             disabled = {disable}
                             onChange={newAudienceHandler}
-                            value={ newAudience.organization.value}
+                            value={newAudience.organization.value}
+                            error={newAudience.organization.err}
+                            helperText={newAudience.organization.errmsg}
                         />
 
                         <TextField
@@ -566,7 +549,9 @@ function TargetAudienceGroup(props) {
                             type="text"
                             disabled = {disable}
                             onChange={newAudienceHandler}
-                            value={ newAudience.department.value}
+                            value={newAudience.department.value}
+                            error={newAudience.department.err}
+                            helperText={newAudience.department.errmsg}
                         />
 
                         <div className={classes.createCampaignBody__selectedField}>
@@ -574,6 +559,7 @@ function TargetAudienceGroup(props) {
                                 !uploadFieldActive
                                     ?
                                     <CreateGroup
+                                        groupType = {props.type}   //preview // edit //create
                                         uploadFieldActive={uploadFieldActive}
                                         disable = {disable}
                                         setUploadFieldActiveInputHandler={setUploadFieldActiveInputHandler}
@@ -586,6 +572,7 @@ function TargetAudienceGroup(props) {
                                     />
                                     :
                                     <CreateGroup
+                                        groupType = {props.type}   //preview // edit //create
                                         uploadFieldActive={uploadFieldActive}
                                         setUploadFieldActiveInputHandler={setUploadFieldActiveInputHandler}
                                         setUploadFieldActiveUploadHandler={setUploadFieldActiveUploadHandler}

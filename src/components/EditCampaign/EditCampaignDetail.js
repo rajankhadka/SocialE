@@ -1,6 +1,7 @@
 import { Button, FormControl, Select, TextField } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import React,{useContext,useEffect, useState} from 'react'
+import { campaignApi } from '../../api/campaign/campaign';
 import { template } from '../../api/template/template';
 import { SpecificCampaignDetailContext } from '../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';
 import classes from './EditCampaignDetail.module.css'
@@ -30,6 +31,7 @@ function EditCampaignDetail(props) {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 let newtemplateName = [];
                 data.data.forEach(element => {
                     // console.log(element);
@@ -46,6 +48,30 @@ function EditCampaignDetail(props) {
 
     const campaignEditDataSubmitHandler = (event) => {
         event.preventDefault();
+        console.log("object");
+        console.log(campaignApi.campaignupdate);
+        fetch(campaignApi.campaignupdate, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${window.localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                id: specificCampaignDetail.id,
+                campaign_name: campaignName,
+                campaign_title: campaignSubject,
+                start_date: startDate,
+                end_date: endDate,
+                templateresource: templateName
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                props.campaignEditTriggerHanlderOFF();
+            })
+            .catch(err => console.log(err));
+
     }
     return (
         <div className={classes.campaignEdit}>
@@ -54,11 +80,14 @@ function EditCampaignDetail(props) {
             >
                 <Close
                     style={{ fontSize: '20',cursor:'pointer' }}
-                    onClick={props.campaignEditOff}
+                    onClick={props.campaignEditTriggerHanlderOFF}
                 />
             </div>
 
-            <form className={classes.campaignEdit__form} onSubmit={campaignEditDataSubmitHandler}>
+            <form
+                className={classes.campaignEdit__form}
+                onSubmit={campaignEditDataSubmitHandler}
+            >
                 <TextField
                     required
                     variant="standard"
@@ -136,7 +165,7 @@ function EditCampaignDetail(props) {
                         style={{ width: "250px" }}
                         
                     >
-                    Create Campaign
+                    Edit Campaign
                 </Button>
                 
             </form>

@@ -9,6 +9,7 @@ import validator from "validator";
 import Header from "../../components/Header/Header"
 import SideBar from "../../components/SideBar/SideBar"
 import TargetAudienceGroupComponent from "../../components/TargetAudienceGroup/TargetAudienceGroup";
+import Modal from "../../components/Model/Model";
 
 import {
     Button,
@@ -46,6 +47,9 @@ import { campaignApi } from "../../api/campaign/campaign";
 const CreateCampaginPage = (props) => {
 
     const createCampaignHistory = useHistory();
+
+    //all selected group and target audience email
+    const [allSelectedTargetAudiences, setAllSelectedTargetAudiences] = useState([]);
 
     //createTemplatePageRouteHandler
     const createTemplatePageRouteHandler = () => {
@@ -182,18 +186,28 @@ const CreateCampaginPage = (props) => {
     //target user id for create campaign
     const [campaignTargetUser, setCampaignTargetUser] = useState([]);
 
+    
+
     const campaignTargetUserHandler = (id) => {
+        // props.disableTargetAudienceAction(id);
         console.log("remove!!!");
         console.log(id);
         const targetUserID = campaignTargetUser.filter(item => item !== id);
         setCampaignTargetUser(targetUserID);
         console.log(campaignTargetUser);
+        setInitialData(false);
+        // console.log(props.targetaudienceAvailable);
+
     }
+
+    
+
     
     const campaignValueHandler = (event) => {
         console.log(campaignValue);
         console.log(event.target.name);
         console.log(event.target.value);
+        console.log(event.target.value.length);
         switch (event.target.name) {
             case "Campaign Name":
                 console.log(`${event.target.value.length > 0  ? true : false}`);
@@ -281,9 +295,26 @@ const CreateCampaginPage = (props) => {
 
     const campaignDataHandler = (event) => {
         event.preventDefault();
-        console.log("create campaign", campaignValue.selectTemplate.value);
-        console.log("target audience", campaignTargetUser);
+        // console.log("create campaign", campaignValue.selectTemplate.value);
+        // console.log(props.targetaudienceAvailable);
+        // console.log(campaignTargetUser.length);
 
+        //filtering all data that are selected only
+
+        let allSelectedTargetAudiences = props.targetaudienceAvailable.filter(targetAudience => targetAudience.click === true);
+
+        allSelectedTargetAudiences = allSelectedTargetAudiences.map(targetAudience => {
+            return {
+                email: targetAudience.email,
+                targetusergroup: targetAudience.targetusergroup,
+                id:targetAudience.id
+            }
+        })
+
+        console.log(allSelectedTargetAudiences);
+        console.log(groupSelected);
+
+      
         fetch(campaignApi.campaigncreate, {
             method: "POST",
             headers: {
@@ -294,10 +325,12 @@ const CreateCampaginPage = (props) => {
                 "campaign_name": campaignValue.campaignName.value,
                 "campaign_title": campaignValue.campaignSubject.value,
                 "templateresource": campaignValue.selectTemplate.value,
-                // "targetuser": campaignTargetUser,
                 "start_date": campaignValue.campaignStartDate.value,
                 "end_date": campaignValue.campaignEndDate.value,
-                "targetusergroup":selected
+                // "targetusergroup":selected
+                "targetusergroup": groupSelected,
+                "target_user_mail_list":allSelectedTargetAudiences
+
             }),
         })
             .then(response => response.json())
@@ -360,7 +393,12 @@ const CreateCampaginPage = (props) => {
         
     }, [createGroupClicked]);
 
+
+    //initial data load
+    const [initialData, setInitialData] = useState(false);
+
     //available target audience group
+
     const [chooseGroup, setChooseGroup] = useState(false);
     const [chooseGroupActive, setChooseGroupActive] = useState(false);
 
@@ -386,6 +424,7 @@ const CreateCampaginPage = (props) => {
             setGroupSelected(removedselectedGroup);
             console.log("[removed Group]", groupSelected);
             setGroupData(updateGroup);
+            setInitialData(false);
 
         } else {
             let updateGroup = [];
@@ -404,7 +443,7 @@ const CreateCampaginPage = (props) => {
                 return [...prevState,group.id]
             })
             setGroupData(updateGroup);
-            
+            setInitialData(true);
         }
     }
 
@@ -454,6 +493,7 @@ const CreateCampaginPage = (props) => {
     //fetching all group name target audience
     useEffect(() => {
 
+        console.log('group selected!!!!!!')
         const targetAudienceEmail = [];
         groupSelected.forEach((group) => {
             fetch(targetAudienceApi.targetuserget, {
@@ -463,7 +503,7 @@ const CreateCampaginPage = (props) => {
                     "Content-Type": "application/json"
                 },
                 "body": JSON.stringify({
-                    id: group
+                    group_id: group
                 })
             })
                 .then(response => response.json())
@@ -472,6 +512,7 @@ const CreateCampaginPage = (props) => {
                     return targetAudienceEmail
                 })
                 .then(email => {
+                    console.log(email);
                     props.availableTargetAudienceAction(email);
                 })
                 .catch(err => console.log(err));
@@ -586,16 +627,8 @@ const CreateCampaginPage = (props) => {
                                     value={campaignValue.campaignSubject.value}
                                     onChange={campaignValueHandler}
                                     style={{ marginBottom: "10px", width:"250px"}}
-                                    />
+                                />
 
-                                {/* <TextField
-                                    variant="standard"
-                                    label="Campaign Description" 
-                                    multiline={true} rowsMax={4}
-                                    style={{  width:"250px"}}
-                                /> */}
-
-                                
 
                                 <FormControl style={{width:"250px",marginBottom: "20px"}}>
                                     <InputLabel id="selectTemplate">Select Template</InputLabel>
@@ -691,7 +724,7 @@ const CreateCampaginPage = (props) => {
                                             campaignValue.selectTemplate.valid &&
                                             campaignValue.campaignStartDate.valid &&
                                             campaignValue.campaignEndDate.valid &&
-                                            (campaignTargetUser.length > 0 ? true : false)
+                                            (campaignTargetUser.length > 0 || initialData)
                                         )
                                             ? true
                                             : false
@@ -703,11 +736,14 @@ const CreateCampaginPage = (props) => {
                             </form>
                             
                             {
-                                showcreateGroup && 
-                                <TargetAudienceGroupComponent
-                                    showGroupOFFhandler={showcreateGroupOFFhandler}
-                                    createGroupClickedHandlerON={createGroupClickedHandlerON}
-                                />
+                                showcreateGroup &&
+                                <Modal>
+                                    <TargetAudienceGroupComponent
+                                        showGroupOFFhandler={showcreateGroupOFFhandler}
+                                        createGroupClickedHandlerON={createGroupClickedHandlerON}
+                                    />
+                                </Modal>
+                                
                             }
 
                         </div>
@@ -778,7 +814,7 @@ const CreateCampaginPage = (props) => {
                                             onKeyPress={(event) => {
                                                 if (event.key === "Enter") {
                                                     if (validator.isEmail(newTargetAudience)) {
-                                                        props.addnewTargetAudienceAction({ id: uuidv4(), email: newTargetAudience, click: true });
+                                                        props.addnewTargetAudienceAction({ id: uuidv4(), email: newTargetAudience, click: true,group:null });
                                                         setNewTargetAudienceError(false);
                                                         setNewTargetAudience("");
                                                         setNewTargetAudienceSuccess(true);
@@ -808,10 +844,7 @@ const CreateCampaginPage = (props) => {
                                         
                                     </div>
                                 </div>
-                            }
-                            
-                            
-                            
+                            }    
                         </div>
                    </div>
                 </div>
@@ -825,6 +858,7 @@ const mapStateToProps = state => {
     return {
         targetaudienceAvailable: state.targetaudienceReducers.availableAudience,
         groupName: state.targetaudienceReducers.groupName,
+       
     }
 }
 
@@ -838,6 +872,7 @@ const mapDispatchtoProps = (dispatch) => {
         addnewGroupAction: (data) => dispatch(addnewGroup(data)),
         templatePageCreateAction: () => dispatch(templatePageCreate()),
         templatesidebarAction: () => dispatch(templatesidebar()),
+
     }
 }
 

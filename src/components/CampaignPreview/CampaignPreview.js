@@ -67,7 +67,7 @@ function CampaignPreview(props) {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    id: groupid
+                                    group_id: groupid
                                 })
                             })
                                 .then(res => res.json())
@@ -98,8 +98,8 @@ function CampaignPreview(props) {
 
     },[props.campaignDetail.campaign_name])
 
-    console.log(groupName);
-    console.log(targetAudienceName);
+    // console.log(groupName);
+    // console.log(targetAudienceName);
 
     return (
         <div className={classes.campaignPreview}>

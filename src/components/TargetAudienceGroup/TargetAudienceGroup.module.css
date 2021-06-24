@@ -1,19 +1,33 @@
+@media (min-width: 600px) and (max-width: 800px) {
+  .targetAudienceGroup__content {
+    flex: 0.6;
+    background-color: #2bae66;
+  }
+
+  .createCampaignBody__addnewAudience
+    > form
+    > .createCampaignBody__addnewAudience__input {
+    width: 90% !important;
+  }
+}
+
 .targetAudienceGroup {
   width: 100%;
-  height: 100vh;
-  position: absolute;
+  /* height: 100vh; */
+  /* position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 9999; */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .targetAudienceGroup__content {
-  width: 30%;
-  height: 70vh;
+  flex: 0.3;
+  /* width: 30%; */
+  /* height: 70vh; */
   background-color: whitesmoke;
 }
 
@@ -143,4 +157,8 @@
   display: flex;
   /* align-items: center; */
   justify-content: space-between;
+}
+
+.createCampaignBody__selectedField {
+  margin-top: 20px;
 }

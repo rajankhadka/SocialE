@@ -2,21 +2,74 @@ import { TargetAudience } from "../../actions/actionTypes";
 
 const initialState = {
     availableAudience: [],
-    groupName:[],
+    groupName: [],
 }
 
 const targetaudienceReducers = (state = initialState, action) => {
+    let distinctUser = [];
+    let newdata = [];
+    let flag = false;
+
     switch (action.type) {
         case TargetAudience.AVAILABLEAUDIENCE:
-            let newdata = action.data.map((item) => {
-                return {
-                    ...item,
-                    click : true
+
+            //making distinct array
+            if (state.availableAudience.length > 0) {
+                for (let i = 0; i < state.availableAudience.length; i++){
+                    for (let j = 0; j < action.data.length; j++){
+                        
+                        if (action.data[j].email !== state.availableAudience[i].email) {
+                            for (let k = 0; k < state.availableAudience.length; k++){
+                                if (action.data[j].email === state.availableAudience[k].email) {
+                                    flag = true;
+                                }   
+                            }
+                            if (!flag) {
+                                distinctUser.push(action.data[j]);
+                            }
+                        }
+                    }
                 }
-            });
+                console.log('distinct data', distinctUser);
+            } else {
+                newdata = action.data.map((item) => {
+                    return {
+                        // ...item,
+                        email: item.email,
+                        targetusergroup:item.targetusergroup,
+                        click: true,
+                        id:item.id
+                    }
+                });
+            }
+
+            
+            
+            if (distinctUser.length > 0) {
+
+                newdata = distinctUser.map((item) => {
+                    return {
+                        // ...item,
+                        email: item.email,
+                        targetusergroup:item.targetusergroup,
+                        click: true,
+                        id:item.id
+                    }
+                });
+            }
+            
+            // let newdata = action.data.map((item) => {
+            //     return {
+            //         // ...item,
+            //         email: item.email,
+            //         targetusergroup:item.targetusergroup,
+            //         click: true,
+            //         id:item.id
+            //     }
+            // });
             return {
                 ...state,
-                availableAudience: [...newdata]
+                availableAudience: state.availableAudience.concat(newdata),
             }
         
         case TargetAudience.CLICKAUDIENCE:
@@ -32,11 +85,13 @@ const targetaudienceReducers = (state = initialState, action) => {
 
             return {
                 ...state,
-                availableAudience: clickdata
+                availableAudience: clickdata,
+                
             }
         
         case TargetAudience.DISABLEAUDIENCE:
             let disabledata = state.availableAudience.map(item => {
+                
                 if (item.id === action.id) {
                     return {
                         ...item,
@@ -48,13 +103,35 @@ const targetaudienceReducers = (state = initialState, action) => {
 
             return {
                 ...state,
-                availableAudience: disabledata
+                availableAudience: [...disabledata],
             }
         
         case TargetAudience.ADDNEWAUDIENCE:
+
+            if (state.availableAudience.length > 0) {
+
+                for (let k = 0; k < state.availableAudience.length; k++){
+                    if (action.data.email === state.availableAudience[k].email) {
+                        flag = true;
+                        break;
+                    } else {
+                        flag = false;
+                    }  
+                }
+
+                if (!flag) {
+                    distinctUser.push({ ...action.data });
+                }
+
+                newdata = newdata.concat(distinctUser);
+                
+            } else {
+                newdata = newdata.concat({ ...action.data })
+            }
+            
             return {
                 ...state,
-                availableAudience: state.availableAudience.concat({...action.data}),
+                availableAudience: state.availableAudience.concat(newdata),
             }
 
         case TargetAudience.GROUPADD:

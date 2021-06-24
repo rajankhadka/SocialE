@@ -19,7 +19,7 @@
 
 .body {
   display: flex;
-  width: 90%;
+  width: 95%;
   flex: 1;
   /* background-color: aqua; */
   height: 55vh;
@@ -40,6 +40,7 @@
   flex: 0.5;
   justify-content: center;
   cursor: pointer;
+
 }
 
 .body__header__edit {
@@ -59,17 +60,22 @@
 .body__content__view {
   /* background-color: aqua; */
   width: 100%;
+  flex: 1;
   margin-top: 10px;
   display: flex;
   flex-direction: row;
-  height: 45vh;
-  overflow: scroll;
+  height: 30vh;
+  overflow:hidden;
+  /* background-color: #2bae66; */
+  box-sizing: border-box;
+  /* scrollbar-width: none;  */
 }
 
 .body__left__group {
   display: flex;
   flex-direction: column;
   flex: 0.5;
+  
 }
 
 .groupName {

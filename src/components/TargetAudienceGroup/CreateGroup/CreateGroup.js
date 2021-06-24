@@ -3,13 +3,13 @@ import classes from "./CreateGroup.module.css";
 
 function CreateGroup(props) {
 
-    // useEffect(() => {
-        
-    // })
-    
-    //active classes
-    return (
-        <div className={classes.createGroup}>
+    console.log("object", props.groupType);
+
+    let showHeader = null;
+
+    //showing header only for create group
+    if (!props.groupType) {
+        showHeader = (
             <div className={classes.createCampaignBody__right__header}>
                 <div
                     className={classes.createCampaignBody__right__available}
@@ -33,22 +33,30 @@ function CreateGroup(props) {
                     Upload
                 </div>
             </div>
+        )
+    }
 
-            {/* //body part */}
-            
+    //showing body only for create and preview group
+    let showBody = null;
+
+    if (props.groupType === 'Preview Group' || !props.groupType) {
+        showBody = (
             <div className={classes.CreateGroup__body}>
                 
                 {
+
                     !props.uploadFieldActive
                         ?
-                            <>
-                                <label htmlFor="audienceInput">Email Ids : </label>
+                        <>
+                            
+                            <label htmlFor="audienceInput">Email Ids : </label>
                             <textarea
-                                disabled={props.disable}
+                                // disabled={true}
+                                className={classes.textarea}
+                                disabled={props.groupType === 'Preview Group' && true}
                                 id="audienceInput"
                                 style={{
                                     resize: "none",
-                                    width: "50vh",
                                     borderColor: "rgba(0,0,0,0.2)",
                                     borderRadius: "5px",
                                     height: "20vh",
@@ -64,6 +72,7 @@ function CreateGroup(props) {
                         <>
                             {
                                 props.targetAudienceUserUpload.error.length > 0
+                                    
                                     ?
                                     <p
                                         style={{
@@ -72,7 +81,9 @@ function CreateGroup(props) {
                                             marginBottom: "10px",
                                             marginTop:"5px"
                                         }}
-                                    >{props.targetAudienceUserUpload.error}</p>
+                                    >
+                                        {props.targetAudienceUserUpload.error}
+                                    </p>
                                     :
                                     null
                             }
@@ -85,6 +96,20 @@ function CreateGroup(props) {
                         </>
                 }
             </div>
+        );
+    }
+
+    return (
+        <div className={classes.createGroup}>
+            {
+                showHeader
+            }
+
+            {/* //body part */}
+            {
+                showBody
+            }
+            
         </div>
     )
 }
