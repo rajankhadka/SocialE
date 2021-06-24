@@ -8,7 +8,7 @@ RUN npm install
 
 RUN npm install -g server
 
-COPY . /app/
+COPY . .
 
 RUN npm run build
 
