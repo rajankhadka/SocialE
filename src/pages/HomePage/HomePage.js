@@ -10,7 +10,7 @@ import {  } from '@material-ui/core';
 import {  } from '@material-ui/icons';
 import BodyTable from '../../components/UI/BodyTable/BodyTable';
 
-import { Redirect,useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import TargetAudienceGroup from '../../components/TargetAudienceGroup/TargetAudienceGroup';
 import ShowGroup from '../../components/TargetAudienceGroup/ShowGroup/ShowGroup';
 import { SpecificCampaignDetailProvider } from '../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';

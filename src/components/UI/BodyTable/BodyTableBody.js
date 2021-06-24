@@ -291,6 +291,7 @@ function BodyTableBody(props) {
                 </Model>
             }
 
+            {/* campaign delete  */}
             {
                 props.campaignDeleteTrigger &&
 
