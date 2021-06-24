@@ -10,7 +10,7 @@ RUN npm install -g server
 
 RUN npm run build
 
-COPY . .
+COPY . /app/
 
 EXPOSE 3000
 
