@@ -24,7 +24,7 @@ function Header(props) {
                 </div>
             </div>
 
-            <div className={classes.header__header__right} onClick={()=> props.openTooltipAction()}>
+            <div className={classes.header__header__right} >
                 
                 <Avatar
                     alt="Remy Sharp"
@@ -36,7 +36,7 @@ function Header(props) {
                         borderColor : !props.showtooltipReducers.border ? "rgba(0, 0, 0, 0)" : "rgba(0, 0, 0, 0.5)"
                     }}
                 />
-                <HeaderTooltip />
+                {/* <HeaderTooltip /> */}
             </div>
         </div>
     )

@@ -81,8 +81,10 @@
 .homePage__body__bodyTableBody {
   height: 65vh;
   overflow-y: scroll;
+  scroll-behavior: smooth;
   overflow-x: hidden;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .homePage__body__bodyTableBodyRow {

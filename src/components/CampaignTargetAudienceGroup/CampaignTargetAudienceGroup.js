@@ -4,9 +4,11 @@ import { Add, Check, Close } from '@material-ui/icons'
 import { targetAudienceApi } from '../../api/targetAudience/targetAudience';
 import { v4 as uuidv4 } from 'uuid';
 import validator from 'validator';
+import { campaignApi } from '../../api/campaign/campaign';
 
 function CampaignTargetAudienceGroup(props) {
 
+    // console.log(props.campaignDetail);
     // if (props.campaignDetail) {
         // console.log('props', (props.campaignDetail.target_users_mail_list));
     // }
@@ -23,8 +25,10 @@ function CampaignTargetAudienceGroup(props) {
     const viewref = useRef(null);
     const editref = useRef(null);
 
+    //view part
     //group name
     const [targetAudienceGroup, setTargetAudienceGroup] = useState(null);
+    
 
     //edit part 
     const [targetAudienceGroupEdit, setTargetAudienceGroupEdit] = useState([]);
@@ -41,25 +45,35 @@ function CampaignTargetAudienceGroup(props) {
 
 
     useEffect(() => {
-        // console.log(props.campaignDetail.target_users_mail_list.length);
-        // console.log(props.campaignDetail.target_users_mail_list);
-        let mail = [];
+        //user mail list saved 
         if (props.campaignDetail.target_users_mail_list.length > 0) {
             
-            // const data = (JSON.stringify(props.campaignDetail.target_users_mail_list));
-            // const json = JSON.parse(data);
-            console.log(props.campaignDetail.target_users_mail_list);
-            // props.campaignDetail.target_users_mail_list.split(',').forEach(m => {
-            //     mail.push({ id:uuidv4() ,email: m.slice(1, (m.length - 1)), click: true })
-            // });
-            
-            // setTargetusermail([...props.campaignDetail.target_users_mail_list]);
-            setTargetAudienceNameEdit([...mail]);
-            setActiveUserNameSaved([...mail]);
+            fetch(campaignApi.campaignretrieve,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    "Authorization":`Token ${window.localStorage.getItem('token')}`
+                },
+                body:JSON.stringify({
+                    id:props.campaignDetail.id
+                })
+            })
+                .then(res => res.json())
+                .then(usermailList => {
+                    
+                    //saving user mail list
+                    const mailList = [];
+                    usermailList.mail_list.forEach(mailListItem => {
+                        mailList.push({...mailListItem,click:true})
+                    });
+                    setTargetusermail(mailList);
+                })
+                .catch(err => console.log(err));
         } else {
             setTargetusermail([]);
         }
-        // console.log(mail);
+        
+
         fetch(targetAudienceApi.targetusergroupget, {
             method: 'GET',
             headers: {
@@ -91,72 +105,11 @@ function CampaignTargetAudienceGroup(props) {
                     }
                 });
 
+                //saving all group name
                 setTargetAudienceGroupEdit(activeGroup.concat(notactiveGroup));
 
+                //fetching all audience name avaliable in group that is present in campaign
 
-                data.forEach(group => {
-
-                    props.campaignDetail.targetusergroup.forEach(groupid => {
-                        if (groupid === group.id) {
-                            //group name
-                            setTargetAudienceGroup(prevState => {
-                                if (prevState) {
-                                    return [...prevState, group];
-                                } else {
-                                    return [group];
-                                }
-                            })
-
-                            //target audience name
-                            fetch(targetAudienceApi.targetuserget, {
-                                method: 'POST',
-                                headers: {
-                                    'Authorization': `Token ${window.localStorage.getItem('token')}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    group_id: groupid
-                                })
-                            })
-                                .then(res => res.json())
-                                .then(targetdata => {
-                                    
-                                    if (targetdata.payload.length > 0) {
-                                        
-                                        targetdata.payload.forEach(targetAudience => {
-                                            
-                                            setActiveUserNameSaved(prevState => {
-                                                return [...prevState, { email: targetAudience.email, click: true,id:uuidv4() }];
-                                            })
-
-                                            setTargetAudienceNameEdit(prevState => {
-                                                return [...prevState, { email: targetAudience.email, click: true,id:uuidv4() }];
-                                            })
-
-                                            setTargetAudienceName(prevState => {
-                                                if (prevState) {
-                                                    return [...prevState, { email: targetAudience.email, click: true }];
-                                                } else {
-                                                    return [{ email: targetAudience.email, click: true }];
-                                                }
-                                            })
-
-                                        })
-                                    } else {
-                                        setTargetAudienceName(prevState => {
-                                            if (prevState) {
-                                                return [...prevState];
-                                            } else {
-                                                return [];
-                                            }
-                                        })
-                                    }
-                                    
-                                    
-                                });
-                        }
-                    })
-                });
             })
             .catch(err => console.log(err));
         return () => {
@@ -173,36 +126,35 @@ function CampaignTargetAudienceGroup(props) {
 
     //call every time when group selected or deselected
     useEffect(() => {
-        // console.log('object');
-        // console.log(targetAudienceGroupEdit);
-        // console.log(targetAudienceNameEdit);
-        let newTargetUser = [];
-        targetAudienceGroupEdit.forEach(group => {
-            if (group.click) {
-                fetch(targetAudienceApi.targetuserget, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Token ${window.localStorage.getItem('token')}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        group_id: group.id
-                    })
-                })
-                    .then(res => res.json())
-                    .then(targetdata => {
+        console.log("object");
+        console.log(targetusermail)
+        // let newTargetUser = [];
+        // targetAudienceGroupEdit.forEach(group => {
+        //     if (group.click) {
+        //         fetch(targetAudienceApi.targetuserget, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Authorization': `Token ${window.localStorage.getItem('token')}`,
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify({
+        //                 group_id: group.id
+        //             })
+        //         })
+        //             .then(res => res.json())
+        //             .then(targetdata => {
                         
-                        if (targetdata.payload.length > 0) {
-                            targetdata.payload.forEach(targetAudience => {
-                                newTargetUser.push({ email: targetAudience.email, click: true, id: uuidv4() })
-                            })
-                        }
-                        setActiveUserNameSaved(newTargetUser.concat(targetusermail.concat(addTargetAudience)));
-                        setTargetAudienceNameEdit(newTargetUser.concat(targetusermail.concat(addTargetAudience)));
-                    })
-                    .catch(err => console.log(err));
-            }
-        })
+        //                 if (targetdata.payload.length > 0) {
+        //                     targetdata.payload.forEach(targetAudience => {
+        //                         newTargetUser.push({ email: targetAudience.email, click: true, id: uuidv4() })
+        //                     })
+        //                 }
+        //                 setActiveUserNameSaved(newTargetUser.concat(targetusermail.concat(addTargetAudience)));
+        //                 setTargetAudienceNameEdit(newTargetUser.concat(targetusermail.concat(addTargetAudience)));
+        //             })
+        //             .catch(err => console.log(err));
+        //     }
+        // })
 
     }, [trigger]);
 
@@ -211,19 +163,39 @@ function CampaignTargetAudienceGroup(props) {
     
     //save only active username
     useEffect(() => {
-        let activeUsernameonly = targetAudienceNameEdit.filter(user => user.click);
-        setActiveUserNameSaved([...activeUsernameonly,...addTargetAudience]);
+        console.log("user mail list trigger");
+
+        //saving selected data only in server
+        if(targetusermail){
+            const allselectedusermailList = targetusermail.filter(usermail => usermail.click);
+            console.log(allselectedusermailList);
+            fetch(campaignApi.addUsermailList,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization': `Token ${window.localStorage.getItem('token')}`
+                },
+                body:JSON.stringify({
+                    campaign_id:props.campaignDetail.id,
+                    emails:allselectedusermailList
+                })
+            })
+                .then(res => res.json())
+                .then(savedUserMail => console.log(savedUserMail))
+                .catch(err => console.log(err));
+        }       
         
+       
     }, [userNameTrigger])
 
     let targetUserNameDisplay = null;
     
-    if (targetAudienceName && targetusermail) {
-        let joinTargetUserEmail = targetAudienceName.concat(targetusermail);
+    if (targetusermail) {
+        // let joinTargetUserEmail = targetAudienceName.concat(targetusermail);
         // console.log(joinTargetUserEmail)
 
-        if (joinTargetUserEmail.length > 0) {
-            targetUserNameDisplay = joinTargetUserEmail.map((email, index) => (
+        if (targetusermail.length > 0) {
+            targetUserNameDisplay = targetusermail.map((email, index) => (
                 <div className={classes.groupName} key={index}>
                     <p>{index+1}. </p>
                     <p>{email.email}</p>
@@ -294,8 +266,8 @@ function CampaignTargetAudienceGroup(props) {
 
     //edit part target audience group name only
     let targetAudienceUserNameEdit = null;
-    if (targetAudienceNameEdit.length > 0) {
-        targetAudienceUserNameEdit = targetAudienceNameEdit.map((user, index) => (
+    if (targetusermail) {
+        targetAudienceUserNameEdit = targetusermail.map((user, index) => (
             <div className={classes.groupName} key={index}>
                 <p>{index + 1}. </p>
                 <p className={classes.groupname__p}>{user.email}</p>
@@ -309,7 +281,7 @@ function CampaignTargetAudienceGroup(props) {
                                 onClick={() => {
                                     // console.log(user);
                                     setUserNameTrigger(!userNameTrigger)
-                                    setTargetAudienceNameEdit(targetAudienceNameEdit.map(targetUser => {
+                                    setTargetusermail(targetusermail.map(targetUser => {
                                         if (user.id === targetUser.id) {
                                             return {
                                                 ...targetUser,
@@ -331,7 +303,7 @@ function CampaignTargetAudienceGroup(props) {
                                 style={{ color: "black" }}
                                 onClick={() => {
                                     setUserNameTrigger(!userNameTrigger)
-                                    setTargetAudienceNameEdit(targetAudienceNameEdit.map(targetUser => {
+                                    setTargetusermail(targetusermail.map(targetUser => {
                                         if (user.id === targetUser.id) {
                                             return {
                                                 ...targetUser,
@@ -441,15 +413,17 @@ function CampaignTargetAudienceGroup(props) {
                                         if (event.key === 'Enter') {
                                             if (validator.isEmail(usernameValue)) {
                                                 setErrorEmail(false);
-                                                setAddTargetAudience(prevState => [...prevState,{ id: uuidv4(), click: true, email: usernameValue }])
-                                                setActiveUserNameSaved(prevState => {
-                                                    return [...prevState, { id: uuidv4(), click: true, email: usernameValue }]
-                                                });
-
-                                                setTargetAudienceNameEdit(prevState => {
-                                                    return [...prevState, { id: uuidv4(), click: true, email: usernameValue }]
-                                                });
-                                                setUsernameValue(''); 
+                                                //check the unique email
+                                                const found =targetusermail.find(mail => mail.email.toLowerCase() === usernameValue.toLocaleLowerCase())
+                                                if(!found){
+                                                    setTargetusermail(prevState => [...prevState,{email:usernameValue.toLocaleLowerCase(),id:uuidv4(),click:true,targetusergroup:null}]);
+                                                    setUsernameValue(''); 
+                                                    setErrorEmail(false);
+                                                    setUserNameTrigger(!userNameTrigger)
+                                                }else{
+                                                    setErrorEmail(true)
+                                                }
+                                                
                                             } else {
                                                 setErrorEmail(true);
                                             }
@@ -471,8 +445,8 @@ function CampaignTargetAudienceGroup(props) {
                             <div className={[classes.body__left__group,classes.boder__right].join(' ')}>
                                 <p>Groups</p>
                                 {
-                                    targetAudienceGroup &&
-                                    targetAudienceGroup.map((group, index) => (
+                                    targetAudienceGroupEdit &&
+                                    targetAudienceGroupEdit.map((group, index) => (
                                         <div className={classes.groupName} key={index}>
                                             <p>{index+1}. </p>
                                             <p>{group.group_name}</p>

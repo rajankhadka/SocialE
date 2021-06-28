@@ -8,6 +8,7 @@ const campaignApi = {
     'campaigndelete': BASEURL + '',
     'campaignretrieve': BASEURL + 'campaign/retrieve/',
     'campaignmail_list': BASEURL + 'campaign/update/mail_list/',
+    'addUsermailList':BASEURL + 'campaign/target_mail_list/',
 }
 
 export { campaignApi };

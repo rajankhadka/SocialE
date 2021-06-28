@@ -12,9 +12,17 @@
 .sideBar__body__sideBar__content {
   color: white;
   font-size: 8px;
+  margin-top: -15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* background-color: aqua; */
+  flex: 1;height: 92%;
 }
 
-.sideBar__body__sideBar__content > div {
+
+.bodycontent__top > div,
+.bodycontent__bottom > div {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -22,13 +30,16 @@
   height: 60px;
   cursor: pointer;
   /* background-color: aqua; */
+  box-sizing: border-box;
+  height: 9vh;
 }
 
 /* .sideBar__body__sideBar__content > div:hover {
   border-right: 5px solid black;
 } */
 
-.sideBar__body__sideBar__content > div > h1 {
+.bodycontent__top > div > h1 ,
+.bodycontent__bottom > div > h1{
   font-weight: 300;
   flex: 0.9;
   padding-left: 10px;
