@@ -495,6 +495,7 @@ const CreateCampaginPage = (props) => {
 
         console.log('group selected!!!!!!')
         const targetAudienceEmail = [];
+        console.log("groupselected",groupSelected);
         groupSelected.forEach((group) => {
             fetch(targetAudienceApi.targetuserget, {
                 "method": "POST",
@@ -508,12 +509,15 @@ const CreateCampaginPage = (props) => {
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log("object",data);
                     targetAudienceEmail.push(...data.payload)
+                    console.log(targetAudienceEmail);
                     return targetAudienceEmail
                 })
                 .then(email => {
                     console.log(email);
                     props.availableTargetAudienceAction(email);
+                    console.log("reducers",props.targetaudienceAvailable);
                 })
                 .catch(err => console.log(err));
         });
@@ -814,7 +818,7 @@ const CreateCampaginPage = (props) => {
                                             onKeyPress={(event) => {
                                                 if (event.key === "Enter") {
                                                     if (validator.isEmail(newTargetAudience)) {
-                                                        props.addnewTargetAudienceAction({ id: uuidv4(), email: newTargetAudience, click: true,group:null });
+                                                        props.addnewTargetAudienceAction({ id: uuidv4(), email: newTargetAudience, click: true,targetusergroup:null });
                                                         setNewTargetAudienceError(false);
                                                         setNewTargetAudience("");
                                                         setNewTargetAudienceSuccess(true);

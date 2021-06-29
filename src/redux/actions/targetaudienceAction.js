@@ -7,6 +7,7 @@ export const availableTargetAudience = (data) => {
     return {
         type: TargetAudience.AVAILABLEAUDIENCE,
         data: data,
+        
     }
 }
 

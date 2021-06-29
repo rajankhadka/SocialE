@@ -1,5 +1,5 @@
 
-export const BASEURL = 'http://127.0.0.1:8081/';
+export const BASEURL = 'http://127.0.0.1:8000/';
 
 export const FRONTENDURL = 'http://119.13.100.46:3000/'
 

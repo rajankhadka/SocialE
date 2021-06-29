@@ -86,11 +86,14 @@ function CampaignTargetAudienceGroup(props) {
 
                 //edit group part
 
-                // console.log(props.campaignDetail);
+                
                 // console.log(data);
+                
 
                 let activeGroup = data.filter(item => props.campaignDetail.targetusergroup.includes(item.id));
                 let notactiveGroup = data.filter(item => !props.campaignDetail.targetusergroup.includes(item.id));
+                
+                // console.log(activeGroup);
                 activeGroup = activeGroup.map(group => {
                     return {
                         ...group,
@@ -105,14 +108,19 @@ function CampaignTargetAudienceGroup(props) {
                     }
                 });
 
+                //saving all group name that is presented in specific campaign only
+                setTargetAudienceGroupEdit(activeGroup);
+            
+
                 //saving all group name
-                setTargetAudienceGroupEdit(activeGroup.concat(notactiveGroup));
+                // setTargetAudienceGroupEdit(activeGroup.concat(notactiveGroup));
 
                 //fetching all audience name avaliable in group that is present in campaign
 
             })
             .catch(err => console.log(err));
         return () => {
+            setTargetAudienceGroupEdit([]);
             setTargetAudienceGroup(null);
             setTargetAudienceName(null);
             setTargetusermail(null);
@@ -212,7 +220,9 @@ function CampaignTargetAudienceGroup(props) {
             <div className={classes.groupName} key={index}>
                 <p>{index+1}. </p>
                 <p className={classes.groupname__p}>{group.group_name}</p>
-                {
+
+                {/* disabling check and add option in group of edit part */}
+                {/* {
                    group.click
                         ?
 
@@ -258,7 +268,7 @@ function CampaignTargetAudienceGroup(props) {
                                 }}
                             />
                         </p> 
-                }
+                } */}
             </div>
         ))
     }
@@ -431,9 +441,12 @@ function CampaignTargetAudienceGroup(props) {
                                         }
                                     }}
                                 />
-                                {
-                                    targetAudienceUserNameEdit
-                                }
+                                <div className={classes.contentbody__only}>
+                                    {
+                                        targetAudienceUserNameEdit
+                                    }
+                                </div>
+                                
                             </div>
 
                         </div>
@@ -458,9 +471,12 @@ function CampaignTargetAudienceGroup(props) {
                             {/* user name */}
                             <div className={[classes.body__left__group,classes.margin__left].join(' ')}>
                                 <p>Target Users</p>
-                                {
-                                    targetUserNameDisplay
-                                }
+                                <div className={classes.contentbody__only}>
+                                    {
+                                        targetUserNameDisplay
+                                    }
+                                </div>
+                                
                             </div>
                         </div>
                 }
