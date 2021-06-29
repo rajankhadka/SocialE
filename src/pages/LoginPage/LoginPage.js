@@ -348,22 +348,22 @@ function LoginPage(props) {
                     value={password.value}
                     error={password.error}
                     required
-                    InputProps={{
-                        endAdornment: 
-                            // <div style={{marginLeft:'85%'}}>
-                                <IconButton
-                                    style={{
-                                        // marginLeft:'85%',                                        // marginLeft: password.showPassword && "62px",
-                                        // backgroundColor:"red"
-                                    }}
-                                    onClick={showPasswordHandler}
-                                    // edge="end"
-                                >
-                                    {/* {password.showPassword ? <Visibility /> :<VisibilityOff/>} */}
-                                </IconButton>
-                            // </div>
+                    // // InputProps={{
+                    // //     endAdornment: 
+                    //         // <div style={{marginLeft:'85%'}}>
+                    //             <IconButton
+                    //                 style={{
+                    //                     // marginLeft:'85%',                                        // marginLeft: password.showPassword && "62px",
+                    //                     // backgroundColor:"red"
+                    //                 }}
+                    //                 onClick={showPasswordHandler}
+                    //                 // edge="end"
+                    //             >
+                    //                 {/* {password.showPassword ? <Visibility /> :<VisibilityOff/>} */}
+                    //             </IconButton>
+                    //         // </div>
                             
-                    }}
+                    // }}
 
                     onFocus={() => {
                         setPassword(prevState => {
@@ -377,7 +377,8 @@ function LoginPage(props) {
                 />
 
                 <Button variant="contained"
-                    type="submit" color="primary" disabled={ buttondisable || initialclick }
+                    type="submit" color="primary" 
+                    // disabled={ buttondisable || initialclick }
                     className={classes.loginPage__button}
                 >
                     Sign In

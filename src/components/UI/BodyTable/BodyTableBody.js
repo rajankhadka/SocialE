@@ -306,6 +306,7 @@ function BodyTableBody(props) {
                             <button
                                 className={classes.DeleteButton}
                                 onClick={() => {
+                                    console.log("yes delete")
                                     props.campaignDeleteTriggerHandlerOFF();
                                 }}
                             >
@@ -315,6 +316,7 @@ function BodyTableBody(props) {
                             <button
                                 className={classes.DeleteNotButton}
                                 onClick={() => {
+                                    console.log("no delete")
                                     props.campaignDeleteTriggerHandlerOFF();
                                 }}
                             >

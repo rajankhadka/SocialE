@@ -35,7 +35,8 @@ function SideBar(props) {
                 width : props.showsidebarReducers.sidebaropen ? "200px" : "50px"
             }}
         >
-            <div className={classes.sideBar__body__sideBar__header}
+            <div 
+                className={classes.sideBar__body__sideBar__header}
             >
                 <IconButton onClick={()=> props.closesidebarAction()}>
                     {props.showsidebarReducers.sidebaropen

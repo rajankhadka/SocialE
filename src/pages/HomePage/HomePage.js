@@ -35,6 +35,7 @@ function HomePage(props) {
     const campaignDeleteTriggerHandlerON = () => setCampaignDeleteTrigger(true);
 
     useEffect(() => {
+        console.log("delete");
         fetch(campaignApi.campaigngetlist, {
             method: "GET",
             headers: {
@@ -44,7 +45,7 @@ function HomePage(props) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data.payload);
+                
                 setCampaign(data.payload);
             })
             .catch(err => console.log(err));

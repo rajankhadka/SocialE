@@ -16,7 +16,6 @@ import CreateTemplate from "../CreateTemplate/CreateTemplate";
 
 const BodyTable = (props) => {
     const bodytableHistory = useHistory();
-    console.log("bodytable", props);
 
     const routeURLHandler = () => {
         bodytableHistory.push(props.campaigndetailURL);
@@ -36,6 +35,10 @@ const BodyTable = (props) => {
         bodyTable = <CreateTemplate />;
     } else if (props.header === "Target Audience Groups") {
         bodyTable = null;
+    }else if(props.header === "User Management"){
+        <BodyTableBody 
+            
+        />
     }
     
     else {

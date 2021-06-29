@@ -42,7 +42,11 @@ const HomePageBodyHeader = (props) =>{
         );
     } else if (props.header === 'Templates' && props.templatePageToggle === "create") {
         searchButton = null;
-    } else {
+    }else if(props.header === "User Management"){
+
+    } 
+    
+    else {
         searchButton = (
             <div className={classes.homePage__body__bodyHeaderCompanyRight}
                 // style={{
@@ -117,7 +121,17 @@ const HomePageBodyHeader = (props) =>{
                                 fontWeight: 'lighter',
                                 marginLeft: "10px"
                             }}
-                            onClick = {props.header === "Campaigns" ?   campaignCreateHandler : ()=>props.showcreateGroupONhandler()}
+                            onClick = { () =>{
+                                if(props.header === 'Campaigns'){
+                                    campaignCreateHandler();
+                                }else if(props.header === 'User Management'){
+                                        console.log("user management");
+                                        console.log(props.url)
+                                        homepageHistory.push(props.url);
+                                }else{
+                                    props.showcreateGroupONhandler()
+                                }
+                            }}
                         >
                             {props.buttonName}
                         </Button>

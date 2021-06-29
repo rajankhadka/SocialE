@@ -59,28 +59,28 @@ function Setting(props) {
         let email_two_factor_auth = false;
         let totp_two_factor_auth = false;
         let email_and_sms_two_factor_auth = false;
-        console.log("twoauthHandler");
-        console.log(twoAuth)
+        // console.log("twoauthHandler");
+        // console.log(twoAuth)
         let token = (window.localStorage.getItem('token'));
         if (twoAuth === 'email') {
-            console.log("email_two_factor_auth");
+            // console.log("email_two_factor_auth");
             email_two_factor_auth = true;
             totp_two_factor_auth = false;
             email_and_sms_two_factor_auth = false;
-            console.log(email_two_factor_auth,email_and_sms_two_factor_auth,totp_two_factor_auth)
+            // console.log(email_two_factor_auth,email_and_sms_two_factor_auth,totp_two_factor_auth)
         } else if (twoAuth === 'sms') {
-            console.log("email_and_sms_two_factor_auth");
+            // console.log("email_and_sms_two_factor_auth");
             email_two_factor_auth = false;
             totp_two_factor_auth = false;
             email_and_sms_two_factor_auth = true;
-            console.log(email_two_factor_auth,email_and_sms_two_factor_auth,totp_two_factor_auth)
+            // console.log(email_two_factor_auth,email_and_sms_two_factor_auth,totp_two_factor_auth)
 
         } else {
-            console.log("totp_two_factor_auth");
+            // console.log("totp_two_factor_auth");
             email_two_factor_auth = false;
             totp_two_factor_auth = true;
             email_and_sms_two_factor_auth = false;
-            console.log(email_two_factor_auth,email_and_sms_two_factor_auth,totp_two_factor_auth)
+            // console.log(email_two_factor_auth,email_and_sms_two_factor_auth,totp_two_factor_auth)
 
         }
 
@@ -98,7 +98,7 @@ function Setting(props) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 
             })
             .catch(err => {
@@ -124,7 +124,7 @@ function Setting(props) {
             })
                 .then(response => {
                     
-                    console.log(response.status);
+                    // console.log(response.status);
                     if (response.status === 403) {
                         setErrmsg("Old Password doesnot match!!!");
                         setSuccessmsg("");
@@ -141,17 +141,17 @@ function Setting(props) {
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
                     
                 })
                 .catch(err => {
                     console.log(err);
                     
                 });
-            console.log("password change")
+            // console.log("password change")
         } else {
             setErrmsg("New Password Does not match!!!")
-            console.log("password mismatch");
+            // console.log("password mismatch");
             setSuccessmsg("");
         }
     }
@@ -227,11 +227,20 @@ function Setting(props) {
                                                                 "Authorization": `Token ${window.localStorage.getItem('token')}`
                                                             }
                                                         })
-                                                            .then(response => response.json())
-                                                            .then(data => {
-                                                                console.log(data.qrcode)
+                                                            .then(response => {
                                                                 
-                                                                setQrcodeimg(data.qrcode)
+                                                                return response.json()
+                                                            })
+                                                            .then(data => {
+                                                                // console.log("qrcode data--->",data);
+                                                                // console.log(data.qrcode)
+                                                                if(data){
+                                                                    if(data.qrcode.length > 0){
+                                                                        setQrcodeimg(data.qrcode)
+                                                                    }
+                                                                    
+                                                                }
+                                                                
                                                             })
                                                             .catch(err => console.log("err--->",err));
                                                     }
@@ -252,7 +261,7 @@ function Setting(props) {
                                                             
                                                             {/* <Image src={ qrcodeimg}/> */}
                                                             {/* <img src={ qrcodeimg.toString()} alt="qrcode"/> */}
-                                                            <QRCode value={qrcodeimg} style={{width:"180px",height:"180px",marginLeft:"10px",marginTop:"10px"}}/>
+                                                            {  qrcodeimg.length> 0 && <QRCode value={qrcodeimg} style={{width:"180px",height:"180px",marginLeft:"10px",marginTop:"10px"}}/>}
                                                         </div>
                                                     </div>
                                                     
@@ -286,7 +295,7 @@ function Setting(props) {
                                         name="changePassword"
                                         onChange={(event) => {
                                             setChangePassword(event.target.checked)
-                                            console.log(changePassword)
+                                            // console.log(changePassword)
                                         }}
                                         color="primary"
                                     />
@@ -311,7 +320,7 @@ function Setting(props) {
                                                 value={oldPassword}
                                                 onChange={(event) =>{
                                                     setOldPassword(event.target.value);
-                                                    console.log(event.target.value)
+                                                    // console.log(event.target.value)
                                                 }}
                                             />
                                         </div>
@@ -325,7 +334,7 @@ function Setting(props) {
                                                 value={newPassword}
                                                 onChange={(event) =>{
                                                     setNewPassword(event.target.value);
-                                                    console.log(event.target.value)
+                                                    // console.log(event.target.value)
                                                 }}
                                             />
                                         </div>
@@ -339,7 +348,7 @@ function Setting(props) {
                                                 value={confirmPassword}
                                                 onChange={(event) =>{
                                                     setConfirmPassword(event.target.value);
-                                                    console.log(event.target.value)
+                                                    // console.log(event.target.value)
                                                 }}
 
                                             />
