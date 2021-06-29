@@ -65,10 +65,19 @@
   display: flex;
   flex-direction: row;
   height: 30vh;
-  overflow:hidden;
+  /* overflow:scroll; */
   /* background-color: #2bae66; */
   box-sizing: border-box;
   /* scrollbar-width: none;  */
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera  */
+.body__content__view::-webkit-scrollbar {
+  display: none;
 }
 
 .body__left__group {
@@ -80,7 +89,22 @@
 
 .groupName {
   display: flex;
+  /* background-color: aqua; */
+  /* overflow: scroll; */
 }
+
+.contentbody__only{
+  /* background-color: aqua; */
+  height: 35vh;
+  overflow: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.contentbody__only::-webkit-scrollbar{
+  display: none;
+}
+
 
 .groupName > p {
   margin-right: 10px;

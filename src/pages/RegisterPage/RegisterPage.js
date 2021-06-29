@@ -9,6 +9,7 @@ import {  } from '@material-ui/icons';
 import { connect } from "react-redux";
 import { closeRegister } from "../../redux/actions/showregisterAction";
 import UserPermissions from '../../components/UserPermissions/UserPermissions';
+import { signinApi } from '../../api/signin/signin';
 
 function RegisterPage(props) {
 
@@ -98,7 +99,7 @@ function RegisterPage(props) {
         console.log(firstName, lastName, userName, email, password, confirmPassword, contactNumber);
         if (password.value === confirmPassword.value) {
             console.log("password");
-            fetch("http://127.0.0.1:8000/signup/", {
+            fetch(signinApi.usersignup, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

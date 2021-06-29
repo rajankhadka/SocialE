@@ -8,13 +8,16 @@ import classes from "./CreateTemplate.module.css";
 import { connect } from "react-redux";
 import {shownewtemplate } from "../../../redux/actions/shownewtemplate";
 
+//FRONTENDURL
+import { FRONTENDURL } from '../../../api/baseurl';
+
 const templateData = [
     {
         templateName: "temp001",
-        url:"http://localhost:3000/template/001",
+        url: FRONTENDURL + "template/001",
     }, {
         templateName: "temp002",
-        url:"http://localhost:3000/template/002",
+        url: FRONTENDURL + "template/002",
     }
 ];
 

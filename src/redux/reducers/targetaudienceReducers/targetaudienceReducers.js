@@ -31,6 +31,21 @@ const targetaudienceReducers = (state = initialState, action) => {
                     }
                 }
                 console.log('distinct data', distinctUser);
+
+                //saving the target audience whos group is only selected
+                console.log("action.data",action.data);
+
+                for(let i=0;i < distinctUser.length; i++){
+                    console.log("targetuser")
+                    if(distinctUser[i].targetusergroup){
+                        for(let j=0;j<action.data;j++){
+                            if(distinctUser[i].email === action.data[j].email){
+                                console.log("selected",distinctUser[i])
+                            }
+                        }
+                    }
+                }
+
             } else {
                 newdata = action.data.map((item) => {
                     return {

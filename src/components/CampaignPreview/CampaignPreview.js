@@ -3,6 +3,7 @@ import React,{useState,useEffect} from 'react'
 import { Close } from '@material-ui/icons'
 import { template } from '../../api/template/template';
 import { targetAudienceApi } from '../../api/targetAudience/targetAudience';
+import { campaignApi } from '../../api/campaign/campaign';
 
 function CampaignPreview(props) {
 
@@ -29,15 +30,7 @@ function CampaignPreview(props) {
             })
             .catch(err => console.log(err));
         
-        //fetching target mail
-        let mail = [];
-        if (props.campaignDetail.target_users_mail_list.length > 0) {
-            
-            props.campaignDetail.target_users_mail_list.split(',').forEach(m => {
-                mail.push(m.slice(1, (m.length - 1)))
-            });
-            setTargetAudienceName(prevState => [...prevState,...mail])
-        }
+        
         
         //fetching all group name and target audience name
 
@@ -60,21 +53,21 @@ function CampaignPreview(props) {
                             setGroupName(prevState => [...prevState, group.group_name]);
 
                             //target audience name
-                            fetch(targetAudienceApi.targetuserget, {
+                            fetch(campaignApi.campaignretrieve, {
                                 method: 'POST',
                                 headers: {
                                     'Authorization': `Token ${window.localStorage.getItem('token')}`,
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    group_id: groupid
+                                    id:props.campaignDetail.id
                                 })
                             })
                                 .then(res => res.json())
                                 .then(targetdata => {
-
-                                    if (targetdata.payload.length > 0) {
-                                        targetdata.payload.forEach(targetAudience => {
+                                    console.log(targetdata)
+                                    if (targetdata.mail_list.length > 0) {
+                                        targetdata.mail_list.forEach(targetAudience => {
                                             setTargetAudienceName(prevState => [...prevState, targetAudience.email])
                                         })
                                     }

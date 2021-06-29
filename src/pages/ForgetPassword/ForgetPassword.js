@@ -11,6 +11,7 @@ import { closeForgetPassword } from "../../redux/actions/showforgetpasswordActio
 
 //router
 import { useHistory } from "react-router-dom";
+import { signinApi } from '../../api/signin/signin';
 
 function ForgetPassword(props) {
     const forgotPasswordHistory = useHistory()
@@ -33,7 +34,7 @@ function ForgetPassword(props) {
         console.log(password);
         console.log(confirmPassword);
         if (password === confirmPassword) {
-            fetch("http://127.0.0.1:8000/setpassword/", {
+            fetch(signinApi.setpassword, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -45,7 +46,7 @@ function ForgetPassword(props) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    
                     setErrormsg("");
                     props.closeForgetPasswordAction();
                     // forgotPasswordHistory.replace("/login");
@@ -59,7 +60,7 @@ function ForgetPassword(props) {
     //email verify
     const forgetPasswordHandler = (event) => {
         event.preventDefault();
-        fetch("http://127.0.0.1:8000/sendmail/", {
+        fetch(signinApi.sendmail, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -70,9 +71,6 @@ function ForgetPassword(props) {
         })
             .then(response => {
                 if (response.status !== 200) {
-                    console.log("email is not ass");
-                    console.log(response);
-                    
                     return;
                 }
                 else {
@@ -102,7 +100,7 @@ function ForgetPassword(props) {
     //otphandler
     const otpverifyHandler = (event) => {
         event.preventDefault();
-        fetch("http://127.0.0.1:8000/verify/otp/", {
+        fetch(signinApi.verifyotp, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -145,7 +143,6 @@ function ForgetPassword(props) {
                         required={true}
                         value={email}
                         onChange={(event) => {
-                            console.log(event.target.value);
                             setEmail(event.target.value);
                         }}
                         style={{
@@ -183,7 +180,6 @@ function ForgetPassword(props) {
                         required={true}
                         value={otp}
                         onChange={(event) => {
-                            console.log(event.target.value);
                             setotp(event.target.value);
                         }}
                         style={{
@@ -221,7 +217,7 @@ function ForgetPassword(props) {
                         required={true}
                         value={password}
                         onChange={(event) => {
-                            console.log(event.target.value);
+                            
                             setPassword(event.target.value);
                         }}
                         style={{
@@ -244,7 +240,7 @@ function ForgetPassword(props) {
                         required={true}
                         value={confirmPassword}
                         onChange={(event) => {
-                            console.log(event.target.value);
+                            
                             setConfirmPassword(event.target.value);
                         }}
                         style={{

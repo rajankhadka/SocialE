@@ -37,7 +37,7 @@ function LoginPage(props) {
         error: false,
         helperText: "",
         value: "",
-        showPassword : "false"
+        showPassword : false
     });
 
     const [errormsg, setErrormsg] = useState("");
@@ -58,7 +58,7 @@ function LoginPage(props) {
 
     //saving value of input field to the local state
     const inputFieldHandler = (event) => {
-        console.log(password.showPassword)
+        // console.log(password.value)
         switch (event.target.name) {
             case "email":
                 setEmail(preState => {
@@ -222,43 +222,6 @@ function LoginPage(props) {
                             }
                         })
                         .catch(err => console.log(err))
-
-                    // fetch("http://127.0.0.1:8000/signin/2f/", {
-                    //     method: "POST",
-                    //     headers: {
-                    //         "Content-Type": "application/json",
-                    //         "Authorization":`Token ${token.key}`
-                    //     }
-                    // })
-                    //     .then(response => response.json())
-                    //     .then(data => {
-                    //         // setToken(data.key)
-                            
-                    //         console.log(data);
-                    //         if (data.status === "Email Based"){
-                    //             console.log("Email Based");
-                    //             setTwoAuth("email");
-                    //             setMessage("Check Your Email");
-                    //         } else if (data.message === "Totp Implemented") {
-                    //             console.log("Totp Implemented");
-                    //             setTwoAuth("totp");
-                    //             setMessage("Check Google Authenticator")
-                    //         } else if (data.status === "SMS Based") {
-                    //             console.log("SMS Based");
-                    //             setTwoAuth("sms");
-                    //             setMessage("Check Your SMS")
-                    //         } else if(data.message === "Two Factor Auth not implemented") {
-                    //             window.localStorage.setItem('token', token.key);
-                    //             console.log(token);
-                    //             console.log("Two Factor Auth not implemented");
-                    //             console.log("time to online");
-                    //             setTwoAuth("");
-                    //             setMessage("");
-                    //             loginHistory.replace("/")
-                    //         }
-                    //     })
-                    //     .catch(err => console.log(err))
-                    // loginHistory.replace("/")
                 }
                 
                 
@@ -357,6 +320,7 @@ function LoginPage(props) {
         singlebasedlogin = (
             <form ref={form} onSubmit={submitHandler} >
                 <TextField variant="outlined"
+                    required
                     label="Email" type="email" name="email"
                     className={classes.loginPage__input}
                     onChange={inputFieldHandler}
@@ -378,20 +342,27 @@ function LoginPage(props) {
 
                 <TextField variant="outlined"
                     label="Password" name="password"
-                    type={password.showPassword ? "password" : "text"} 
+                    type={password.showPassword ? "text" : "password"} 
                     className={classes.loginPage__input}
                     onChange={inputFieldHandler}
                     value={password.value}
                     error={password.error}
+                    required
                     InputProps={{
                         endAdornment: 
-                            <IconButton
-                                style={{marginLeft: password.showPassword && "62px" }}
-                                onClick={showPasswordHandler}
-                                edge="end"
-                            >
-                                {password.showPassword ? <Visibility /> :<VisibilityOff/>}
-                            </IconButton>
+                            // <div style={{marginLeft:'85%'}}>
+                                <IconButton
+                                    style={{
+                                        // marginLeft:'85%',                                        // marginLeft: password.showPassword && "62px",
+                                        // backgroundColor:"red"
+                                    }}
+                                    onClick={showPasswordHandler}
+                                    // edge="end"
+                                >
+                                    {/* {password.showPassword ? <Visibility /> :<VisibilityOff/>} */}
+                                </IconButton>
+                            // </div>
+                            
                     }}
 
                     onFocus={() => {

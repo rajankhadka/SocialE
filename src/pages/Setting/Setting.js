@@ -9,12 +9,13 @@ import { Button, FormControl, FormControlLabel, Radio, RadioGroup, Switch } from
 //importing component
 import Header from '../../components/Header/Header';
 import SideBar from '../../components/SideBar/SideBar';
+import { signinApi } from '../../api/signin/signin';
 
 
 function Setting(props) {
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/status/auth/", {
+        fetch(signinApi.chech2fstatus, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -43,11 +44,6 @@ function Setting(props) {
 
     const [enableTwoAuth, setEnableTwoAuth] = useState(false);
     const [twoAuth, setTwoAuth] = useState("email");
-
-    // const [email_two_factor_auth, setEmail_two_factor_auth] = useState(false);
-    // const [totp_two_factor_auth, setTotp_two_factor_auth] = useState(false);
-    // const [email_and_sms_two_factor_auth, setEmail_and_sms_two_factor_auth] = useState(false);
-
 
     //qrcode img
     const [qrcodeimg, setQrcodeimg] = useState("");
@@ -88,7 +84,7 @@ function Setting(props) {
 
         }
 
-        fetch('http://127.0.0.1:8000/select/twofactor/', {
+        fetch(signinApi.select2f, {
             method: "POST",
             headers: {
                 'Content-Type': "application/json",
@@ -115,7 +111,7 @@ function Setting(props) {
     //password handler
     const changepasswordHandler = () => {
         if (newPassword === confirmPassword) {
-            fetch("http://127.0.0.1:8000/user/update/password/", {
+            fetch(signinApi.passwordupdate, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -185,7 +181,7 @@ function Setting(props) {
                                             console.log(event.target.checked)
                                             if (event.target.checked === false) {
                                                 console.log("disable")
-                                                fetch("http://127.0.0.1:8000/disable/twofactor/", {
+                                                fetch(signinApi.disable2f, {
                                                     method: "POST",
                                                     headers: {
                                                         "Content-Type": "application/json",
@@ -224,7 +220,7 @@ function Setting(props) {
                                                     console.log(event.target.value);
                                                     if (event.target.value === 'qrcode') {
                                                         console.log("qrcode called");
-                                                        fetch("http://127.0.0.1:8000/enable/totp/", {
+                                                        fetch(signinApi.enabletotp, {
                                                             method: "POST",
                                                             headers: {
                                                                 "Content-Type": "application/json",

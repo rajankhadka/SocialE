@@ -83,6 +83,13 @@
   overflow-y: scroll;
   overflow-x: hidden;
   cursor: pointer;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.homePage__body__bodyTableBody::-webkit-scrollbar{
+  display: none;
 }
 
 .homePage__body__bodyTableBodyRow {

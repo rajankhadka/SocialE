@@ -111,8 +111,15 @@
   flex-direction: column;
   height: 57vh;
   overflow-y: scroll;
+  
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
   /* background-color: aqua; */
+}
+
+.createCampaignBody__right__body::-webkit-scrollbar{
+  display: none;
 }
 
 .createCampaignBody__right__body > div {

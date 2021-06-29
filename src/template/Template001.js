@@ -38,76 +38,84 @@ function Template001(props) {
     }
 
     useEffect(() => {
-        console.log(document.title);
         document.title = 'template 001'
 
-        //user agent data
-        console.log(userAgentfunction());
+        
 
         //validating target audience and campaign id and fetching template resources
-        fetch(template.templateValidateandresource, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Token ${window.localStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                campaign_id: params.campaignid,
-                target_user_uuid: params.uuid,
-                template_name: params.tempNam
-            })
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if (data.sucess) {
-                    console.log(data.data);
-                    setTemplateData(prevState => {
-                        return {
-                            ...prevState,
-                            ...data.data
-                        }
-                    });
-                    setError(false);
 
-                        //fetching ip address and location 
-                    fetch(template.templateIPtracing, {
-                        method: 'GET'
-                    })
-                        .then(response => {
-                            return (response.json());
-                        })
-                        .then(data => {
-                            console.log(data);
-                            // send all user agent data
-                            fetch(template.useragentData, {
-                                method: 'POST',
-                                headers: {
-                                    'Authorization': `Token ${window.localStorage.getItem('token')}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    campaign_id: params.campaignid,
-                                    target_user_uuid: params.uuid,
-                                    user_agent_data: {
-                                        location: data,
-                                        useragentData: userAgentfunction()
-                                    }
-                                })
-                            })
-                                .then(res => res.json())
-                                .then(useragentData => console.log(useragentData))
-                                .catch(err => console.log(err));
-                        })
-                        .catch(error => {
-                            console.log(error);
+        if(params.uuid){
+
+            //user agent data
+            console.log(userAgentfunction());
+            
+            fetch(template.templateValidateandresource, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${window.localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    campaign_id: params.campaignid,
+                    target_user_uuid: params.uuid,
+                    template_name: params.tempNam
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.sucess) {
+                        console.log(data.data);
+                        setTemplateData(prevState => {
+                            return {
+                                ...prevState,
+                                ...data.data
+                            }
                         });
-
-                } else {
-                    setError(true);
-                }
-            })
-            .catch(err => console.log(err));
+                        setError(false);
+    
+                            //fetching ip address and location 
+                        fetch(template.templateIPtracing, {
+                            method: 'GET'
+                        })
+                            .then(response => {
+                                return (response.json());
+                            })
+                            .then(data => {
+                                console.log(data);
+                                // send all user agent data
+                                fetch(template.useragentData, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Authorization': `Token ${window.localStorage.getItem('token')}`,
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        campaign_id: params.campaignid,
+                                        target_user_uuid: params.uuid,
+                                        user_agent_data: {
+                                            location: data,
+                                            useragentData: userAgentfunction()
+                                        }
+                                    })
+                                })
+                                    .then(res => res.json())
+                                    .then(useragentData => console.log(useragentData))
+                                    .catch(err => console.log(err));
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+    
+                    } else {
+                        setError(true);
+                    }
+                })
+                .catch(err => console.log(err));
+        }else{
+            setError(false);
+        }
+        
         
     }, []);
 
