@@ -2,14 +2,13 @@ import React,{useEffect} from 'react'
 import { signinApi } from '../api/signin/signin';
 
 //react router dom
-import { useHistory ,Redirect} from "react-router-dom";
+import { Redirect} from "react-router-dom";
 
 function TokenVerification(props) {
 
-    const tokenverificationHistory = useHistory();
+    // const tokenverificationHistory = useHistory();
 
     useEffect(()=>{
-        console.log("object");
         fetch(signinApi.tokenverification,{
             method:'POST',
             headers:{
@@ -22,6 +21,7 @@ function TokenVerification(props) {
             })
         })
             .then(res => {
+                // return res.json()
                 if(res.status === 200){
                     return res.json()
                 }else{
@@ -31,7 +31,7 @@ function TokenVerification(props) {
                 
             })
             .catch(err => console.log(err));
-    },[window.localStorage.removeItem('token'),window.localStorage.removeItem('user')])
+    },[window.localStorage.getItem('token'),window.localStorage.getItem('user')])
 
     if(window.localStorage.getItem("token") === null){
         return <Redirect to="/login"/>

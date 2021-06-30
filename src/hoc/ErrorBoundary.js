@@ -13,17 +13,14 @@ class ErrorBoundary extends Component{
     }
 
     static getDerivedStateFromError(error){
-        console.log("error");
         return {hasError:true}
     }
 
     componentDidMount(){
-        console.log("error boundary called!!!");
-        console.log(this.props);
+
     }
 
     componentDidCatch(){
-        console.log("error occured!!!");
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('user');
         // console.log(this.props);

@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import classes from "./LoginPage.module.css";
 
 //material UI
@@ -647,6 +647,37 @@ function LoginPage(props) {
     } else {
         email_sms = null;
     }
+
+    //cleanup
+    useEffect(()=>{
+        //clean up
+        return () =>{
+            setTwostepmsg("");
+            setPhonenumber("");
+            setOtpcode({
+                value: "",
+                error: false,
+                helperText:"",
+            });
+            setMessage("");
+            setTwoAuth("");
+            setInitialclick(true);
+            setButtondisable(false);
+            setErrormsg("");
+            setPassword({
+                error: false,
+                helperText: "",
+                value: "",
+                showPassword : false
+            });
+            setEmail({
+                error: false,
+                helperText: "",
+                value:""
+            });
+            setTwosteptotp("");
+        }
+    },[])
 
     return (
         <div className={classes.loginPage}>

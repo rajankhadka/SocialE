@@ -42,7 +42,6 @@ function HomePage(props) {
     const campaignDeleteTriggerHandlerON = () => setCampaignDeleteTrigger(true);
 
     useEffect(() => {
-        console.log("delete");
         fetch(campaignApi.campaigngetlist, {
             method: "GET",
             headers: {
@@ -90,7 +89,7 @@ function HomePage(props) {
     //checking and verifying token
 
     useEffect(()=>{
-        console.log("object",window.localStorage.getItem('token'));
+        
         fetch(signinApi.tokenverification,{
             method:'POST',
             headers:{

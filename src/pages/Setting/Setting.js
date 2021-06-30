@@ -25,7 +25,6 @@ function Setting(props) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 if (data.email_two_factor_auth === true) {
                     setTwoAuth('email');
                     setEnableTwoAuth(true);
@@ -181,9 +180,9 @@ function Setting(props) {
                                             name="enableTwoAuth"
                                             onChange={(event) => {
                                                 setEnableTwoAuth(event.target.checked)
-                                                console.log(event.target.checked)
+                                                
                                                 if (event.target.checked === false) {
-                                                    console.log("disable")
+                                                    
                                                     fetch(signinApi.disable2f, {
                                                         method: "POST",
                                                         headers: {
@@ -195,7 +194,7 @@ function Setting(props) {
                                                         })
                                                     })
                                                         .then(response => response.json())
-                                                        .then(data => console.log(data))
+                                                        .then(data => {})
                                                         .catch(err => console.log(err))
                                                 }
                                             }}

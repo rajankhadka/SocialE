@@ -23,7 +23,7 @@ const TemplatePage = props => {
     const templatePageHistory = useHistory();
 
     useEffect(()=>{
-        console.log("object");
+        
         fetch(signinApi.tokenverification,{
             method:'POST',
             headers:{
