@@ -27,7 +27,12 @@
   /* background-color: aqua; */
   margin-top: 10px;
   overflow: scroll;
-  overflow: -moz-hidden-unscrollable;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.body::-webkit-scrollbar{
+  display: none;
 }
 
 .campaign__name {

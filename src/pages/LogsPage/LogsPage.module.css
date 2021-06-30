@@ -1,0 +1,8 @@
+.logPage {
+    height: 100vh;
+  }
+  
+.logPage__body {
+display: flex;
+height: 92vh;
+}

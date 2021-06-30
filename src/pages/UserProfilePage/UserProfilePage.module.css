@@ -1,0 +1,8 @@
+.userProfilePage {
+    height: 100vh;
+  }
+  
+.userProfilePage__body {
+display: flex;
+height: 92vh;
+}

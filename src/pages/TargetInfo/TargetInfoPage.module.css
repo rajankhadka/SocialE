@@ -1,0 +1,8 @@
+.targetInfoPage {
+    height: 100vh;
+  }
+  
+.targetInfoPage__body {
+display: flex;
+height: 92vh;
+}

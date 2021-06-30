@@ -19,6 +19,9 @@ import Template002 from '../../template/Template002';
 import Test from './Test';
 import TargetAudienceGroup from '../../pages/TargetAudienceGroup/TargetAudienceGroup';
 import PageNotFound from '../../hoc/PageNotFound';
+import LogsPage from '../../pages/LogsPage/LogsPage';
+import TargetInfoPage from '../../pages/TargetInfo/TargetInfoPage';
+import UserProfilePage from '../../pages/UserProfilePage/UserProfilePage';
 
 function App(props) {
   return (
@@ -35,6 +38,13 @@ function App(props) {
         <Route path="/home/create-user" exact component={CreateUserPage} />
         <Route path="/home/setting" exact component={Setting} />
         <Route path="/home/targetaudiencegroup" component={ TargetAudienceGroup}/>
+
+        {/* log and targetinfo  */}
+        <Route path="/logs" exact component={LogsPage} />
+        <Route path="/target-info" exact component={TargetInfoPage} />
+
+        {/* user profile */}
+        <Route exact path="/user-profile" component={UserProfilePage} />
 
         {/* template */}
 
