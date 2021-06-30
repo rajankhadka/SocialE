@@ -154,7 +154,7 @@
 
 .campaignEdit__input{
   /* width: 250px; */
-  margin-bottom: 10px;
+  margin-bottom: 10px !important;
 }
 
 .campaignEdit__formcontrol{
@@ -164,6 +164,7 @@
 
 #startDate,
 #endDate {
+  margin-top: 10px;
   margin-bottom: 5px;
   /* margin-left: -75%; */
 }

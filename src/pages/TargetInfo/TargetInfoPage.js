@@ -7,19 +7,23 @@ import SideBar from "../../components/SideBar/SideBar";
 
 //redux
 import { connect } from "react-redux";
+import TokenVerification from "../../hoc/TokenVerification";
 
 const TargetInfoPage = props => {
     
     
     return(
-        <div className={classes.targetInfoPage}  >
-            <Header />
-            <div className={classes.targetInfoPage__body}>
-                <SideBar />
-                <h1>Target Info</h1>
-                
+
+        <TokenVerification>
+            <div className={classes.targetInfoPage}  >
+                <Header />
+                <div className={classes.targetInfoPage__body}>
+                    <SideBar />
+                    <h1>Target Info</h1>
+                    
+                </div>
             </div>
-        </div>
+        </TokenVerification>
     );
 }
 

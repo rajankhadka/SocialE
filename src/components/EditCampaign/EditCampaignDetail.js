@@ -143,6 +143,7 @@ function EditCampaignDetail(props) {
                     className={classes.campaignEdit__input}
                     value={startDate}
                     onChange={(event)=> setStartDate(event.target.value)}
+                    style={{marginBottom:'10px'}}
                 />
 
                 <label htmlFor="endDate" id={classes.endDate}>End Date</label>
@@ -160,7 +161,7 @@ function EditCampaignDetail(props) {
                 <Button
                         type="submit"
                         variant="contained"
-                        style={{ width: "250px" }}
+                        style={{ width: "250px" ,marginTop:'10px'}}
                         
                     >
                     Edit Campaign

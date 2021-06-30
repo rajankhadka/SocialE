@@ -2,7 +2,7 @@ import React,{} from "react";
 import classes from "./HomePageBodyHeader.module.css"
 
 //material UI
-import { Button, TextField } from '@material-ui/core';
+import { Button, Select, TextField } from '@material-ui/core';
 import { Add, Search } from '@material-ui/icons';
 
 //react router 
@@ -70,6 +70,8 @@ const HomePageBodyHeader = (props) =>{
             <div className={classes.homePage__body__bodyHeaderTitle}>
                 <div className={classes.homePage__tabView}>
                     <h2>{props.header}</h2>
+
+                    {/* template header */}
                     {
                         props.header === 'Templates' &&
                         <div className={classes.homePage__tabView__right}>
@@ -98,6 +100,27 @@ const HomePageBodyHeader = (props) =>{
                             >
                                 Create Template
                             </div>
+                        </div>
+                    }
+
+                    {/* campaign header */}
+                    {
+                        props.header === 'Campaigns' && 
+                        <div 
+                            className={classes.homePage__tabView__right}
+                            style={{backgroundColor:'white '}}
+                        >
+                            <Select 
+                                native
+                                label="campaign"
+                                id="campaign"
+                                name="campaign"
+                                // value
+                                // onChange
+                            >
+                                <option value="all"> All </option>
+                                <option value="only">Only Yours</option>
+                            </Select>
                         </div>
                     }
                 </div>
@@ -136,40 +159,6 @@ const HomePageBodyHeader = (props) =>{
                             {props.buttonName}
                         </Button>
 
-                        
-                        {
-                            // props.header === "Campaigns" &&
-                                // <>
-                                //                 {/* All group  */}
-                                //     <Button variant="text"
-                                //         startIcon={<List />}
-                                //         style={{
-                                //             // fontSize: 15,
-                                //             textTransform: 'capitalize',
-                                //             marginLeft: "10px",
-                                //         }}
-                                //         onClick = {props.showONAllGroupHandler}
-                                //     >
-                                //         {props.showAllGroup}
-                                //     </Button>
-
-                                //     {/* create group  */}
-                                //     <Button variant="text"
-                                //         startIcon={<Add />}
-                                //         style={{
-                                //             // fontSize: 15,
-                                //             textTransform: 'capitalize',
-                                //             marginLeft: "10px",
-                                //         }}
-                                //         onClick = {props.showGroupONHandler}
-                                //     >
-                                //         {props.groupName}
-                                //     </Button>
-                                // </>
-                        }
-
-                        
-                        
                     </div>
                 }
 

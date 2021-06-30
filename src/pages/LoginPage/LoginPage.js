@@ -210,9 +210,10 @@ function LoginPage(props) {
                                 data.email_and_sms_two_factor_auth === false
                             ) {
                                 window.localStorage.setItem('token', token.key);
-                                console.log(token);
-                                console.log("Two Factor Auth not implemented");
-                                console.log("time to online");
+                                window.localStorage.setItem('user',token.user)
+                                // console.log(token);
+                                // console.log("Two Factor Auth not implemented");
+                                // console.log("time to online");
                                 setTwoAuth("");
                                 setMessage("");
                                 loginHistory.replace("/")

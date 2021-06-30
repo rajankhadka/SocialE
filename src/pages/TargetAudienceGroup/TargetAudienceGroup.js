@@ -8,6 +8,7 @@ import BodyTable from '../../components/UI/BodyTable/BodyTable';
 import TargetAudienceGroupComponent from "../../components/TargetAudienceGroup/TargetAudienceGroup";
 import BodyTableGroup from '../../components/UI/BodyTable/BodyTableGroup/BodyTableGroup';
 import Modal from "../../components/Model/Model";
+import TokenVerification from '../../hoc/TokenVerification';
 
 function TargetAudienceGroup(props) {
     const [showcreateGroup, setShowcreateGroup] = useState(false);
@@ -31,44 +32,47 @@ function TargetAudienceGroup(props) {
 
 
     return (
-        <div className={classes.homePage}>
-            
-            <Header />
-            <div className={classes.homePage__body}>
-                <SideBar />
 
-                <div className={ classes.group__body}>
-                    <BodyTable
-                        header="Target Audience Groups" 
-                        buttonName="Create Group"
-                        title="Target Audience Groups"
-                        showcreateGroupONhandler={showcreateGroupONhandler}
-                    />
-
-                    {
-                        showcreateGroup
-                            ?
-
-                            <Modal>
-                                <TargetAudienceGroupComponent
-                                    showGroupOFFhandler={showcreateGroupOFFhandler}
-                                    createGroupClickedHandlerON={createGroupClickedHandlerON}
-                                    
-                                />
-                            </Modal>
-
-                            
-                            :
-                                null
-                    }
-                    <BodyTableGroup title="Group"
-                        createGroupClickedHandlerOFF={createGroupClickedHandlerOFF}
-                        createGroupClicked={ createGroupClicked}
-                    />
-                </div>
+        <TokenVerification>
+            <div className={classes.homePage}>
                 
+                <Header />
+                <div className={classes.homePage__body}>
+                    <SideBar />
+
+                    <div className={ classes.group__body}>
+                        <BodyTable
+                            header="Target Audience Groups" 
+                            buttonName="Create Group"
+                            title="Target Audience Groups"
+                            showcreateGroupONhandler={showcreateGroupONhandler}
+                        />
+
+                        {
+                            showcreateGroup
+                                ?
+
+                                <Modal>
+                                    <TargetAudienceGroupComponent
+                                        showGroupOFFhandler={showcreateGroupOFFhandler}
+                                        createGroupClickedHandlerON={createGroupClickedHandlerON}
+                                        
+                                    />
+                                </Modal>
+
+                                
+                                :
+                                    null
+                        }
+                        <BodyTableGroup title="Group"
+                            createGroupClickedHandlerOFF={createGroupClickedHandlerOFF}
+                            createGroupClicked={ createGroupClicked}
+                        />
+                    </div>
+                    
+                </div>
             </div>
-        </div>
+        </TokenVerification>
     )
 }
 

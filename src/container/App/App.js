@@ -23,43 +23,48 @@ import LogsPage from '../../pages/LogsPage/LogsPage';
 import TargetInfoPage from '../../pages/TargetInfo/TargetInfoPage';
 import UserProfilePage from '../../pages/UserProfilePage/UserProfilePage';
 
+
+//Error Boundary
+import ErrorBoundary from '../../hoc/ErrorBoundary';
+
 function App(props) {
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/home/campaign" exact component={ Campaign}/>
-        <Route path="/home/create-campagin" component={CreateCampaginPage} />
-        <Route path="/login" exact component={LoginRegisterUI} />
-        <Route path="/home/templates" exact component={TempaltePage} />
-        <Route path="/home/create-template" exact component={CreateTemplatePage} />
-        <Route path="/forgot-password/verify-your-email" exact component={VerifyYourEmail} />
-        <Route path="/home/user-management" exact component={UserManagementPage} />
-        <Route path="/home/create-user" exact component={CreateUserPage} />
-        <Route path="/home/setting" exact component={Setting} />
-        <Route path="/home/targetaudiencegroup" component={ TargetAudienceGroup}/>
+      <ErrorBoundary>
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/home/campaign" exact component={ Campaign}/>
+          <Route path="/home/create-campagin" component={CreateCampaginPage} />
+          <Route path="/login" exact component={LoginRegisterUI} />
+          <Route path="/home/templates" exact component={TempaltePage} />
+          <Route path="/home/create-template" exact component={CreateTemplatePage} />
+          <Route path="/forgot-password/verify-your-email" exact component={VerifyYourEmail} />
+          <Route path="/home/user-management" exact component={UserManagementPage} />
+          <Route path="/home/create-user" exact component={CreateUserPage} />
+          <Route path="/home/setting" exact component={Setting} />
+          <Route path="/home/targetaudiencegroup" component={ TargetAudienceGroup}/>
 
-        {/* log and targetinfo  */}
-        <Route path="/logs" exact component={LogsPage} />
-        <Route path="/target-info" exact component={TargetInfoPage} />
+          {/* log and targetinfo  */}
+          <Route path="/logs" exact component={LogsPage} />
+          <Route path="/target-info" exact component={TargetInfoPage} />
 
-        {/* user profile */}
-        <Route exact path="/user-profile" component={UserProfilePage} />
+          {/* user profile */}
+          <Route exact path="/user-profile" component={UserProfilePage} />
 
-        {/* template */}
+          {/* template */}
 
-        {/* raw template */}
-        <Route path="/template/001/" exact component={Template001} />
-        <Route path="/template/002/" exact component={Template002} />
+          {/* raw template */}
+          <Route path="/template/001/" exact component={Template001} />
+          <Route path="/template/002/" exact component={Template002} />
 
-        
-        <Route path="/template/001/:uuid/:campaignid/:tempNam" exact component={Template001} />
-        <Route path="/template/002/:uuid/:campaignid/:tempName" exact component={Template002} />
+          
+          <Route path="/template/001/:uuid/:campaignid/:tempNam" exact component={Template001} />
+          <Route path="/template/002/:uuid/:campaignid/:tempName" exact component={Template002} />
 
-        {/* test */}
-        <Route path="*" component={PageNotFound} />
-      </Switch>
-      
+          {/* test */}
+          <Route path="*" component={PageNotFound} />
+        </Switch>
+      </ErrorBoundary>
     </Router>
   );
 }

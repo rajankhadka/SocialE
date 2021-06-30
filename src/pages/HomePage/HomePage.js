@@ -15,6 +15,13 @@ import TargetAudienceGroup from '../../components/TargetAudienceGroup/TargetAudi
 import ShowGroup from '../../components/TargetAudienceGroup/ShowGroup/ShowGroup';
 import { SpecificCampaignDetailProvider } from '../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';
 import { campaignApi } from '../../api/campaign/campaign';
+import { signinApi } from '../../api/signin/signin';
+import ErrorBoundary from '../../hoc/ErrorBoundary';
+
+
+//token and user
+const token = window.localStorage.getItem('token');
+const user = window.localStorage.getItem('user');
 
 function HomePage(props) {
 
@@ -43,13 +50,15 @@ function HomePage(props) {
                 "Authorization": `Token ${window.localStorage.getItem('token')}`
             },
         })
-            .then(response => response.json())
+            .then(response => {
+                if(response.status === 401) throw new Error("Session Expried")
+               return response.json()
+            })
             .then(data => {
                 
                 setCampaign(data.payload);
             })
             .catch(err => console.log(err));
-        
     }, [campaignEditTrigger,campaignDeleteTrigger]);
 
     //show create group
@@ -76,65 +85,102 @@ function HomePage(props) {
     //trigger off the show all group
     const showOFFAllGroupHandler = () => setShowAllGroup(false);
 
-    const homepageHistory = useHistory()
-    return (
-        <div className={classes.homePage}>
-            {window.localStorage.getItem("token") === null && homepageHistory.replace('/login')}
-            <Header />
-            <div className={classes.homePage__body}>
-                <SideBar />
+    const homepageHistory = useHistory();
 
-                <SpecificCampaignDetailProvider>
+    //checking and verifying token
 
-                    <BodyTable
-                        
-                        // edit campaign
-                        campaignEditTrigger={campaignEditTrigger}
-                        campaignEditTriggerHanlderOFF={campaignEditTriggerHanlderOFF}
-                        campaignEditTriggerHanlderON={campaignEditTriggerHanlderON}
-
-                        // delete campaign
-                        campaignDeleteTrigger={campaignDeleteTrigger}
-                        campaignDeleteTriggerHandlerOFF={campaignDeleteTriggerHandlerOFF}
-                        campaignDeleteTriggerHandlerON={campaignDeleteTriggerHandlerON}
-                        
-                        header="Campaigns" 
-                        buttonName="Add New Campaign"
-                        groupName="Create Group"
-                        title="Campaign" 
-                        url="/home/create-campagin"
-                        campaigndetailURL="/home/campaign"
-                        data={campaign}
-                        showGroup={showGroup}
-                        showGroupONHandler={showGroupONHandler}
-                        showAllGroup="All Groups"
-                        showONAllGroupHandler={showONAllGroupHandler}
-                    />
-                </SpecificCampaignDetailProvider>
+    useEffect(()=>{
+        console.log("object",window.localStorage.getItem('token'));
+        fetch(signinApi.tokenverification,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Token ${window.localStorage.getItem('token')}`
+            },
+            body:JSON.stringify({
+                token:window.localStorage.getItem('token'),
+                username:window.localStorage.getItem('user')
+            })
+        })
+            .then(res => {
+                if(res.status === 200){
+                    setErrorOccured(false);
+                    return res.json()
+                }else{
+                    setErrorOccured(true);
+                    window.localStorage.removeItem('token');
+                    window.localStorage.removeItem('user');
+                }
                 
+            })
+            .catch(err => console.log(err));
+        
+        return ()=>{
+            setErrorOccured(false);
+        }
+    },[]);
 
-                {
-                    showGroup
-                        ?
-                        <TargetAudienceGroup
-                            showGroupOFFhandler={showGroupOFFhandler}
+    const [errorOccured, setErrorOccured] = useState(false)
+    return (
+        <ErrorBoundary>
+            <div className={classes.homePage}>
+                {(window.localStorage.getItem("token") === null || errorOccured) && homepageHistory.replace('/login')}
+                <Header />
+                <div className={classes.homePage__body}>
+                    <SideBar />
+
+                    <SpecificCampaignDetailProvider>
+
+                        <BodyTable
+                            
+                            // edit campaign
+                            campaignEditTrigger={campaignEditTrigger}
+                            campaignEditTriggerHanlderOFF={campaignEditTriggerHanlderOFF}
+                            campaignEditTriggerHanlderON={campaignEditTriggerHanlderON}
+
+                            // delete campaign
+                            campaignDeleteTrigger={campaignDeleteTrigger}
+                            campaignDeleteTriggerHandlerOFF={campaignDeleteTriggerHandlerOFF}
+                            campaignDeleteTriggerHandlerON={campaignDeleteTriggerHandlerON}
+                            
+                            header="Campaigns" 
+                            buttonName="Add New Campaign"
+                            groupName="Create Group"
+                            title="Campaign" 
+                            url="/home/create-campagin"
+                            campaigndetailURL="/home/campaign"
+                            data={campaign}
+                            showGroup={showGroup}
+                            showGroupONHandler={showGroupONHandler}
+                            showAllGroup="All Groups"
+                            showONAllGroupHandler={showONAllGroupHandler}
                         />
-                        :
+                    </SpecificCampaignDetailProvider>
+                    
+
+                    {
+                        showGroup
+                            ?
+                            <TargetAudienceGroup
+                                showGroupOFFhandler={showGroupOFFhandler}
+                            />
+                            :
+                                null
+                    }
+
+                    {
+                        showAllGroup
+                            ?
+                            <ShowGroup
+                                showOFFAllGroupHandler={showOFFAllGroupHandler}
+                            />
+                            :
                             null
-                }
+                    }
+                </div>
 
-                {
-                    showAllGroup
-                        ?
-                        <ShowGroup
-                            showOFFAllGroupHandler={showOFFAllGroupHandler}
-                        />
-                        :
-                        null
-                }
             </div>
-
-        </div>
+        </ErrorBoundary>
     )
 }
 

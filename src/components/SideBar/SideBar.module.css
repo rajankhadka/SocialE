@@ -1,8 +1,6 @@
+/* smaller devices */
+@media screen and (max-width:600px){
 
-
-
-
-@media screen and (max-width:420px){
   .sideBar__body__sideBar{
     width: 50px !important;
   }
@@ -13,16 +11,20 @@
 
   .sideBar__body__sideBar__content{
     height: 100%;
+    margin-top: 0px;
   }
 } 
 
-@media screen and (min-width:421px){
+/* medium and large devices */
+@media screen and (min-width:600px){
+
   .sideBar__body__sideBar__header{
     display: flex;
   }
 
   .sideBar__body__sideBar__content{
     height: 92%;
+    margin-top: -15px;
   }
 }
 
@@ -40,7 +42,7 @@
 .sideBar__body__sideBar__content {
   color: white;
   font-size: 8px;
-  margin-top: -15px;
+  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
