@@ -4,11 +4,14 @@ import classes from "./SideBar.module.css"
 //material UI
 import { IconButton } from '@material-ui/core';
 import {
-    Close, Group, Home,
+    Close, Home,
     TrackChanges, Warning, Menu,
     Description,
     Settings,
-    AccountCircle
+    AccountCircle,
+    ExitToApp,
+    Person,
+    Group
 } from '@material-ui/icons';
 
 //react router
@@ -35,7 +38,8 @@ function SideBar(props) {
                 width : props.showsidebarReducers.sidebaropen ? "200px" : "50px"
             }}
         >
-            <div className={classes.sideBar__body__sideBar__header}
+            <div 
+                className={classes.sideBar__body__sideBar__header}
             >
                 <IconButton onClick={()=> props.closesidebarAction()}>
                     {props.showsidebarReducers.sidebaropen
@@ -100,7 +104,7 @@ function SideBar(props) {
                             sideBarHistory.push("/home/targetaudiencegroup")
                         }}
                     >
-                        <Description style={{fontSize: 30}} />
+                        <Group style={{fontSize: 30}} />
                         <h1>Group</h1>
                         
                     </div>
@@ -115,7 +119,7 @@ function SideBar(props) {
                         }}
                         onClick={() => {
                             props.logssidebarAction()
-                            sideBarHistory.push("/");
+                            sideBarHistory.push("/logs");
                         }}
                     >
                         <Warning style={{fontSize: 30}}/>
@@ -133,7 +137,7 @@ function SideBar(props) {
                         }}
                         onClick={() => {
                             props.targetinfosidebarAction()
-                            sideBarHistory.push("/");
+                            sideBarHistory.push("/target-info");
                         }}
                     >
                         <TrackChanges style={{fontSize: 30}}/>
@@ -154,7 +158,7 @@ function SideBar(props) {
                         }}
                     
                     >
-                        <AccountCircle style={{fontSize: 30}}/>
+                        <Person style={{fontSize: 30}}/>
                         <h1>UserManagement</h1>
                     </div>
 
@@ -184,7 +188,7 @@ function SideBar(props) {
                         }}
                         onClick={() => {
                             props.userprofilesidebarAction();
-                            sideBarHistory.push("/uesr-pofile");
+                            sideBarHistory.push("/user-profile");
                         }}
                     
                     >
@@ -198,6 +202,8 @@ function SideBar(props) {
 
                 {/* footer */}
                 <div className={classes.bodycontent__bottom}>
+
+                    {/* logout */}
                     <div 
                         style={{
                             backgroundColor:'red'
@@ -209,7 +215,7 @@ function SideBar(props) {
                             window.localStorage.removeItem('user');
                         }}
                     >
-                        <AccountCircle style={{fontSize: 30}}/>
+                        <ExitToApp style={{fontSize: 30}}/>
                         <h1>Log Out</h1>
                     </div>  
                 </div>

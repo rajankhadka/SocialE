@@ -5,7 +5,7 @@ const campaignApi = {
     'campaigngetlist': BASEURL+'campaign/getlist/',
     'campaignsend': BASEURL + 'campaign/send/',
     'campaignupdate': BASEURL + 'campaign/update/detail/',
-    'campaigndelete': BASEURL + '',
+    'campaigndelete': BASEURL + 'campaign/delete/',
     'campaignretrieve': BASEURL + 'campaign/retrieve/',
     'campaignmail_list': BASEURL + 'campaign/update/mail_list/',
     'addUsermailList':BASEURL + 'campaign/target_mail_list/',

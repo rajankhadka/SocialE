@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import classes from "./TemplatePage.module.css"
 
 //importing components
@@ -10,12 +10,47 @@ import BodyTable from "../../components/UI/BodyTable/BodyTable";
 import { connect } from "react-redux";
 import { closeTooltip } from "../../redux/actions/showToolTipAction";
 import { SpecificCampaignDetailProvider } from "../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext";
+import { signinApi } from "../../api/signin/signin";
+
+//react router dom
+import { useHistory } from "react-router-dom";
+
+const token = window.localStorage.getItem('token');
+const user = window.localStorage.getItem('user')
 
 const TemplatePage = props => {
     
+    const templatePageHistory = useHistory();
+
+    useEffect(()=>{
+        
+        fetch(signinApi.tokenverification,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Token ${window.localStorage.getItem('token')}`
+            },
+            body:JSON.stringify({
+                token:window.localStorage.getItem('token'),
+                username:window.localStorage.getItem('user')
+            })
+        })
+            .then(res => {
+                if(res.status === 200){
+                    return res.json()
+                }else{
+                    templatePageHistory.replace('/login');
+                    window.localStorage.removeItem('token');
+                    window.localStorage.removeItem('user');
+                }
+                
+            })
+            .catch(err => console.log(err));
+    },[token,user])
     
     return(
-        <div className={classes.homePage}  >
+        <div className={classes.homePage} >
+            {window.localStorage.getItem("token") === null && templatePageHistory.replace('/login')}
             <Header />
             <div className={classes.homePage__body}>
                 <SideBar />

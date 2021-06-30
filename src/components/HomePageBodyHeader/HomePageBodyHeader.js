@@ -2,7 +2,7 @@ import React,{} from "react";
 import classes from "./HomePageBodyHeader.module.css"
 
 //material UI
-import { Button, TextField } from '@material-ui/core';
+import { Button, Select, TextField } from '@material-ui/core';
 import { Add, Search } from '@material-ui/icons';
 
 //react router 
@@ -42,7 +42,11 @@ const HomePageBodyHeader = (props) =>{
         );
     } else if (props.header === 'Templates' && props.templatePageToggle === "create") {
         searchButton = null;
-    } else {
+    }else if(props.header === "User Management"){
+
+    } 
+    
+    else {
         searchButton = (
             <div className={classes.homePage__body__bodyHeaderCompanyRight}
                 // style={{
@@ -66,6 +70,8 @@ const HomePageBodyHeader = (props) =>{
             <div className={classes.homePage__body__bodyHeaderTitle}>
                 <div className={classes.homePage__tabView}>
                     <h2>{props.header}</h2>
+
+                    {/* template header */}
                     {
                         props.header === 'Templates' &&
                         <div className={classes.homePage__tabView__right}>
@@ -96,6 +102,27 @@ const HomePageBodyHeader = (props) =>{
                             </div>
                         </div>
                     }
+
+                    {/* campaign header */}
+                    {
+                        props.header === 'Campaigns' && 
+                        <div 
+                            className={classes.homePage__tabView__right}
+                            style={{backgroundColor:'white '}}
+                        >
+                            <Select 
+                                native
+                                label="campaign"
+                                id="campaign"
+                                name="campaign"
+                                // value
+                                // onChange
+                            >
+                                <option value="all"> All </option>
+                                <option value="only">Only Yours</option>
+                            </Select>
+                        </div>
+                    }
                 </div>
                 
             </div>
@@ -117,45 +144,21 @@ const HomePageBodyHeader = (props) =>{
                                 fontWeight: 'lighter',
                                 marginLeft: "10px"
                             }}
-                            onClick = {props.header === "Campaigns" ?   campaignCreateHandler : ()=>props.showcreateGroupONhandler()}
+                            onClick = { () =>{
+                                if(props.header === 'Campaigns'){
+                                    campaignCreateHandler();
+                                }else if(props.header === 'User Management'){
+                                        console.log("user management");
+                                        console.log(props.url)
+                                        homepageHistory.push(props.url);
+                                }else{
+                                    props.showcreateGroupONhandler()
+                                }
+                            }}
                         >
                             {props.buttonName}
                         </Button>
 
-                        
-                        {
-                            // props.header === "Campaigns" &&
-                                // <>
-                                //                 {/* All group  */}
-                                //     <Button variant="text"
-                                //         startIcon={<List />}
-                                //         style={{
-                                //             // fontSize: 15,
-                                //             textTransform: 'capitalize',
-                                //             marginLeft: "10px",
-                                //         }}
-                                //         onClick = {props.showONAllGroupHandler}
-                                //     >
-                                //         {props.showAllGroup}
-                                //     </Button>
-
-                                //     {/* create group  */}
-                                //     <Button variant="text"
-                                //         startIcon={<Add />}
-                                //         style={{
-                                //             // fontSize: 15,
-                                //             textTransform: 'capitalize',
-                                //             marginLeft: "10px",
-                                //         }}
-                                //         onClick = {props.showGroupONHandler}
-                                //     >
-                                //         {props.groupName}
-                                //     </Button>
-                                // </>
-                        }
-
-                        
-                        
                     </div>
                 }
 

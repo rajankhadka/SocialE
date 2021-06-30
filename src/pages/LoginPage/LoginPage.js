@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import classes from "./LoginPage.module.css";
 
 //material UI
@@ -210,9 +210,10 @@ function LoginPage(props) {
                                 data.email_and_sms_two_factor_auth === false
                             ) {
                                 window.localStorage.setItem('token', token.key);
-                                console.log(token);
-                                console.log("Two Factor Auth not implemented");
-                                console.log("time to online");
+                                window.localStorage.setItem('user',token.user)
+                                // console.log(token);
+                                // console.log("Two Factor Auth not implemented");
+                                // console.log("time to online");
                                 setTwoAuth("");
                                 setMessage("");
                                 loginHistory.replace("/")
@@ -348,22 +349,22 @@ function LoginPage(props) {
                     value={password.value}
                     error={password.error}
                     required
-                    InputProps={{
-                        endAdornment: 
-                            // <div style={{marginLeft:'85%'}}>
-                                <IconButton
-                                    style={{
-                                        // marginLeft:'85%',                                        // marginLeft: password.showPassword && "62px",
-                                        // backgroundColor:"red"
-                                    }}
-                                    onClick={showPasswordHandler}
-                                    // edge="end"
-                                >
-                                    {/* {password.showPassword ? <Visibility /> :<VisibilityOff/>} */}
-                                </IconButton>
-                            // </div>
+                    // // InputProps={{
+                    // //     endAdornment: 
+                    //         // <div style={{marginLeft:'85%'}}>
+                    //             <IconButton
+                    //                 style={{
+                    //                     // marginLeft:'85%',                                        // marginLeft: password.showPassword && "62px",
+                    //                     // backgroundColor:"red"
+                    //                 }}
+                    //                 onClick={showPasswordHandler}
+                    //                 // edge="end"
+                    //             >
+                    //                 {/* {password.showPassword ? <Visibility /> :<VisibilityOff/>} */}
+                    //             </IconButton>
+                    //         // </div>
                             
-                    }}
+                    // }}
 
                     onFocus={() => {
                         setPassword(prevState => {
@@ -377,7 +378,8 @@ function LoginPage(props) {
                 />
 
                 <Button variant="contained"
-                    type="submit" color="primary" disabled={ buttondisable || initialclick }
+                    type="submit" color="primary" 
+                    // disabled={ buttondisable || initialclick }
                     className={classes.loginPage__button}
                 >
                     Sign In
@@ -645,6 +647,37 @@ function LoginPage(props) {
     } else {
         email_sms = null;
     }
+
+    //cleanup
+    useEffect(()=>{
+        //clean up
+        return () =>{
+            setTwostepmsg("");
+            setPhonenumber("");
+            setOtpcode({
+                value: "",
+                error: false,
+                helperText:"",
+            });
+            setMessage("");
+            setTwoAuth("");
+            setInitialclick(true);
+            setButtondisable(false);
+            setErrormsg("");
+            setPassword({
+                error: false,
+                helperText: "",
+                value: "",
+                showPassword : false
+            });
+            setEmail({
+                error: false,
+                helperText: "",
+                value:""
+            });
+            setTwosteptotp("");
+        }
+    },[])
 
     return (
         <div className={classes.loginPage}>

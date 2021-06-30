@@ -27,7 +27,6 @@ function BodyTableGroup(props) {
     const [organizationName, setOrganizationName] = useState([]);
 
     useEffect(() => {
-        console.log("[Body Table Group components]");
         
         fetch(targetAudienceApi.targetusergroupget, {
             method: "GET",
@@ -54,7 +53,7 @@ function BodyTableGroup(props) {
                         }
                     }
                 })
-                console.log(organization);
+                // console.log(organization);
                 setOrganizationName([...organization]);
 
             })

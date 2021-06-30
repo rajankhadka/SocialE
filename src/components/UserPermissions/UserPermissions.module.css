@@ -56,8 +56,14 @@
   width: 300px;
   height: 50vh;
   box-sizing: border-box;
-  overflow-x: scroll;
-  overflow-y: scroll;
+  overflow: scroll;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.userpermissions__body__left__body::-webkit-scrollbar{
+  display: none;
 }
 
 .userpermissions__body__left__body > p {

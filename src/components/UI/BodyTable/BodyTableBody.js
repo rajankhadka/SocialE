@@ -8,6 +8,7 @@ import classes from "./BodyTableBody.module.css";
 import { template } from "../../../api/template/template";
 import CampaignTargetAudienceGroup from '../../CampaignTargetAudienceGroup/CampaignTargetAudienceGroup';
 import CampaignPreview from '../../CampaignPreview/CampaignPreview';
+import { campaignApi } from '../../../api/campaign/campaign';
 
 function BodyTableBody(props) {
 
@@ -297,7 +298,7 @@ function BodyTableBody(props) {
 
                 <Model>
                     <div className={classes.deleteGroup} style={{
-                        width: '40%', display: 'flex',
+                        display: 'flex',
                         flexDirection: 'column', alignItems: 'center'
 
                     }}>
@@ -306,7 +307,25 @@ function BodyTableBody(props) {
                             <button
                                 className={classes.DeleteButton}
                                 onClick={() => {
-                                    props.campaignDeleteTriggerHandlerOFF();
+                                    console.log("yes delete");
+
+                                    fetch(campaignApi.campaigndelete,{
+                                        method:'DELETE',
+                                        headers:{
+                                            'Content-Type':'application/json',
+                                            'Authorization':`Token ${window.localStorage.getItem('token')}`
+                                        },
+                                        body:JSON.stringify({
+                                            campaign_id:campaignDetail.id
+                                        })
+                                    })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            console.log(data);
+                                            props.campaignDeleteTriggerHandlerOFF();
+                                        })
+                                        .catch(err => console.log(err))
+                                    
                                 }}
                             >
                                 Yes
@@ -315,6 +334,7 @@ function BodyTableBody(props) {
                             <button
                                 className={classes.DeleteNotButton}
                                 onClick={() => {
+                                    console.log("no delete")
                                     props.campaignDeleteTriggerHandlerOFF();
                                 }}
                             >

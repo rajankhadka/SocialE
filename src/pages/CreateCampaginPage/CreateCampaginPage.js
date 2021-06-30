@@ -43,6 +43,7 @@ import { template } from "../../api/template/template";
 //api
 import {targetAudienceApi} from "../../api/targetAudience/targetAudience"
 import { campaignApi } from "../../api/campaign/campaign";
+import TokenVerification from "../../hoc/TokenVerification";
 
 const CreateCampaginPage = (props) => {
 
@@ -588,273 +589,276 @@ const CreateCampaginPage = (props) => {
     const [newTargetAudienceSuccess, setNewTargetAudienceSuccess] = useState(false);
 
     return(
-        <div className={classes.homePage}>
-            <Header />
-            <div className={classes.homePage__body}>
-                <SideBar />
-                <div className={classes.createCampaignBody}>
-                   <div className={classes.createCampaignBodyHeader}>
-                        <h2>Create Campaign</h2>
-                   </div>
 
-                    <div className={classes.createCampaignBody__body}>
-                        <div className={classes.createCampaignBody__body__left}>
+        <TokenVerification>
+            <div className={classes.homePage}>
+                <Header />
+                <div className={classes.homePage__body}>
+                    <SideBar />
+                    <div className={classes.createCampaignBody}>
+                    <div className={classes.createCampaignBodyHeader}>
+                            <h2>Create Campaign</h2>
+                    </div>
 
-                            {
-                                createCampaignSuccess &&
-                                <div className={classes.createCampaign__success}>
-                                    <p>Successfully Created!!!</p>
-                                    <Close onClick={ () => setCreateCampaignSuccess(false)}/>
-                                </div>
-                            }
-                            
-                            {
-                                createCampaignError &&
-                                <div className={classes.createCampaign__invalid}>
-                                    <p>Invalid Data!!!</p>
-                                    <Close onClick={ () => setCreateCampaignError(false)}/>
-                                </div>
-                            }
-                            <form method="POST" onSubmit={campaignDataHandler}>
-                                <TextField variant="standard"
-                                    name="Campaign Name"
-                                    label="Campaign Name"
-                                    value={campaignValue.campaignName.value}
-                                    onChange={campaignValueHandler}
-                                    style={{  marginBottom: "10px", width:"250px"}}
-                                />
+                        <div className={classes.createCampaignBody__body}>
+                            <div className={classes.createCampaignBody__body__left}>
 
-                                <TextField
-                                    variant="standard"
-                                    name="Campaign Subject"    
-                                    label="Campaign Subject"
-                                    value={campaignValue.campaignSubject.value}
-                                    onChange={campaignValueHandler}
-                                    style={{ marginBottom: "10px", width:"250px"}}
-                                />
-
-
-                                <FormControl style={{width:"250px",marginBottom: "20px"}}>
-                                    <InputLabel id="selectTemplate">Select Template</InputLabel>
-                                    <Select
-                                        name="selectTemplate"
-                                        native
-                                        labelId="selectTemplate"
-                                        id="selectTemplate"
-                                        value={campaignValue.selectTemplate.value}
+                                {
+                                    createCampaignSuccess &&
+                                    <div className={classes.createCampaign__success}>
+                                        <p>Successfully Created!!!</p>
+                                        <Close onClick={ () => setCreateCampaignSuccess(false)}/>
+                                    </div>
+                                }
+                                
+                                {
+                                    createCampaignError &&
+                                    <div className={classes.createCampaign__invalid}>
+                                        <p>Invalid Data!!!</p>
+                                        <Close onClick={ () => setCreateCampaignError(false)}/>
+                                    </div>
+                                }
+                                <form method="POST" onSubmit={campaignDataHandler}>
+                                    <TextField variant="standard"
+                                        name="Campaign Name"
+                                        label="Campaign Name"
+                                        value={campaignValue.campaignName.value}
                                         onChange={campaignValueHandler}
-                                        
-                                    >
-                                        <option value="" />
-                                        <option  value="create template">Create Template</option>
-                                        
-                                        {
-                                            templateName.map(item => <option key={item.id} value={item.id}> {item.template_name} </option>)
-                                        }
-
-                                        
-                                    </Select>
-                                </FormControl>
-
-                                {/* choose target audience group */}
-                                <div className={classes.createCampaign__template}>
-                                    <label htmlFor="template">Group</label>
-                                    <div className={classes.createCampaign__template__button}>
-                                        <ThemeProvider theme={theme} >
-                                            <Button variant="text"
-                                                startIcon={<Add />}
-                                                style={{
-                                                    fontSize: 15,
-                                                    backgroundColor: showcreateGroup && "#2bae66",
-                                                    fontWeight: '400',
-                                                    marginLeft: "10px"
-                                                }}
-                                                onClick={()=> showcreateGroupONhandler()}
-                                            >
-                                                Create Group
-                                            </Button>
-                                        </ThemeProvider>
-                                        
-                                        <ThemeProvider theme={theme}>
-                                            
-                                            <Button variant="text"
-                                                startIcon={<List />}
-                                                style={{
-                                                    fontSize: 15,
-                                                    backgroundColor: chooseGroupActive && "#2bae66",
-                                                    fontWeight: 'lighter',
-                                                    marginLeft: "10px"
-                                                }}
-                                                onClick= {chooseTargetAudienceGroup}
-                                            >
-                                                Choose Group
-                                            </Button>
-                                        </ThemeProvider>
-                                    </div>
-                                </div>
-                                
-                                <label htmlFor="startDate">Start Date</label>
-
-                                <TextField
-                                    variant="standard"
-                                    type="date"
-                                    id="startDate"
-                                    name="startDate"
-                                    style={{marginBottom:"10px" }}
-                                    value={campaignValue.campaignStartDate.value}
-                                    onChange={campaignValueHandler}
-                                />
-
-                                <label htmlFor="endDate">End Date</label>
-                                <TextField
-                                    variant="standard"
-                                    type="date"
-                                    id="endDate"
-                                    name="endDate"
-                                    style={{marginBottom: "20px"}}
-                                    value={campaignValue.campaignEndDate.value}
-                                    onChange={campaignValueHandler}
-                                />
-                                
-                               
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    style={{ width: "250px" }}
-                                    disabled={
-                                        !(
-                                            campaignValue.campaignName.valid &&
-                                            campaignValue.campaignSubject.valid &&
-                                            campaignValue.selectTemplate.valid &&
-                                            campaignValue.campaignStartDate.valid &&
-                                            campaignValue.campaignEndDate.valid &&
-                                            (campaignTargetUser.length > 0 || initialData)
-                                        )
-                                            ? true
-                                            : false
-                                        
-                                    }
-                                >
-                                    Create Campaign
-                                </Button>
-                            </form>
-                            
-                            {
-                                showcreateGroup &&
-                                <Modal>
-                                    <TargetAudienceGroupComponent
-                                        showGroupOFFhandler={showcreateGroupOFFhandler}
-                                        createGroupClickedHandlerON={createGroupClickedHandlerON}
+                                        style={{  marginBottom: "10px", width:"250px"}}
                                     />
-                                </Modal>
+
+                                    <TextField
+                                        variant="standard"
+                                        name="Campaign Subject"    
+                                        label="Campaign Subject"
+                                        value={campaignValue.campaignSubject.value}
+                                        onChange={campaignValueHandler}
+                                        style={{ marginBottom: "10px", width:"250px"}}
+                                    />
+
+
+                                    <FormControl style={{width:"250px",marginBottom: "20px"}}>
+                                        <InputLabel id="selectTemplate">Select Template</InputLabel>
+                                        <Select
+                                            name="selectTemplate"
+                                            native
+                                            labelId="selectTemplate"
+                                            id="selectTemplate"
+                                            value={campaignValue.selectTemplate.value}
+                                            onChange={campaignValueHandler}
+                                            
+                                        >
+                                            <option value="" />
+                                            <option  value="create template">Create Template</option>
+                                            
+                                            {
+                                                templateName.map(item => <option key={item.id} value={item.id}> {item.template_name} </option>)
+                                            }
+
+                                            
+                                        </Select>
+                                    </FormControl>
+
+                                    {/* choose target audience group */}
+                                    <div className={classes.createCampaign__template}>
+                                        <label htmlFor="template">Group</label>
+                                        <div className={classes.createCampaign__template__button}>
+                                            <ThemeProvider theme={theme} >
+                                                <Button variant="text"
+                                                    startIcon={<Add />}
+                                                    style={{
+                                                        fontSize: 15,
+                                                        backgroundColor: showcreateGroup && "#2bae66",
+                                                        fontWeight: '400',
+                                                        marginLeft: "10px"
+                                                    }}
+                                                    onClick={()=> showcreateGroupONhandler()}
+                                                >
+                                                    Create Group
+                                                </Button>
+                                            </ThemeProvider>
+                                            
+                                            <ThemeProvider theme={theme}>
+                                                
+                                                <Button variant="text"
+                                                    startIcon={<List />}
+                                                    style={{
+                                                        fontSize: 15,
+                                                        backgroundColor: chooseGroupActive && "#2bae66",
+                                                        fontWeight: 'lighter',
+                                                        marginLeft: "10px"
+                                                    }}
+                                                    onClick= {chooseTargetAudienceGroup}
+                                                >
+                                                    Choose Group
+                                                </Button>
+                                            </ThemeProvider>
+                                        </div>
+                                    </div>
+                                    
+                                    <label htmlFor="startDate">Start Date</label>
+
+                                    <TextField
+                                        variant="standard"
+                                        type="date"
+                                        id="startDate"
+                                        name="startDate"
+                                        style={{marginBottom:"10px" }}
+                                        value={campaignValue.campaignStartDate.value}
+                                        onChange={campaignValueHandler}
+                                    />
+
+                                    <label htmlFor="endDate">End Date</label>
+                                    <TextField
+                                        variant="standard"
+                                        type="date"
+                                        id="endDate"
+                                        name="endDate"
+                                        style={{marginBottom: "20px"}}
+                                        value={campaignValue.campaignEndDate.value}
+                                        onChange={campaignValueHandler}
+                                    />
+                                    
                                 
-                            }
-
-                        </div>
-                       
-                        {/* right part  */}
-
-                        <div className={classes.createCampaignBody__body__right}>
-                            
-                            {/* available target audience group  */}
-
-                            {
-                                chooseGroup &&  
-                                <div className={classes.createCampaignBody__right__availableGroup}>
-
-                                    <div className={classes.createCampaignBody__right__header}>
-                                        <div
-                                            className={classes.createCampaignBody__right__available}
-                                            onClick={() => setAddNewAudience(false)}
-                                            style={{
-                                                backgroundColor: !addNewAudience ? "#2bae66" : "#EDEDED",
-                                                color: !addNewAudience ? "#EDEDED" : "#2bae66"
-                                            }}
-                                        >
-                                            Available Targeted Group
-                                        </div>
-
-                                        
-
-                                    </div>
-
-                                    <div className={classes.createCampaignBody__right__body}>
-
-                                        {
-                                            targetAudienceGroup  
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        style={{ width: "250px" }}
+                                        disabled={
+                                            !(
+                                                campaignValue.campaignName.valid &&
+                                                campaignValue.campaignSubject.valid &&
+                                                campaignValue.selectTemplate.valid &&
+                                                campaignValue.campaignStartDate.valid &&
+                                                campaignValue.campaignEndDate.valid &&
+                                                (campaignTargetUser.length > 0 || initialData)
+                                            )
+                                                ? true
+                                                : false
+                                            
                                         }
-
-                                        
-                                    </div>
-                                </div>
-                            }
-
-                            {/* available target audience */}
-
-                            {
-                                (chooseGroup && groupSelected.length > 0) && 
-                                <div className={classes.createCampaignBody__right__availableAudience}>
-
-                                    <div className={classes.createCampaignBody__right__header}>
-                                        <div
-                                            className={classes.createCampaignBody__right__available}
-                                            onClick={() => setAddNewAudience(false)}
-                                            style={{
-                                                backgroundColor: !addNewAudience ? "#2bae66" : "#EDEDED",
-                                                color: !addNewAudience ? "#EDEDED" : "#2bae66"
-                                            }}
-                                        >
-                                            Available Targeted Audience
-                                        </div>
-
-                                        
-
-                                    </div>
-
-                                    <div className={classes.createCampaignBody__right__body}>
-                                        {newTargetAudienceError && <p style={{ color: "red" }}>Invalid Email!!!</p>}
-                                        {newTargetAudienceSuccess &&  <p style={{color:"green"}}>Succeefully Email Added!!!</p>}
-                                        <input type="text"
-                                            onKeyPress={(event) => {
-                                                if (event.key === "Enter") {
-                                                    if (validator.isEmail(newTargetAudience)) {
-                                                        props.addnewTargetAudienceAction({ id: uuidv4(), email: newTargetAudience, click: true,targetusergroup:null });
-                                                        setNewTargetAudienceError(false);
-                                                        setNewTargetAudience("");
-                                                        setNewTargetAudienceSuccess(true);
-                                                    }
-                                                    else {
-                                                        setNewTargetAudienceError(true);
-                                                        setNewTargetAudienceSuccess(false);
-                                                    }
-                                                    
-                                                }
-                                            }}
-                                            className={classes.createCampaignBody__right__body__addAudience}
-                                            placeholder="Add New Email..."
-                                            value={newTargetAudience}
-                                            onChange={(event) => {
-                                                setNewTargetAudience(event.target.value);
-                                                setNewTargetAudienceSuccess(false);
-                                                setNewTargetAudienceError(false);
-                                            }}
+                                    >
+                                        Create Campaign
+                                    </Button>
+                                </form>
+                                
+                                {
+                                    showcreateGroup &&
+                                    <Modal>
+                                        <TargetAudienceGroupComponent
+                                            showGroupOFFhandler={showcreateGroupOFFhandler}
+                                            createGroupClickedHandlerON={createGroupClickedHandlerON}
                                         />
+                                    </Modal>
+                                    
+                                }
 
-                                        {
+                            </div>
+                        
+                            {/* right part  */}
 
-                                            targetAudience  
-                                        }
+                            <div className={classes.createCampaignBody__body__right}>
+                                
+                                {/* available target audience group  */}
 
-                                        
+                                {
+                                    chooseGroup &&  
+                                    <div className={classes.createCampaignBody__right__availableGroup}>
+
+                                        <div className={classes.createCampaignBody__right__header}>
+                                            <div
+                                                className={classes.createCampaignBody__right__available}
+                                                onClick={() => setAddNewAudience(false)}
+                                                style={{
+                                                    backgroundColor: !addNewAudience ? "#2bae66" : "#EDEDED",
+                                                    color: !addNewAudience ? "#EDEDED" : "#2bae66"
+                                                }}
+                                            >
+                                                Available Targeted Group
+                                            </div>
+
+                                            
+
+                                        </div>
+
+                                        <div className={classes.createCampaignBody__right__body}>
+
+                                            {
+                                                targetAudienceGroup  
+                                            }
+
+                                            
+                                        </div>
                                     </div>
-                                </div>
-                            }    
-                        </div>
-                   </div>
+                                }
+
+                                {/* available target audience */}
+
+                                {
+                                    (chooseGroup && groupSelected.length > 0) && 
+                                    <div className={classes.createCampaignBody__right__availableAudience}>
+
+                                        <div className={classes.createCampaignBody__right__header}>
+                                            <div
+                                                className={classes.createCampaignBody__right__available}
+                                                onClick={() => setAddNewAudience(false)}
+                                                style={{
+                                                    backgroundColor: !addNewAudience ? "#2bae66" : "#EDEDED",
+                                                    color: !addNewAudience ? "#EDEDED" : "#2bae66"
+                                                }}
+                                            >
+                                                Available Targeted Audience
+                                            </div>
+
+                                            
+
+                                        </div>
+
+                                        <div className={classes.createCampaignBody__right__body}>
+                                            {newTargetAudienceError && <p style={{ color: "red" }}>Invalid Email!!!</p>}
+                                            {newTargetAudienceSuccess &&  <p style={{color:"green"}}>Succeefully Email Added!!!</p>}
+                                            <input type="text"
+                                                onKeyPress={(event) => {
+                                                    if (event.key === "Enter") {
+                                                        if (validator.isEmail(newTargetAudience)) {
+                                                            props.addnewTargetAudienceAction({ id: uuidv4(), email: newTargetAudience, click: true,targetusergroup:null });
+                                                            setNewTargetAudienceError(false);
+                                                            setNewTargetAudience("");
+                                                            setNewTargetAudienceSuccess(true);
+                                                        }
+                                                        else {
+                                                            setNewTargetAudienceError(true);
+                                                            setNewTargetAudienceSuccess(false);
+                                                        }
+                                                        
+                                                    }
+                                                }}
+                                                className={classes.createCampaignBody__right__body__addAudience}
+                                                placeholder="Add New Email..."
+                                                value={newTargetAudience}
+                                                onChange={(event) => {
+                                                    setNewTargetAudience(event.target.value);
+                                                    setNewTargetAudienceSuccess(false);
+                                                    setNewTargetAudienceError(false);
+                                                }}
+                                            />
+
+                                            {
+
+                                                targetAudience  
+                                            }
+
+                                            
+                                        </div>
+                                    </div>
+                                }    
+                            </div>
+                    </div>
+                    </div>
+                    
                 </div>
-                
             </div>
-        </div>
+        </TokenVerification>
     );
 }
 

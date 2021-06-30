@@ -18,5 +18,8 @@ const signinApi = {
     'setpassword':BASEURL+'setpassword/',
     'sendmail':BASEURL+'sendmail/',
 
+    //token check
+    'tokenverification':BASEURL +'user/state/',
+
 }
 export { signinApi };
