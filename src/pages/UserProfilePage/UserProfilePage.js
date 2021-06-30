@@ -46,11 +46,11 @@ const UserProfilePage = props => {
                             {
                                 userProfile &&
                                 <>
-                                    <h1 className={classes.username}>{userProfile.username}<span>( username )</span></h1>
-                                    <p className={classes.firstname}>{userProfile.first_name} <span>( firstname )</span> </p>
-                                    <p className={classes.lastname}>{userProfile.last_name} <span>( lastname )</span></p>
-                                    <p className={classes.email}>{userProfile.email} <span>( email )</span></p>
-                                    <p className={classes.phonenumber}>{userProfile.phonenumber}<span span>( phonenumber )</span></p>
+                                    <h1 className={classes.username}>{userProfile.username}<span className={classes.userprofilespan}>( username )</span></h1>
+                                    <p className={classes.firstname}>{userProfile.first_name} <span className={classes.userprofilespan}>( firstname )</span> </p>
+                                    <p className={classes.lastname}>{userProfile.last_name} <span className={classes.userprofilespan}>( lastname )</span></p>
+                                    <p className={classes.email}>{userProfile.email} <span className={classes.userprofilespan}>( email )</span></p>
+                                    <p className={classes.phonenumber}>{userProfile.phonenumber} <span className={classes.userprofilespan}>( phonenumber )</span></p>
                                 </>
                             }
                         </div>

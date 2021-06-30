@@ -45,7 +45,7 @@ height: 92vh;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-span{
+.userprofilespan{
     font-size: small;
     padding-left: 10px;
     text-transform: capitalize;
