@@ -1,10 +1,139 @@
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .campaignEdit{
+    padding-bottom: 10px;
+    width: 95%;
+  }
+
+  .campaignEdit__input{
+    width: 95%;
+  }
+  
+  .campaignEdit__formcontrol{
+    width: 95%;
+  }
+
+  #startDate,
+  #endDate {
+    margin-left: -83%;
+  }
+
+  #selectTemplate {
+    margin-left: -75%;
+  }
+  
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .campaignEdit{
+    padding-bottom: 10px;
+    width: 95%;
+  }
+
+  .campaignEdit__input{
+    width: 95%;
+  }
+  
+  .campaignEdit__formcontrol{
+    width: 95%;
+  }
+
+  #startDate,
+  #endDate {
+    margin-left: -85%;
+  }
+
+  #selectTemplate {
+    margin-left: -80%;
+  }
+  
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .campaignEdit{
+    padding-bottom: 10px;
+    width: 50%;
+  }
+  
+  .campaignEdit__input{
+    width: 95%;
+  }
+  
+  .campaignEdit__formcontrol{
+    width: 95%;
+  }
+
+  #startDate,
+  #endDate {
+    margin-left: -80%;
+  }
+
+  #selectTemplate {
+    margin-left: -70%;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .campaignEdit{
+    padding-bottom: 10px;
+    width: 35%;
+  }
+  
+  .campaignEdit__input{
+    width: 95%;
+  }
+  
+  .campaignEdit__formcontrol{
+    width: 95%;
+  }
+
+  #startDate,
+  #endDate {
+    margin-left: -75%;
+  }
+
+  #selectTemplate {
+    margin-left: -65%;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .campaignEdit{
+    padding-bottom: 10px;
+    width: 30%;
+  }
+
+  .campaignEdit__input{
+    width: 95%;
+  }
+  
+  .campaignEdit__formcontrol{
+    width: 95%;
+  }
+
+  #startDate,
+  #endDate {
+    margin-left: -75%;
+  }
+
+  #selectTemplate {
+    margin-left: -65%;
+  }
+
+}
+
+
 .campaignEdit {
   background-color: whitesmoke;
-  width: 30%;
+  /* width: 30%; */
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  height: 60vh;
+  /* height: 60vh; */
 }
 
 .campaignEdit__header {
@@ -23,16 +152,23 @@
   align-items: center;
 }
 
+.campaignEdit__input{
+  /* width: 250px; */
+  margin-bottom: 10px;
+}
+
+.campaignEdit__formcontrol{
+  /* width: 250px; */
+  margin-bottom: 20px;
+}
+
 #startDate,
 #endDate {
-  /* position: absolute;
-  left: 0; */
-  /* background-color: aqua; */
   margin-bottom: 5px;
-  margin-left: -170px;
+  /* margin-left: -75%; */
 }
 
 #selectTemplate {
   margin-bottom: 5px;
-  margin-left: -130px;
+  /* margin-left: -65%; */
 }

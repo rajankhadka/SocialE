@@ -1,3 +1,78 @@
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+   .deleteGroup{
+    width: 90%;
+  } 
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .homePage__sendEmail{
+    width: 100%;
+  }
+
+  .homePage__sendEmail__body{
+    width: 95%;
+    /* height: 100vh; */
+    padding-bottom: 22px;
+  }
+
+  .deleteGroup{
+    width: 90%;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .homePage__sendEmail{
+    width: 100%;
+  }
+
+  .homePage__sendEmail__body{
+    width: 60%;
+    /* height: 80vh; */
+    padding-bottom: 20px;
+  }
+
+  .deleteGroup{
+    width: 40%;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .homePage__sendEmail{
+    width: 100%;
+  }
+
+  .homePage__sendEmail__body{
+    width: 50%;
+    /* height: 70vh; */
+    padding-bottom: 10px;
+  }
+
+  .deleteGroup{
+    width: 40%;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .homePage__sendEmail{
+    width: 100%;
+  }
+
+  .homePage__sendEmail__body{
+    width: 50%;
+    /* height: 70vh; */
+    padding-bottom: 10px;
+  }
+
+  .deleteGroup{
+    width: 40%;
+  }
+}
+
 .homePage__body__body {
   flex: 1;
   z-index: 9;
@@ -110,10 +185,22 @@
 
 /* ---------------------send email---------------------- */
 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .homePage__sendEmail{
+    width: 100vh;
+  }
+
+  .homePage__sendEmail__body{
+    width: 95%;
+    /* height: 100vh; */
+    padding-bottom: 22px;
+  }
+}
+
 .homePage__sendEmail {
-  background-color: aqua;
+  /* background-color: aqua; */
   height: 100vh;
-  width: 100%;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.3);
   top: 0;
@@ -124,8 +211,6 @@
 }
 
 .homePage__sendEmail__body {
-  width: 50%;
-  height: 70vh;
   background-color: #ededed;
 }
 
@@ -187,6 +272,7 @@
 .deleteGroup {
   border-radius: 7px;
   background-color: rgba(255, 255, 255, 1);
+  /* width: 40%, */
 }
 
 .DeleteButton {

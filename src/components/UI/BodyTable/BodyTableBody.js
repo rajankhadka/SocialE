@@ -297,7 +297,7 @@ function BodyTableBody(props) {
 
                 <Model>
                     <div className={classes.deleteGroup} style={{
-                        width: '40%', display: 'flex',
+                        display: 'flex',
                         flexDirection: 'column', alignItems: 'center'
 
                     }}>

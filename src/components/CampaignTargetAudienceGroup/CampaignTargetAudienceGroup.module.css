@@ -1,5 +1,50 @@
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .campaignTargetAudienceGroup{
+    width: 95%;
+  }
+
+  .input{
+    box-sizing: border-box;
+    width:100%
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .campaignTargetAudienceGroup{
+    width: 90%;
+  }
+
+  .input{
+    box-sizing: border-box;
+    width:100%;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .campaignTargetAudienceGroup{
+    width: 60%;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .campaignTargetAudienceGroup{
+    width: 60%;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .campaignTargetAudienceGroup{
+    width: 60%;
+  }
+}
+
 .campaignTargetAudienceGroup {
-  width: 60%;
+  /* width: 60%; */
   height: 60vh;
   background-color: white;
   border-radius: 10px;
@@ -120,6 +165,10 @@
 }
 
 /* -----------input --------- */
+
+
+
+
 .input {
   margin-top: 10px;
   padding: 10px 10px;

@@ -95,7 +95,7 @@ function EditCampaignDetail(props) {
                     label="Campaign Name"
                     value={campaignName}
                     onChange={(event)=> setCampaignName(event.target.value)}
-                    style={{  marginBottom: "10px", width:"250px"}}
+                    className={classes.campaignEdit__input}
                 />
 
                 <TextField
@@ -105,14 +105,12 @@ function EditCampaignDetail(props) {
                     label="Campaign Subject"
                     value={campaignSubject}
                     onChange={(event)=> setCampaignSubject(event.target.value)}
-                    style={{ marginBottom: "10px", width:"250px"}}
+                    className={classes.campaignEdit__input}
                 />
                 
     
-                    <label htmlFor="selectTemplate" id={classes.selectTemplate}>Select Template</label>
-                    <FormControl style={{ width: "250px", marginBottom: "20px" }}>
-                        
-                                    {/* <InputLabel id="selectTemplate">Select Template</InputLabel> */}
+                <label htmlFor="selectTemplate" id={classes.selectTemplate}>Select Template</label>
+                <FormControl className={classes.campaignEdit__formcontrol}>
                     <Select
                         required
                         name="selectTemplate"
@@ -142,7 +140,7 @@ function EditCampaignDetail(props) {
                     type="date"
                     id="startDate"
                     name="startDate"
-                    style={{marginBottom:"10px",width:"250px" }}
+                    className={classes.campaignEdit__input}
                     value={startDate}
                     onChange={(event)=> setStartDate(event.target.value)}
                 />
@@ -154,7 +152,7 @@ function EditCampaignDetail(props) {
                     type="date"
                     id="endDate"
                     name="endDate"
-                    style={{marginBottom: "20px",width:"250px"}}
+                    className={classes.campaignEdit__formcontrol}
                     value={endDate}
                     onChange={(event)=> setEndDate(event.target.value)}
                 />
