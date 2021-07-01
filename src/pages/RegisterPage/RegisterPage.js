@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import classes from "./RegisterPage.module.css";
-
+import Modal from "../../components/Model/Model";
 //material UI
 import { TextField,Button, FormControl, InputLabel, Select, } from '@material-ui/core';
 import {  } from '@material-ui/icons';
@@ -252,10 +252,8 @@ function RegisterPage(props) {
                             name="group"
                             value={group.value}
                             onChange={(event) => {
-                                console.log("onchange--->",event.target.value);
-                                console.log("onchange--->", event.target.name);
+                                
                                 if (event.target.value === "Create Group") {
-                                    console.log("yes");
                                     setCreategroup(true);
                                 }
                                 setGroup((prevState) => {
@@ -268,9 +266,7 @@ function RegisterPage(props) {
                         >
                             <option value="" />
                             <option value="Create Group">Create Group</option>
-                            <option value="System Admin">System Admin</option>
-                            <option value="Company Admin">Company Admin</option>
-                            <option value="Staff">Staff</option>
+                            <option value="System Admin">Choose Group</option>
                         </Select>
                     </FormControl>
 
@@ -286,17 +282,19 @@ function RegisterPage(props) {
             {
                 creategroup
                     ?
-                        <div className={classes.creategroup}>
-                            <div>
-                                
+                        
+                            
+                            <Modal>
                                 <UserPermissions
+                                    pageload={props.pageload}
+                                    pageloadtrigger={props.pageloadtrigger}
                                     creategroup={creategroup}
                                     groupname={groupname}
                                     groupnameHandler={groupnameHandler}
                                     creategroupHandler={creategroupHandler}
                                 />
-                            </div>               
-                        </div>
+                            </Modal>            
+                        
                     :
                         null
                 

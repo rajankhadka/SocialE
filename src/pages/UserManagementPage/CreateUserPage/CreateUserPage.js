@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./CreateUserPage.module.css";
 
 //importing components
@@ -9,6 +9,13 @@ import UserPermissions from "../../../components/UserPermissions/UserPermissions
 import TokenVerification from "../../../hoc/TokenVerification";
 
 const CreateUserPage = (props) =>{
+
+    const [pageload, setPageload] = useState(false);
+
+    const pageloadtrigger = () => {
+        setPageload(prevState => !prevState)
+    }
+
     return(
         <TokenVerification>
             <div className={classes.createuserPage}>
@@ -21,8 +28,14 @@ const CreateUserPage = (props) =>{
                     </div>
 
                     <div className={classes.createuserPageBody__body}>
-                        <RegisterPage />
-                        <UserPermissions />
+                        <RegisterPage 
+                            pageload={pageload}
+                            pageloadtrigger={pageloadtrigger}
+                        />
+                        <UserPermissions  
+                            pageload={pageload}
+                            pageloadtrigger={pageloadtrigger}
+                        />
                     </div>
                     </div>
                     
