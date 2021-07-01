@@ -69,6 +69,11 @@ const BodyTable = (props) => {
             }}
         >
             <HomePageBodyHeader 
+
+                //header select 
+                selectCampaign={props.selectCampaign}
+                selectCampaignValueHandler={props.selectCampaignValueHandler}
+
                 header={props.header} 
                 buttonName={props.buttonName}
                 groupName={props.groupName}

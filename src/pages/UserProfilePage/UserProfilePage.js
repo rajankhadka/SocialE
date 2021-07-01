@@ -10,10 +10,49 @@ import { connect } from "react-redux";
 import TokenVerification from "../../hoc/TokenVerification";
 import { Avatar } from "@material-ui/core";
 import { userapi } from "../../api/userapi/user";
+import UserProfileComponent from "../../components/UserProfileComponent/UserProfileComponent";
 
 const UserProfilePage = props => {
     
     const [userProfile, setUserProfile] = useState(null);
+    //trigger the update api
+    const [updatetrigger,setUpdateTrigger] = useState(false);
+
+
+    //username
+    const [username, setUsername] = useState({
+        edit:false,
+        value:'',
+        error:false,
+    });
+
+    //firstname
+    const [firstname, setFirstname] = useState({
+        edit:false,
+        value:'',
+        error:false,
+    });
+
+    //lastname
+    const [lastname, setLastname] = useState({
+        edit:false,
+        value:'',
+        error:false,
+    });
+
+    //email
+    const [email, setEmail] = useState({
+        edit:false,
+        value:'',
+        error:false,
+    })
+
+    //phonenumber
+    const [phonenumber, setPhonenumber] = useState({
+        edit:false,
+        value:'',
+        error:false,
+    })
 
     //fetching all information about user profile
     useEffect(()=>{
@@ -26,11 +65,379 @@ const UserProfilePage = props => {
         })
             .then(res => res.json())
             .then(userdata => {
-                setUserProfile({...userdata})
+                setUserProfile({...userdata});
+
+                //setting the initial value of 
+                // username
+                setUsername(prevState => {
+                    return {
+                        ...prevState,
+                        value:userdata.username
+                    }
+                });
+
+                //firstname
+                setFirstname(prevState => {
+                    return {
+                        ...prevState,
+                        value:userdata.first_name
+                    }
+                })
+
+                //lastname
+                setLastname(prevState => {
+                    return {
+                        ...prevState,
+                        value:userdata.last_name
+                    }
+                })
+
+                //email
+                setEmail(prevState => {
+                    return {
+                        ...prevState,
+                        value:userdata.email
+                    }
+                })
+
+                //phonenumber
+                setPhonenumber(prevState => {
+                    return {
+                        ...prevState,
+                        value:userdata.phonenumber
+                    }
+                })
             })
             .catch(err => console.log(err));
-    },[])
+    },[updatetrigger]);
+
+    //all handler
+    //edit button is ON
+    // username
+    const editButtonTriggerUsernameHandler = () =>{
+        setUsername(prevState => {
+            return {
+                ...prevState,
+                edit:true
+            }
+        })
+    }
+
+    //firstname
+    const editButtonTriggerFirstnameHandler = () =>{
+        setFirstname(prevState => {
+            return {
+                ...prevState,
+                edit:true
+            }
+        })
+    }
+
+    //lastname
+    const editButtonTriggerLastnameHandler = () =>{
+        setLastname(prevState => {
+            return {
+                ...prevState,
+                edit:true
+            }
+        })
+    }
+
+    //email
+    const editButtonTriggerEmailHandler = () =>{
+        setEmail(prevState => {
+            return {
+                ...prevState,
+                edit:true
+            }
+        })
+    }
+
+    //phonenumber
+    const editButtonTriggerPhonenumberHandler = () =>{
+        setPhonenumber(prevState => {
+            return {
+                ...prevState,
+                edit:true
+            }
+        })
+    }
+
+
+    //when close button is pressed
+    //when edit button is closed
+    //username
+    const closeButtonUsernameHandler = () =>{
+        setUsername(prevState => {
+            return {
+                ...prevState,
+                value:userProfile.username,
+                edit:false,
+                error:false,
+            }
+        });
+    }
+
+    //firstname
+    const closeButtonFirstnameHandler = () =>{
+        setFirstname(prevState => {
+            return {
+                ...prevState,
+                value:userProfile.first_name,
+                edit:false,
+                error:false,
+            }
+        });
+    }
+
+    //lastname
+    const closeButtonLastnameHandler = () =>{
+        setLastname(prevState => {
+            return {
+                ...prevState,
+                value:userProfile.last_name,
+                edit:false,
+                error:false,
+            }
+        });
+    }
+
+    //email
+    const closeButtonEmailHandler = () =>{
+        setEmail(prevState => {
+            return {
+                ...prevState,
+                value:userProfile.email,
+                edit:false,
+                error:false,
+            }
+        });
+    }
+
+    //phonenumber
+    const closeButtonPhonenumberHandler = () =>{
+        setPhonenumber(prevState => {
+            return {
+                ...prevState,
+                value:userProfile.phonenumber,
+                edit:false,
+                error:false,
+            }
+        });
+    }
+
+    //before sending data to server
+    //when check button is pressed
+    //username
+    const editButtonClosUsernameHandler = () =>{
+        setUsername(prevState => {
+            return {
+                ...prevState,
+                edit:false
+            }
+        });
+        updateuserprofile();
+    }
+
+    //firstname
+    const editButtonCloseFirstnameHandler = () =>{
+        setFirstname(prevState => {
+            return {
+                ...prevState,
+                edit:false
+            }
+        })
+        updateuserprofile();
+    }
+
+    //lastname
+    const editButtonCloseLastnameHandler = () =>{
+        setLastname(prevState => {
+            return {
+                ...prevState,
+                edit:false
+            }
+        });
+        updateuserprofile();
+    }
     
+    //email
+    const editButtonCloseEmailHandler = () =>{
+        setEmail(prevState => {
+            return {
+                ...prevState,
+                edit:false
+            }
+        });
+        updateuserprofile();
+    }
+
+    //phoneNumber
+    const editButtonClosePhonenumberHandler = () =>{
+        setPhonenumber(prevState => {
+            return {
+                ...prevState,
+                edit:false
+            }
+        })
+        updateuserprofile();
+    }
+
+    // onchange handler
+    //input value saved
+    //username
+    const usernameonChangeHandler = (event) =>{
+        setUsername(prevState => {
+            return {
+                ...prevState,
+                value:event.target.value
+            }
+        })
+    }
+
+    //firstname
+    const firstnameonChangeHandler = (event) =>{
+        setFirstname(prevState => {
+            return {
+                ...prevState,
+                value:event.target.value
+            }
+        })
+    }
+
+    //lastname
+    const lastnameonChangeHandler = (event) =>{
+        setLastname(prevState => {
+            return {
+                ...prevState,
+                value:event.target.value
+            }
+        })
+    }
+
+    //email
+    const emailonChangeHandler = (event) =>{
+        setEmail(prevState => {
+            return {
+                ...prevState,
+                value:event.target.value
+            }
+        })
+    }
+
+    //phonenumber
+    const phonenumberonChangeHandler = (event) =>{
+        setPhonenumber(prevState => {
+            return {
+                ...prevState,
+                value:event.target.value
+            }
+        })
+    }
+
+    //handler that send data to server
+    const updateprofile = () =>{
+        const data = {
+            username:username.value,
+            first_name:firstname.value,
+            last_name:lastname.value,
+            phonenumber:phonenumber.value,
+            email:email.value
+        }
+
+        setUpdateTrigger(prevState => !prevState);
+        return data;
+    }
+
+    const updateuserprofile =() => {
+        fetch(userapi.individualuserprofileupdate,{
+            method:'PUT',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Token ${window.localStorage.getItem('token')}`
+            },
+            body:JSON.stringify({
+                ...updateprofile()
+            })
+        })
+            .then(res => {
+                if(res.status !== 200){
+                    setStatus(res.status)
+                }
+                return res.json()
+            })
+            .then(result => {
+                
+                if(status !== 200){
+                    if(result.username){
+                        if(typeof result.username === 'object'){
+                            setUsername(prevState =>{
+                                return {
+                                    ...prevState,
+                                    error:true,
+                                    edit:true,
+                                }
+                            })
+                        }else{
+                            setUsername(prevState =>{
+                                return {
+                                    ...prevState,
+                                    error:false,
+                                    edit:false,
+                                }
+                            })
+                        }
+                    }
+
+                    if(result.email){
+                        if(typeof result.email === 'object'){
+                            setEmail(prevState =>{
+                                return {
+                                    ...prevState,
+                                    error:true,
+                                    edit:true,
+                                }
+                            })
+                        }else{
+                            setEmail(prevState =>{
+                                return {
+                                    ...prevState,
+                                    error:false,
+                                    edit:false,
+                                }
+                            })
+                        }
+                    }
+
+                    if(result.phonenumber){
+                        if(typeof result.phonenumber === 'object'){
+                            setPhonenumber(prevState =>{
+                                return {
+                                    ...prevState,
+                                    error:true,
+                                    edit:true,
+                                }
+                            })
+                        }else{
+                            setPhonenumber(prevState =>{
+                                return {
+                                    ...prevState,
+                                    error:false,
+                                    edit:false,
+                                }
+                            })
+                        }
+                    }
+                }else{
+
+                }
+                
+            })
+            .catch(err => console.log(err));
+
+    }
+
+    const [status, setStatus] = useState(200);
     return(
         <TokenVerification>
             <div className={classes.userProfilePage}  >
@@ -46,11 +453,139 @@ const UserProfilePage = props => {
                             {
                                 userProfile &&
                                 <>
-                                    <h1 className={classes.username}>{userProfile.username}<span className={classes.userprofilespan}>( username )</span></h1>
-                                    <p className={classes.firstname}>{userProfile.first_name} <span className={classes.userprofilespan}>( firstname )</span> </p>
-                                    <p className={classes.lastname}>{userProfile.last_name} <span className={classes.userprofilespan}>( lastname )</span></p>
-                                    <p className={classes.email}>{userProfile.email} <span className={classes.userprofilespan}>( email )</span></p>
-                                    <p className={classes.phonenumber}>{userProfile.phonenumber} <span className={classes.userprofilespan}>( phonenumber )</span></p>
+                                    {/* username  */}
+                                    
+                                    <UserProfileComponent 
+                                        titleName = "username"
+                                        titleClassName = {classes.username} 
+                                        titleSpanClassName = {classes.userprofilespan}
+                                        title={userProfile.username}
+                                        titleState = {username}
+
+                                        //edit icon like that stuff
+                                        titleIconClassName = {classes.userProfile__username__edit__icon}
+
+                                        //handler
+                                        editButtonTriggerUsernameHandler = {editButtonTriggerUsernameHandler}
+                                        
+                                        //edit part
+                                        editpartdivclassNameouter = {classes.userprofile__username__div__outer}
+                                        editpartdivclassName = {classes.userprofile__username__div}
+                                        editpartinputclassName = {classes.userprofile__username__input}
+                                        editparticonClassName = {classes.userprofile__username__icon}
+                                        usernameonChangeHandler = {usernameonChangeHandler}
+
+                                        //edit part handler
+                                        editButtonClosUsernameHandler={editButtonClosUsernameHandler}
+                                        closeButtonUsernameHandler={closeButtonUsernameHandler}
+                                    />
+                                    
+                                    {/* firstname */}
+
+                                    <UserProfileComponent 
+
+                                        titleName = "firstname"
+                                        titleClassName={classes.firstname}
+                                        titleSpanClassName={classes.userprofilespan}
+                                        title={userProfile.first_name}
+                                        titleState = {firstname}
+
+                                        //edit icon like that stuff
+                                        titleIconClassName = {classes.userProfile__username__edit__icon}
+
+                                        //edit part
+                                        editpartdivclassName = {classes.userprofile__firstname__div}
+                                        editpartinputclassName = {classes.userprofile__username__input}
+                                        editparticonClassName = {classes.userprofile__username__icon}
+
+                                        //handler
+                                        editButtonTriggerFirstnameHandler = {editButtonTriggerFirstnameHandler}
+                                        firstnameonChangeHandler = {firstnameonChangeHandler}
+
+                                        //edit part handler
+                                        editButtonCloseFirstnameHandler={editButtonCloseFirstnameHandler}
+                                        closeButtonFirstnameHandler={closeButtonFirstnameHandler}
+                                    />
+                                    
+
+                                    {/* lastName */}
+                                    
+                                    <UserProfileComponent 
+
+                                        titleName = "lastname"
+                                        titleClassName={classes.firstname}
+                                        titleSpanClassName={classes.userprofilespan}
+                                        title={userProfile.last_name}
+                                        titleState = {lastname}
+
+                                        //edit icon like that stuff
+                                        titleIconClassName = {classes.userProfile__username__edit__icon}
+
+                                        //edit part
+                                        editpartdivclassName = {classes.userprofile__firstname__div}
+                                        editpartinputclassName = {classes.userprofile__username__input}
+                                        editparticonClassName = {classes.userprofile__username__icon}
+
+                                        //handler
+                                        editButtonTriggerLastnameHandler = {editButtonTriggerLastnameHandler}
+                                        lastnameonChangeHandler = {lastnameonChangeHandler}
+
+                                        //edit part handler
+                                        editButtonCloseLastnameHandler={editButtonCloseLastnameHandler}
+                                        closeButtonLastnameHandler={closeButtonLastnameHandler}
+                                    />
+                                    
+                                    {/* email */}
+                                    <UserProfileComponent 
+
+                                        titleName = "email"
+                                        titleClassName={classes.firstname}
+                                        titleSpanClassName={classes.userprofilespan}
+                                        title={userProfile.email}
+                                        titleState = {email}
+
+                                        //edit icon like that stuff
+                                        titleIconClassName = {classes.userProfile__username__edit__icon}
+
+                                        //edit part
+                                        editpartdivclassName = {classes.userprofile__firstname__div}
+                                        editpartinputclassName = {classes.userprofile__username__input}
+                                        editparticonClassName = {classes.userprofile__username__icon}
+
+                                        //handler
+                                        editButtonTriggerEmailHandler = {editButtonTriggerEmailHandler}
+                                        emailonChangeHandler = {emailonChangeHandler}
+
+                                        //edit part handler
+                                        editButtonCloseEmailHandler={editButtonCloseEmailHandler}
+                                        closeButtonEmailHandler={closeButtonEmailHandler}
+                                    />
+                                    
+                                    {/* phonenumber */}
+                                    <UserProfileComponent 
+
+                                        titleName = "phonenumber"
+                                        titleClassName={classes.firstname}
+                                        titleSpanClassName={classes.userprofilespan}
+                                        title={userProfile.phonenumber}
+                                        titleState = {phonenumber}
+
+                                        //edit icon like that stuff
+                                        titleIconClassName = {classes.userProfile__username__edit__icon}
+
+                                        //edit part
+                                        editpartdivclassName = {classes.userprofile__firstname__div}
+                                        editpartinputclassName = {classes.userprofile__username__input}
+                                        editparticonClassName = {classes.userprofile__username__icon}
+
+                                        //handler
+                                        editButtonTriggerPhonenumberHandler = {editButtonTriggerPhonenumberHandler}
+                                        phonenumberonChangeHandler = {phonenumberonChangeHandler}
+
+                                        //edit part handler
+                                        editButtonClosePhonenumberHandler={editButtonClosePhonenumberHandler}
+                                        closeButtonPhonenumberHandler={closeButtonPhonenumberHandler}
+                                    />
                                 </>
                             }
                         </div>

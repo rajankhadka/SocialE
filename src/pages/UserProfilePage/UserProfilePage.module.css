@@ -19,11 +19,10 @@ height: 92vh;
 /* ------------------user profile body--------- */
 
 .userprofile__pic{
-    width: 25vh;
-    height: 25vh;
+    width: 25vh !important;
+    height: 25vh !important;
     z-index: 10000;
     margin-bottom: -50px;
-    
 }
 
 .userprofile__content{
@@ -43,6 +42,13 @@ height: 92vh;
     text-transform: capitalize;
     margin-bottom: 20px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+}
+
+.firstname{
+    font-size: 1.2rem;
+    font-weight: 300;
 }
 
 .userprofilespan{
@@ -50,3 +56,50 @@ height: 92vh;
     padding-left: 10px;
     text-transform: capitalize;
 }
+
+
+/* ---------------username div ---- */
+.userprofile__username__div__outer{
+    margin-bottom: 30px;
+}
+
+.userprofile__username__div{
+   
+    display: flex;
+    align-items: center;
+}
+
+.userprofile__firstname__div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* ---------------input box */
+.userprofile__username__input{
+    width: 200px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    border:1px solid rgba(0, 0, 0, 0.5);
+    outline: none;
+}
+
+.userprofile__username__input:focus{
+    border: 1px solid black;
+    outline: none;
+}
+
+
+/* ---------------username icon  */
+.userprofile__username__icon{
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+    /* padding-top: 10px; */
+}
+
+.userProfile__username__edit__icon{
+    padding-left: 10px;
+    cursor: pointer;
+}
+ 
