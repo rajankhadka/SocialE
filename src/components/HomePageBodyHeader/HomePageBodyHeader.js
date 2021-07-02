@@ -115,8 +115,10 @@ const HomePageBodyHeader = (props) =>{
                                 label="campaign"
                                 id="campaign"
                                 name="campaign"
-                                // value
-                                // onChange
+                                value={props.selectCampaign}
+                                onChange={(event) => {
+                                    props.selectCampaignValueHandler(event)
+                                }}
                             >
                                 <option value="all"> All </option>
                                 <option value="only">Only Yours</option>

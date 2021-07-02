@@ -7,7 +7,7 @@
   border-radius: 10px;
   box-sizing: border-box;
   box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.24);
-  height: 82vh;
+  /* height: 82vh; */
   margin-left: 40px;
 }
 
@@ -74,11 +74,11 @@
 }
 
 .userpermissions__body__left__body > p:hover {
-  background-color: green;
+  background-color: rgba(0, 0, 0,0.4);
 }
 
 .userpermissions__body__left__body > .actve_p {
-  background-color: green;
+  background-color: rgba(0, 0, 0,0.4);;
 }
 
 /* ------------------------body left footer -------------------- */

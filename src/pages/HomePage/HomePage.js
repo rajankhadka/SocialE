@@ -27,6 +27,13 @@ function HomePage(props) {
 
     const [campaign, setCampaign] = useState([]);
 
+    //heade part to select only and all campaign list
+    const [selectCampaign, setSelectCampaign] = useState('only');
+
+    const selectCampaignValueHandler = (event) =>{
+        setSelectCampaign(event.target.value);
+    }
+
     //edit campaigntrigger
     const [campaignEditTrigger, setCampaignEditTrigger] = useState(false);
 
@@ -42,23 +49,47 @@ function HomePage(props) {
     const campaignDeleteTriggerHandlerON = () => setCampaignDeleteTrigger(true);
 
     useEffect(() => {
-        fetch(campaignApi.campaigngetlist, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Token ${window.localStorage.getItem('token')}`
-            },
-        })
-            .then(response => {
-                if(response.status === 401) throw new Error("Session Expried")
-               return response.json()
+        console.log("select campaign changed!!!")
+        console.log(selectCampaign)
+
+        //if campaign value is only specific individual user
+        if(selectCampaign === 'only'){  
+            fetch(campaignApi.campaigngetlist, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${window.localStorage.getItem('token')}`
+                },
             })
-            .then(data => {
-                
-                setCampaign(data.payload);
+                .then(response => {
+                    if(response.status === 401) throw new Error("Session Expried")
+                   return response.json()
+                })
+                .then(data => {
+                    
+                    setCampaign(data.payload);
+                })
+                .catch(err => console.log(err));
+        }else if(selectCampaign === 'all'){
+            fetch(campaignApi.campaignallretrive, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Token ${window.localStorage.getItem('token')}`
+                },
             })
-            .catch(err => console.log(err));
-    }, [campaignEditTrigger,campaignDeleteTrigger]);
+                .then(response => {
+                    if(response.status === 401) throw new Error("Session Expried")
+                   return response.json()
+                })
+                .then(data => {
+                    
+                    setCampaign(data);
+                })
+                .catch(err => console.log(err));
+        }
+        
+    }, [campaignEditTrigger,campaignDeleteTrigger,selectCampaign]);
 
     //show create group
     const [showGroup, setShowGroup] = useState(false);
@@ -132,6 +163,10 @@ function HomePage(props) {
 
                         <BodyTable
                             
+                            //header
+                            selectCampaign={selectCampaign}
+                            selectCampaignValueHandler={selectCampaignValueHandler}
+
                             // edit campaign
                             campaignEditTrigger={campaignEditTrigger}
                             campaignEditTriggerHanlderOFF={campaignEditTriggerHanlderOFF}

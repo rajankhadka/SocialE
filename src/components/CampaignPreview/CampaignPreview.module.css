@@ -2,6 +2,7 @@
 @media only screen and (max-width: 600px) {
   .campaignPreview{
     width: 95%;
+    height: 60vh;
   }
 }
 
@@ -9,6 +10,7 @@
 @media only screen and (min-width: 600px) {
   .campaignPreview{
     width: 90%;
+    height: 60vh;
   }
 }
 
@@ -16,6 +18,7 @@
 @media only screen and (min-width: 768px) {
   .campaignPreview{
     width: 70%;
+    height: 60vh;
   }
 }
 
@@ -23,6 +26,7 @@
 @media only screen and (min-width: 992px) {
   .campaignPreview{
     width: 60%;
+    height: 80vh;
   }
 }
 
@@ -30,13 +34,14 @@
 @media only screen and (min-width: 1200px) {
   .campaignPreview{
     width: 40%;
+    height: 80vh;
   }
 }
 
 .campaignPreview {
   display: flex;
   /* width: 40%; */
-  height: 60vh;
+  
   background-color: white;
   border-radius: 20px;
   flex-direction: column;
