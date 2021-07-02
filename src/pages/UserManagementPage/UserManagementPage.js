@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from "./UserManagementPage.module.css";
 
 //importing components
@@ -14,10 +14,30 @@ import BodyTable from '../../components/UI/BodyTable/BodyTable';
 import {} from 'react-router-dom';
 import { SpecificCampaignDetailProvider } from '../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';
 import TokenVerification from '../../hoc/TokenVerification';
+import { userapi } from '../../api/userapi/user';
 
 
 
 function UserManagementPage(props) {
+
+   const [allUser,setAllUser] = useState([]);
+
+   useEffect(()=>{
+        fetch(userapi.userlist,{
+            method:'GET',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Token ${window.localStorage.getItem('token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(allUserData => {
+                console.log(allUserData)
+                setAllUser([...allUserData])
+            })
+            .catch(err => console.log(err));
+   },[])
+
     return (
 
         <TokenVerification>
@@ -27,7 +47,8 @@ function UserManagementPage(props) {
                     <SideBar />
 
                     <SpecificCampaignDetailProvider>
-                        <BodyTable 
+                        <BodyTable
+                            allUser = {allUser}
                             header="User Management" 
                             buttonName = "Create User"
                             title="User" 

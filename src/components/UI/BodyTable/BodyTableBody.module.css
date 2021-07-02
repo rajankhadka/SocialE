@@ -102,6 +102,21 @@
   padding-left: 10px;
 }
 
+/* user management  */
+.homePage__body__bodyTable__name__user{
+  flex:0.2;
+  padding-left: 10px;
+  overflow: hidden;
+  margin-right: 15px;
+
+}
+
+.homePage__body__bodyTable__name__email{
+  flex:0.3;
+  overflow: hidden;
+  margin-right: 15px;
+}
+
 .homePage__body__bodyTable__name > h2 {
   margin-bottom: 10px;
   font-size: 20px;

@@ -177,7 +177,49 @@ function BodyTableBody(props) {
             }
             
             break;
+        
+        case 'User':
+            if(props.allUser.length > 0){
+                body =(
+                    props.allUser.map(element =>(
+                        <div className={classes.homePage__body__bodyTableBodyRow} key={element.id}>
+
+                            <div className={classes.homePage__body__bodyTable__name__user}>
+                                <p>{element.username}</p>
+                            </div>
+
+                            <div className={classes.homePage__body__bodyTable__name__email}>
+                                <p>{element.email}</p>
+                            </div>
+
+                            <div className={classes.homePage__body__bodyTable__name__email}>
+                                <p>{element.phonenumber}</p>
+                            </div>
+
+                            {/* user delete */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    
+                                >
+                                    <Delete style={{ fontSize: 15, color: "red" }} />
+                                </IconButton>
+                            </div>
     
+                            {/* user preview */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                   
+                                >
+                                    <Visibility style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
+
+                        </div>
+                    ))
+                )
+            }
+            break;
+
         default:
             break;
     }
@@ -255,6 +297,30 @@ function BodyTableBody(props) {
 
                 <div className={classes.homePage__body__bodyTable__edit}>
                     <h4>Edit</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__delete}>
+                    <h4>Delete</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__delete}>
+                    <h4>Preview</h4>
+                </div>
+            </div>
+        )
+    }else if(props.title === 'User'){
+        header=(
+            <div className={classes.homePage__body__bodyTableHeader}>
+                <div className={classes.homePage__body__bodyTable__name__user}>
+                    <h4>{props.title}Name</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__name__email}>
+                    <h4> Email</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__name__email}>
+                    <h4> Contact Number</h4>
                 </div>
 
                 <div className={classes.homePage__body__bodyTable__delete}>

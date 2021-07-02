@@ -11,5 +11,8 @@ export const userapi = {
     "groupcreate": BASEURL + 'group/create/',
 
     //all group get
-    "grouplist": BASEURL + 'group/get/'
+    "grouplist": BASEURL + 'group/get/',
+
+    //get all user
+    "userlist": BASEURL + 'users/'
 }

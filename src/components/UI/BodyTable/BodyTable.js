@@ -37,8 +37,10 @@ const BodyTable = (props) => {
     } else if (props.header === "Target Audience Groups") {
         bodyTable = null;
     }else if(props.header === "User Management"){
+        bodyTable = 
         <BodyTableBody 
-            
+            title={props.title}
+            allUser={props.allUser}
         />
     }
     
