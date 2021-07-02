@@ -7,6 +7,7 @@ import SideBar from "../../../components/SideBar/SideBar"
 import RegisterPage from "../../RegisterPage/RegisterPage";
 import UserPermissions from "../../../components/UserPermissions/UserPermissions";
 import TokenVerification from "../../../hoc/TokenVerification";
+import { UserPermissionSelectContentProvider } from "../../../contextAPI/UserPermissionSelectContent/UserPermissionSelectContent";
 
 const CreateUserPage = (props) =>{
 
@@ -28,14 +29,18 @@ const CreateUserPage = (props) =>{
                     </div>
 
                     <div className={classes.createuserPageBody__body}>
-                        <RegisterPage 
-                            pageload={pageload}
-                            pageloadtrigger={pageloadtrigger}
-                        />
-                        <UserPermissions  
-                            pageload={pageload}
-                            pageloadtrigger={pageloadtrigger}
-                        />
+
+                        <UserPermissionSelectContentProvider>
+                            <RegisterPage 
+                                pageload={pageload}
+                                pageloadtrigger={pageloadtrigger}
+                            />
+                            <UserPermissions  
+                                pageload={pageload}
+                                pageloadtrigger={pageloadtrigger}
+                            />
+                        </UserPermissionSelectContentProvider>
+                        
                     </div>
                     </div>
                     

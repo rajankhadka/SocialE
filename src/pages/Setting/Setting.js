@@ -88,7 +88,7 @@ function Setting(props) {
             method: "POST",
             headers: {
                 'Content-Type': "application/json",
-                "Authorization":`Token ${token}`
+                "Authorization":`Token ${window.localStorage.getItem('token')}`
             },
             body: JSON.stringify({
                 email_two_factor_auth,
@@ -98,7 +98,7 @@ function Setting(props) {
         })
             .then(response => response.json())
             .then(data => {
-                // console.log(data);
+                console.log(data);
                 
             })
             .catch(err => {

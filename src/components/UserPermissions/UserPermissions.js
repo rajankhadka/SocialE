@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useContext} from "react";
 import classes from "./UserPermissions.module.css";
 
 //material ui
@@ -8,10 +8,13 @@ import {
 } from "@material-ui/icons";
 import { Button, TextField } from "@material-ui/core";
 import { userapi } from "../../api/userapi/user";
-
+import { UserPermissionSelectContent } from "../../contextAPI/UserPermissionSelectContent/UserPermissionSelectContent";
 
 
 const UserPermissions = (props) => {
+
+    //context api
+    const [usergroupStateContext,usergroupDispatchContext] = useContext(UserPermissionSelectContent);
 
     //permission part which is while creating new group
     //saving all permission
@@ -31,6 +34,7 @@ const UserPermissions = (props) => {
 
     //group select part which is while creating new user
     
+    const [allgroupSaved, setAllgroupSaved] = useState([]);
     //left side group
     const [leftsidegroup, setLeftsidegroup] = useState([]);
 
@@ -39,9 +43,7 @@ const UserPermissions = (props) => {
 
 
     useEffect(() => {
-        console.log("show all avaliable permission");
-        console.log("object",props.creategroup)
-        console.log("pageload",props.pageload);
+        
 
         if(props.creategroup){
             fetch(userapi.availableAdjustedPermission,{
@@ -74,14 +76,17 @@ const UserPermissions = (props) => {
             })
                 .then(res => res.json())
                 .then(allgroup => {
-                    console.log(allgroup);
+                    
                     const allgrp = allgroup.map(group => {
                         return{
                             ...group,
                             click:false
                         }
                     });
-                    setLeftsidegroup([...allgrp])
+                    setAllgroupSaved([...allgrp])
+                    setLeftsidegroup([...allgrp]);
+                    setRightsidegroup([]);
+                    usergroupDispatchContext({type:'REMOVEALL'})
                 })
                 .catch(err => console.log(err));
         }
@@ -188,8 +193,10 @@ const UserPermissions = (props) => {
         })
     }
 
+
     //left side group
     if(leftsidegroup.length > 0){
+        
         showleftsidegroup = leftsidegroup.map(permission =>{
             return (
                 <p 
@@ -200,7 +207,8 @@ const UserPermissions = (props) => {
                     {permission.name}
                 </p>
             )
-        })
+        });
+
     }
 
     //right side permission showing
@@ -275,6 +283,11 @@ const UserPermissions = (props) => {
 
             //saving the selected permission to the right side
             setRightsidegroup(prevState => [...prevState,...filterselectedpermission])
+
+            const senddata = [...rightsidegroup]
+
+            //context api
+            usergroupDispatchContext({type:'ADD',data:senddata})
         }
         
     }
@@ -321,6 +334,8 @@ const UserPermissions = (props) => {
             let removingselectedpermission = rightsidegroup.filter(permission => !permission.click);
             setRightsidegroup([...removingselectedpermission]);
 
+            //context api
+            usergroupDispatchContext({type:'REMOVE',data:removingselectedpermission})
 
             //saving the selected permission to the right side
             setLeftsidegroup(prevState => [...prevState,...filterselectedpermission])
@@ -338,6 +353,9 @@ const UserPermissions = (props) => {
         }else{
             setRightsidegroup(prevState => [...prevState,...leftsidegroup])
             setLeftsidegroup([])
+
+            //use context api
+            usergroupDispatchContext({type:'ADDALL',data:leftsidegroup})
         }
         
     }
@@ -351,9 +369,20 @@ const UserPermissions = (props) => {
         }else{
             setLeftsidegroup(prevState => [...prevState,...rightsidegroup]);
             setRightsidegroup([]);
+
+            //usecontext api
+            usergroupDispatchContext({type:'REMOVEALL'})
         }
         
     }
+
+    useEffect(()=>{
+       if((!props.creategroup) && (usergroupStateContext.userSaved)){
+        setLeftsidegroup([...allgroupSaved]);
+        setRightsidegroup([]) 
+       } 
+       
+    },[usergroupStateContext.userSaved])
 
     //create group handler
     const createGroupHandler = (event) => {
@@ -373,11 +402,23 @@ const UserPermissions = (props) => {
                     permissions: permissionid
                 })
             })
-                .then(res => res.json())
+                .then(res => {
+                    console.log(typeof res.status);
+                    if(res.status === 201){
+                        return res.json();
+                    }
+                    else{
+                        alert('Group name must be unique')
+                    }
+                    
+                })
                 .then(result => {
                     console.log(result);
-                    props.creategroupHandler();
-                    props.pageloadtrigger()
+                    if(result){
+                        props.creategroupHandler();
+                        props.pageloadtrigger()
+                    }
+                    
                 })
                 .catch(err => console.log(err))
         }else{
@@ -397,7 +438,9 @@ const UserPermissions = (props) => {
                     {props.groupcreate ? <p>User Permissions:</p> : <p>Groups:</p>}
                     {
                         props.creategroup
-                            ? <Close onClick={() =>{
+                            ? <Close 
+                                    style={{cursor:'pointer'}}
+                                    onClick={() =>{
                                     props.creategroupHandler()
                                     props.pageloadtrigger()
                                 }}

@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState ,useEffect, useContext} from 'react'
 import classes from "./RegisterPage.module.css";
 import Modal from "../../components/Model/Model";
 //material UI
@@ -10,8 +10,12 @@ import { connect } from "react-redux";
 import { closeRegister } from "../../redux/actions/showregisterAction";
 import UserPermissions from '../../components/UserPermissions/UserPermissions';
 import { signinApi } from '../../api/signin/signin';
+import { UserPermissionSelectContent, UserPermissionSelectContentProvider } from '../../contextAPI/UserPermissionSelectContent/UserPermissionSelectContent';
 
 function RegisterPage(props) {
+
+const [usergroupstate,usergroupdispatch] = useContext(UserPermissionSelectContent)
+
 
     const [firstName, setFirstName] = useState({
         error: false,
@@ -96,13 +100,15 @@ function RegisterPage(props) {
     //userregisterHandler
     const userregisterHandler = (event) => {
         event.preventDefault();
-        console.log(firstName, lastName, userName, email, password, confirmPassword, contactNumber);
-        if (password.value === confirmPassword.value) {
-            console.log("password");
+        usergroupdispatch({type:'USERSAVEDOFF'})
+        const groupid = usergroupstate.selectedGroup.map(group => group.id)
+        if ( (password.value.length > 7) && (password.value === confirmPassword.value) && (usergroupstate.selectedGroup.length > 0)) {
+            
             fetch(signinApi.usersignup, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization":`Token ${window.localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
                     first_name: firstName.value,
@@ -111,14 +117,86 @@ function RegisterPage(props) {
                     username: userName.value,
                     password: password.value,
                     confirm_password: confirmPassword.value,
-                    phonenumber: contactNumber.value
+                    phonenumber: contactNumber.value,
+                    groups:groupid
                 })
             })
-                .then(response => response.json())
-                .then(data => console.log(data))
+                .then(response => {
+                    if(response.status === 200){
+                        alert('User Created Successfully!!!')
+
+                        //cleanup function
+                        setFirstName({
+                            error: false,
+                            helperText: "",
+                            value:""
+                        })
+
+                        setLastName({
+                            error: false,
+                            helperText: "",
+                            value:""
+                        })
+
+                        setEmail({
+                            error: false,
+                            helperText: "",
+                            value:""
+                        })
+
+                        setContactNumber({
+                            error: false,
+                            helperText: "",
+                            value:""
+                        })
+
+                        setPassword({
+                            error: false,
+                            helperText: "",
+                            value:""
+                        })
+
+                        setConfirmPassword({
+                            error: false,
+                            helperText: "",
+                            value:""
+                        })
+
+                        setUserName({
+                            error: false,
+                            helperText: "",
+                            value:""
+                        })
+
+                        //cleanup all selected group
+                        usergroupdispatch({type:"REMOVEALL"})
+                        usergroupdispatch({type:"USERSAVEDON"})
+
+                        return response.json();
+                    }else{
+                        
+                        response.json().then(result => {
+                            if(result.email){
+                                alert('Email must be unique')
+                            }else if(result.phonenumber){
+                                alert('Phone Number must be unique')
+                            }else if(result.username){
+                                alert('Username must be unique');
+                            }
+                        });
+                        
+                    }
+                    
+
+                })
+                // .then(data => console.log(data))
                 .catch(err => console.log(err));
-        } else {
-            console.log("password mismatch");
+        } else if(usergroupstate.selectedGroup.length <= 0) {
+            alert("Select atleast one group");
+        } else if((password.value !== confirmPassword.value) || (password.value <= 0)){
+            alert('Password mismatch')
+        } else if(password.value.length < 7){
+            alert('Password must be 8 character long')
         }
     }
 
@@ -129,6 +207,7 @@ function RegisterPage(props) {
                 <form onSubmit={userregisterHandler}>
 
                     <TextField variant="outlined"
+                        required
                         label="FirstName"
                         type="text"
                         className={classes.registerPage__input}
@@ -146,6 +225,7 @@ function RegisterPage(props) {
                     />
 
                     <TextField variant="outlined"
+                    required    
                         label="LastName" type="text"
                         className={classes.registerPage__input}
                         name="lastName"
@@ -162,6 +242,7 @@ function RegisterPage(props) {
                     />
 
                     <TextField variant="outlined"
+                    required
                         label="UserName"
                         type="text"
                         className={classes.registerPage__input}
@@ -179,6 +260,7 @@ function RegisterPage(props) {
                     />
 
                     <TextField variant="outlined"
+                    required
                         label="Email" type="email"
                         className={classes.registerPage__input}
                         name="email"
@@ -195,6 +277,7 @@ function RegisterPage(props) {
                     />
 
                     <TextField variant="outlined"
+                    required
                         label="ContactNumber" type="text"
                         className={classes.registerPage__input}
                         name="contactNumber"
@@ -211,6 +294,7 @@ function RegisterPage(props) {
                     />
 
                     <TextField variant="outlined"
+                    required
                         label="Password" type="password"
                         className={classes.registerPage__input}
                         name="password"
@@ -227,6 +311,7 @@ function RegisterPage(props) {
                     />
 
                     <TextField variant="outlined"
+                    required
                         label="Confirm Password"
                         type="password"
                         size="small"
@@ -285,14 +370,18 @@ function RegisterPage(props) {
                         
                             
                             <Modal>
-                                <UserPermissions
-                                    pageload={props.pageload}
-                                    pageloadtrigger={props.pageloadtrigger}
-                                    creategroup={creategroup}
-                                    groupname={groupname}
-                                    groupnameHandler={groupnameHandler}
-                                    creategroupHandler={creategroupHandler}
-                                />
+
+                                <UserPermissionSelectContentProvider>
+                                    <UserPermissions
+                                        pageload={props.pageload}
+                                        pageloadtrigger={props.pageloadtrigger}
+                                        creategroup={creategroup}
+                                        groupname={groupname}
+                                        groupnameHandler={groupnameHandler}
+                                        creategroupHandler={creategroupHandler}
+                                    />
+                                </UserPermissionSelectContentProvider>
+                                
                             </Modal>            
                         
                     :
