@@ -96,6 +96,12 @@
   flex: 0.3;
 }
 
+/* header for template */
+.homePage__body__bodyTable__name__template{
+  flex:0.7;
+  padding-left: 10px;
+}
+
 .homePage__body__bodyTable__name > h2 {
   margin-bottom: 10px;
   font-size: 20px;

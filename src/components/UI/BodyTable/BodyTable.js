@@ -26,6 +26,7 @@ const BodyTable = (props) => {
     if (props.header === 'Templates' && props.templatePageToggle === "view") {
         bodyTable = (
             <BodyTableBody
+                templateData = {props.templateData}
                 title={props.title}
                 routeURLHandler={routeURLHandler}
                 campaigndetailURL={props.campaigndetailURL}
@@ -70,9 +71,14 @@ const BodyTable = (props) => {
         >
             <HomePageBodyHeader 
 
-                //header select 
+                //header select campaign part
                 selectCampaign={props.selectCampaign}
                 selectCampaignValueHandler={props.selectCampaignValueHandler}
+
+                //template choose part
+                selectTemplate={props.selectTemplate}
+                selectTemplateValueHandler={props.selectTemplateValueHandler}
+
 
                 header={props.header} 
                 buttonName={props.buttonName}

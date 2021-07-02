@@ -25,11 +25,23 @@ const HomePageBodyHeader = (props) =>{
 
     if (props.header === 'Templates' && props.templatePageToggle === "view") {
         searchButton = (
-            <div className={classes.homePage__body__bodyHeaderCompanyRight}
-                // style={{
-                //     justifyContent: props.header !== 'Templates' ? "center" : "flex-end"
-                // }}
+            <div 
+                className={classes.homePage__body__bodyHeaderCompanyRight}
             >
+                <Select
+                    style={{marginRight:'20px'}}
+                    native
+                    label="template"
+                    id="template"
+                    name="template"
+                    value={props.selectTemplate}
+                    onChange={(event) => {
+                        props.selectTemplateValueHandler(event)
+                    }}
+                >
+                    <option value="all"> All </option>
+                    <option value="only">Only Yours</option>
+                </Select>
                 <TextField id="outlined-basic"
                     variant="outlined"
                     placeholder={searchTitle}

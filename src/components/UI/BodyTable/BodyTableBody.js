@@ -14,7 +14,7 @@ function BodyTableBody(props) {
 
     const [campaignDetail, setCampaignDetail] = useContext(SpecificCampaignDetailContext);
 
-    let body = null;
+    
 
     const [showSendEmail, setShowSendEmail] = useState(false);
 
@@ -42,93 +42,140 @@ function BodyTableBody(props) {
     const showpreviewmodaloffHandler = () => setPreviewModalShow(false);
     const showpreviewmodalonHandler = () => setPreviewModalShow(true);
 
+    let body = null;
+
+    
     switch (props.title) {
-        case "Campaign":
+
+        case 'Template':
+            if(props.templateData.length > 0){
+                body = (
+                    props.templateData.map(element => (
+                        <div className={classes.homePage__body__bodyTableBodyRow} key={element.id}>
+                            <div className={classes.homePage__body__bodyTable__name__template}>
+                                <p>{element.template_name}</p>
+                            </div>
+    
+                            {/* template edit */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    
+                                >
+                                    <Edit style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
+    
+                            {/* template delete */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    
+                                >
+                                    <Delete style={{ fontSize: 15, color: "red" }} />
+                                </IconButton>
+                            </div>
+    
+                            {/* template preview */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                   
+                                >
+                                    <Visibility style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
+                        </div>
+                    ))
+                )
+            }
             
-            body = (
-                
-                props.data.map(element => (
-                    <div className={classes.homePage__body__bodyTableBodyRow} key={element.id}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>{element.campaign_name}</p>
-                        </div>
+            break;
 
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>{element.start_date}</p>
-                        </div>
-
-                         <div className={classes.homePage__body__bodyTable__create}>
-                            <p>{element.end_date}</p>
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__uniqueOpen}>
-                            <p>279 opened</p>
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__send}>
-                            <IconButton onClick={() => {
-                                console.log(element);
-                                setCampaignID(element.id)
-                                setShowSendEmail(true)
-                            }}>
-                                <Send style={{ fontSize: 15, color: "blue" }}  />
-                            </IconButton>
-                        </div>
-
-                        {/* campaign edit */}
-                        <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton
-                                onClick={() => {
+        case "Campaign":
+            if(props.data.length > 0){
+                body = (
+                    props.data.map(element => (
+                        <div className={classes.homePage__body__bodyTableBodyRow} key={element.id}>
+                            <div className={classes.homePage__body__bodyTable__name}>
+                                <p>{element.campaign_name}</p>
+                            </div>
+    
+                            <div className={classes.homePage__body__bodyTable__create}>
+                                <p>{element.start_date}</p>
+                            </div>
+    
+                             <div className={classes.homePage__body__bodyTable__create}>
+                                <p>{element.end_date}</p>
+                            </div>
+    
+                            <div className={classes.homePage__body__bodyTable__uniqueOpen}>
+                                <p>279 opened</p>
+                            </div>
+    
+                            <div className={classes.homePage__body__bodyTable__send}>
+                                <IconButton onClick={() => {
                                     console.log(element);
-                                    // setCampaignEditSelected(true);
-                                    setCampaignDetail(element);
-                                    props.campaignEditTriggerHanlderON()
-                                }}
-                            >
-                                <Edit style={{ fontSize: 15, color: "green" }} />
-                            </IconButton>
+                                    setCampaignID(element.id)
+                                    setShowSendEmail(true)
+                                }}>
+                                    <Send style={{ fontSize: 15, color: "blue" }}  />
+                                </IconButton>
+                            </div>
+    
+                            {/* campaign edit */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    onClick={() => {
+                                        console.log(element);
+                                        // setCampaignEditSelected(true);
+                                        setCampaignDetail(element);
+                                        props.campaignEditTriggerHanlderON()
+                                    }}
+                                >
+                                    <Edit style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
+    
+                            
+                            {/* group edit */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    onClick={() => {
+                                        showgroupmodalonHandler();
+                                        setCampaignDetail(element);
+                                    }}
+                                >
+                                    <Group style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
+    
+                            {/* campaign delete */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    onClick={() => {
+                                        props.campaignDeleteTriggerHandlerON()
+                                        setCampaignDetail(element);
+                                    }}
+                                >
+                                    <Delete style={{ fontSize: 15, color: "red" }} />
+                                </IconButton>
+                            </div>
+    
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    onClick={() => {
+                                        showpreviewmodalonHandler();
+                                        setCampaignDetail(element);
+                                    }}
+                                >
+                                    <Visibility style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
                         </div>
-
-                        
-                        {/* group edit */}
-                        <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton
-                                onClick={() => {
-                                    showgroupmodalonHandler();
-                                    setCampaignDetail(element);
-                                }}
-                            >
-                                <Group style={{ fontSize: 15, color: "green" }} />
-                            </IconButton>
-                        </div>
-
-                        {/* campaign delete */}
-                        <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton
-                                onClick={() => {
-                                    props.campaignDeleteTriggerHandlerON()
-                                    setCampaignDetail(element);
-                                }}
-                            >
-                                <Delete style={{ fontSize: 15, color: "red" }} />
-                            </IconButton>
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton
-                                onClick={() => {
-                                    showpreviewmodalonHandler();
-                                    setCampaignDetail(element);
-                                }}
-                            >
-                                <Visibility style={{ fontSize: 15, color: "green" }} />
-                            </IconButton>
-                        </div>
-                    </div>
-                ))
-                
-               
-            )
+                    ))
+                    
+                   
+                )    
+            }
+            
             break;
     
         default:
@@ -158,10 +205,9 @@ function BodyTableBody(props) {
             .catch(err => console.log(err));
     }
 
-    return (
-        <div className={classes.homePage__body__bodyTable}>
-
-            {/* ----------------------------table Header-------------------------- */}
+    let header = null;
+    if(props.title === 'Campaign'){
+        header = (
             <div className={classes.homePage__body__bodyTableHeader}>
                 <div className={classes.homePage__body__bodyTable__name}>
                     <h4>{props.title}</h4>
@@ -199,6 +245,36 @@ function BodyTableBody(props) {
                     <h4>Preview</h4>
                 </div>
             </div>
+        )
+    }else if(props.title === 'Template'){
+        header =(
+            <div className={classes.homePage__body__bodyTableHeader}>
+                <div className={classes.homePage__body__bodyTable__name__template}>
+                    <h4>{props.title}</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__edit}>
+                    <h4>Edit</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__delete}>
+                    <h4>Delete</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__delete}>
+                    <h4>Preview</h4>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className={classes.homePage__body__bodyTable}>
+
+            {/* ----------------------------table Header-------------------------- */}
+
+            {header}
+            
 
             {/* -----------------------------table body-------------------------------------- */}
             

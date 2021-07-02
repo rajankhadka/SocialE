@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect, useState} from "react";
 import classes from "./TemplatePage.module.css"
 
 //importing components
@@ -14,6 +14,7 @@ import { signinApi } from "../../api/signin/signin";
 
 //react router dom
 import { useHistory } from "react-router-dom";
+import { template } from "../../api/template/template";
 
 const token = window.localStorage.getItem('token');
 const user = window.localStorage.getItem('user')
@@ -21,6 +22,40 @@ const user = window.localStorage.getItem('user')
 const TemplatePage = props => {
     
     const templatePageHistory = useHistory();
+
+    //header part to select only and all template list
+    const [selectTemplate, setSelectTemplate] = useState('only');
+
+    const selectTemplateValueHandler = (event) =>{
+    setSelectTemplate(event.target.value);
+    }
+
+    //saving template data
+    const [templateData, setTemplateData] = useState([]);
+
+    useEffect(()=>{
+        console.log(selectTemplate)
+
+        //fetch the template of specific user
+        if(selectTemplate === 'only'){
+            fetch(template.resource_list,{
+                method:'GET',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':`Token ${window.localStorage.getItem('token')}`
+                },
+                
+            })
+                .then(res => res.json())
+                .then(templateData => {
+                    console.log(templateData);
+                    setTemplateData([...templateData.data]);
+                })
+                .catch(err => console.log(err));
+        }else if(selectTemplate === 'all'){
+            setTemplateData([]);
+        }
+    },[selectTemplate])
 
     useEffect(()=>{
         
@@ -58,6 +93,13 @@ const TemplatePage = props => {
                 <SpecificCampaignDetailProvider>
 
                     <BodyTable
+
+                        //choose
+                        selectTemplate={selectTemplate}
+                        selectTemplateValueHandler={selectTemplateValueHandler}
+
+                        //template data
+                        templateData = {templateData}
                         header="Templates" 
                         buttonName = "Create New Template" 
                         title="Template"
