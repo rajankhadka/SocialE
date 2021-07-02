@@ -1,3 +1,6 @@
+# Mantainer: Amik (amik.kandel@digiconnect.com.np)
+# Copyright @ DigiConnect Nepal
+
 FROM node
 
 WORKDIR /app
