@@ -11,6 +11,7 @@ import Header from '../../components/Header/Header';
 import SideBar from '../../components/SideBar/SideBar';
 import { signinApi } from '../../api/signin/signin';
 import TokenVerification from '../../hoc/TokenVerification';
+import { testapi } from '../../api/testapi/testapi';
 
 
 function Setting(props) {
@@ -56,12 +57,12 @@ function Setting(props) {
     const [successmsg, setSuccessmsg] = useState("");
 
     const twoauthHandler = () => {
+        console.log("twoAuth",twoAuth);
         let email_two_factor_auth = false;
         let totp_two_factor_auth = false;
         let email_and_sms_two_factor_auth = false;
         // console.log("twoauthHandler");
         // console.log(twoAuth)
-        let token = (window.localStorage.getItem('token'));
         if (twoAuth === 'email') {
             // console.log("email_two_factor_auth");
             email_two_factor_auth = true;
@@ -98,7 +99,7 @@ function Setting(props) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 
             })
             .catch(err => {
@@ -376,9 +377,26 @@ function Setting(props) {
 
                         {/* enable two factor auth */}
                         
-
+                        <div 
+                            style={{cursor:'pointer'}}
+                            onClick={() =>{
+                                fetch(testapi.test,{
+                                    method:'POST',
+                                    headers:{
+                                        'Content-Type':'application/json',
+                                        'Authorization':`Token ${window.localStorage.getItem('token')}`
+                                    }
+                                })
+                                    .then(res => res.json())
+                                    .then(result => console.log(result))
+                                    .catch(err => console.log(err))
+                            }}> 
+                            Test
+                        </div>
                     </div>
                 </div>
+
+                
             </div>
         </TokenVerification>
     )

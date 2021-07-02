@@ -76,7 +76,7 @@ const UserPermissions = (props) => {
             })
                 .then(res => res.json())
                 .then(allgroup => {
-                    
+                    console.log(allgroup)
                     const allgrp = allgroup.map(group => {
                         return{
                             ...group,
@@ -284,7 +284,7 @@ const UserPermissions = (props) => {
             //saving the selected permission to the right side
             setRightsidegroup(prevState => [...prevState,...filterselectedpermission])
 
-            const senddata = [...rightsidegroup]
+            const senddata = [...rightsidegroup,...filterselectedpermission]
 
             //context api
             usergroupDispatchContext({type:'ADD',data:senddata})

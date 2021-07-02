@@ -9,7 +9,7 @@ const signinApi = {
     'verifyotp': BASEURL+'verify/otp/',
     'sendotpmail':BASEURL+'mail/',
     'usersignup':BASEURL+'signup/',
-    'select2f':BASEURL+'select/twofactor',
+    'select2f':BASEURL+'select/twofactor/',
     'passwordupdate':BASEURL+'user/update/password/',
     'disable2f':BASEURL+'disable/twofactor/',
     'enabletotp':BASEURL+'enable/totp/',

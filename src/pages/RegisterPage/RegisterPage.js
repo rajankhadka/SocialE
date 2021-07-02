@@ -100,6 +100,7 @@ const [usergroupstate,usergroupdispatch] = useContext(UserPermissionSelectConten
     //userregisterHandler
     const userregisterHandler = (event) => {
         event.preventDefault();
+        console.log(usergroupstate.selectedGroup);
         usergroupdispatch({type:'USERSAVEDOFF'})
         const groupid = usergroupstate.selectedGroup.map(group => group.id)
         if ( (password.value.length > 7) && (password.value === confirmPassword.value) && (usergroupstate.selectedGroup.length > 0)) {

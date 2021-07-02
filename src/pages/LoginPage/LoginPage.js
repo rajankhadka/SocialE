@@ -126,6 +126,9 @@ function LoginPage(props) {
     //get phonenumber
     const [phonenumber, setPhonenumber] = useState("");
 
+    //USERNAME
+    const [username__, setUsername__] = useState("");
+
     //submitting the data to the server
     const submitHandler = (event) => {
         event.preventDefault();
@@ -144,7 +147,7 @@ function LoginPage(props) {
             .then(response => response.json())
             .then(token => {
                 props.savedtokenAction(token.key);
-                console.log(token);
+                // console.log(token);
 
                 //get phoneNumber
                 fetch(signinApi.phonenumberget, {
@@ -190,6 +193,8 @@ function LoginPage(props) {
                         .then(data => {
                             console.log(data);
                             if (data.totp_two_factor_auth) {
+                                console.log('Token.user',token.user);
+                                setUsername__(token.user);
                                 fetch(signinApi.sigin2f, {
                                     method: "POST",
                                     headers: {
@@ -199,7 +204,7 @@ function LoginPage(props) {
                                 })
                                     .then(response => response.json())
                                     .then(data => {
-                                        console.log("Totp Implemented");
+                                        // console.log("Totp Implemented");
                                         setTwoAuth("totp");
                                         setMessage("Check Google Authenticator")
                                     })
@@ -209,6 +214,8 @@ function LoginPage(props) {
                                 data.totp_two_factor_auth === false &&
                                 data.email_and_sms_two_factor_auth === false
                             ) {
+                                console.log('Token.user',token.user);
+                                setUsername__(token.user);
                                 window.localStorage.setItem('token', token.key);
                                 window.localStorage.setItem('user',token.user)
                                 // console.log(token);
@@ -218,6 +225,8 @@ function LoginPage(props) {
                                 setMessage("");
                                 loginHistory.replace("/")
                             } else {
+                                console.log('Token.user',token.user);
+                                setUsername__(token.user);
                                 setTwoAuth("email");
                                 setMessage("Check Your Email");
                             }
@@ -234,7 +243,7 @@ function LoginPage(props) {
     //otp code verify
     const otpcodeHandler = (event) => {
         event.preventDefault();
-        console.log(props.token);
+        // console.log(props.token);
         if (twoAuth === 'totp') {
             fetch(signinApi.signintotp, {
                 method: "POST",
@@ -248,10 +257,10 @@ function LoginPage(props) {
             })
                 .then(response => response.json())
                 .then(data1 => {
-                    console.log(data1);
+                    // console.log(data1);
                     if (data1.message === "OTP Verified") {
 
-                        
+                        window.localStorage.setItem('user',username__);
                         window.localStorage.setItem('token', props.token);
                         setOtpcode(prevState => {
                             return {
@@ -274,7 +283,7 @@ function LoginPage(props) {
                 })
                 .catch(err => console.log(err));
         } else {
-            console.log(otpcode.value);
+            // console.log(otpcode.value);
             fetch(signinApi.verifyotp, {
                 method: "POST",
                 headers: {
@@ -287,10 +296,10 @@ function LoginPage(props) {
             })
                 .then(response => response.json())
                 .then(data1 => {
-                    console.log(data1);
+                    // console.log(data1);
                     if (data1.status === "OTP Verified") {
-
-                        
+                        console.log(username__);
+                        window.localStorage.setItem('user',username__);
                         window.localStorage.setItem('token', props.token);
                         setOtpcode(prevState => {
                             return {
@@ -330,7 +339,7 @@ function LoginPage(props) {
                     error={email.error}
                     helperText={email.helperText}
                     onFocus={() => {
-                        console.log("no focus called");
+                        // console.log("no focus called");
                         setErrormsg("");
                         setEmail(prevState => {
                             return {
@@ -425,7 +434,7 @@ function LoginPage(props) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log("from twostephandler", data)
+                // console.log("from twostephandler", data)
                 //if two step is not google authenticator
                 if (!data.totp_two_factor_auth) {
                     fetch(signinApi.sigin2f, {
@@ -439,7 +448,7 @@ function LoginPage(props) {
                         .then(data => {
                             // setToken(data.key)
                             
-                            console.log(data);
+                            // console.log(data);
                             
                         })
                         .catch(err => console.log(err))
@@ -453,15 +462,15 @@ function LoginPage(props) {
                     })
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data);
+                            // console.log(data);
                         })
                         .catch(err => console.log(err));
                 }
             })
             .catch(err => console.log(err));
 
-        console.log("clicked!!!");
-        console.log(props.token);
+        // console.log("clicked!!!");
+        // console.log(props.token);
         
         
     }
@@ -614,7 +623,6 @@ function LoginPage(props) {
                         error={otpcode.error}
                         helperText={otpcode.helperText}
                         onFocus={() => {
-                            console.log("no focus called");
                             
                             setOtpcode(prevState => {
                                 return {
