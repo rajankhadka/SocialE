@@ -478,7 +478,13 @@ function BodyTableBody(props) {
                                 <h3>Group</h3>
                                 {
                                     userSpecificGroup &&
-                                    userSpecificGroup.group_associated.map((group,index) => <p>{group}</p>)
+
+                                    <div>
+                                        {
+                                            userSpecificGroup.group_associated.map((group,index) => <p key={index} >{index +1 }) {group}</p>)
+                                        }
+                                    </div>
+                                    
                                 }
                             </div>
 
@@ -487,7 +493,14 @@ function BodyTableBody(props) {
                                 <h3>Permission</h3>
                                 {
                                     userSpecificGroup &&
-                                    userSpecificGroup.permission_list.map((permission,index) => <p>{permission}</p>)
+
+                                    <div>
+                                        {
+                                            userSpecificGroup.permission_list.map((permission,index) => <p key={index}>{index +1 }) {permission}</p>)
+                                        }
+                                    </div>
+
+                                    
                                 }
                             </div>
                             

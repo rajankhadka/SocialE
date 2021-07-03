@@ -347,7 +347,7 @@
   padding-right: 10px;
   padding-top: 10px;
   padding-bottom: 20px;
-  padding-left: 10px;
+  padding-left: 20px;
 }
 
 .usermanagement__preview__header{
@@ -365,32 +365,43 @@
 }
 
 .usermanagement__preview__left{
-  display: flex;
-  flex-direction: column;
+
   width: 50%;
   /* background-color: blue; */
+ 
+}
+
+.usermanagement__preview__left >div {
+  display: flex;
+  flex-direction: column;
   height: 45vh;
   overflow-y: scroll;
-
+  margin-top: 10px;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.usermanagement__preview__left::-webkit-scrollbar{
+.usermanagement__preview__left > div::-webkit-scrollbar{
   display: none;
 }
 
 .usermanagement__preview__right{
-  display: flex;
-  flex-direction: column;
+  
   width: 50%;
   /* background-color: yellow; */
-  height: 45vh;
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  
 }
 
-.usermanagement__preview__right::-webkit-scrollbar{
+.usermanagement__preview__right > div{
+  height: 45vh;
+  margin-top: 10px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.usermanagement__preview__right > div::-webkit-scrollbar{
   display: none;
 }
