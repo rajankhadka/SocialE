@@ -14,5 +14,8 @@ export const userapi = {
     "grouplist": BASEURL + 'group/get/',
 
     //get all user
-    "userlist": BASEURL + 'users/'
+    "userlist": BASEURL + 'users/',
+
+    //user permission and group detail
+    "usergroup": BASEURL + 'group/details/',
 }

@@ -129,6 +129,10 @@ function LoginPage(props) {
     //USERNAME
     const [username__, setUsername__] = useState("");
 
+
+
+
+
     //submitting the data to the server
     const submitHandler = (event) => {
         event.preventDefault();
@@ -147,8 +151,7 @@ function LoginPage(props) {
             .then(response => response.json())
             .then(token => {
                 props.savedtokenAction(token.key);
-                // console.log(token);
-
+                
                 //get phoneNumber
                 fetch(signinApi.phonenumberget, {
                     method: "GET",

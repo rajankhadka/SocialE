@@ -11,7 +11,7 @@ import { targetAudienceApi } from '../../api/targetAudience/targetAudience';
 function TargetAudienceGroup(props) {
 
     useEffect(() => {
-        console.log("[target audience group components]");
+        // console.log("[target audience group components]");
         const fetchdata = async () => {
 
             if (props.groupData) {
@@ -191,7 +191,7 @@ function TargetAudienceGroup(props) {
             }
         });
 
-        console.log(validateEmailOnly);
+        // console.log(validateEmailOnly);
         
 
         fetch(targetAudienceApi.targetusercreate, {
@@ -207,9 +207,40 @@ function TargetAudienceGroup(props) {
         })
             .then(response => response.json())
             .then(audienceUserAdded => {
-                console.log(audienceUserAdded);
+                // console.log(audienceUserAdded);
                 setShowSuccessmsg(true);
                 setShowErrormsg(false);
+                setNewAudience(prevState => {
+                    return{
+                        ...prevState,
+                        groupName:{
+                            ...prevState.groupName,
+                            value:''
+                        },
+                        department:{
+                            ...prevState.department,
+                            value:''
+                        },
+                        organization:{
+                            ...prevState.organization,
+                            value:''
+                        }
+                    }
+                });
+
+                setTargetAudienceUser(prevState => {
+                    return{
+                        ...prevState,
+                        targetAudienceUserEmail:{
+                            ...prevState.targetAudienceUserEmail,
+                            value:''
+                        },
+                        targetAudienceUserUpload:{
+                            ...prevState.targetAudienceUserUpload,
+                            value:null
+                        }
+                    }
+                })
             })
             .catch(err => console.log(err))
     }
@@ -238,6 +269,37 @@ function TargetAudienceGroup(props) {
                 console.log(audienceUserAdded);
                 setShowSuccessmsg(true);
                 setShowErrormsg(false);
+                setNewAudience(prevState => {
+                    return{
+                        ...prevState,
+                        groupName:{
+                            ...prevState.groupName,
+                            value:''
+                        },
+                        department:{
+                            ...prevState.department,
+                            value:''
+                        },
+                        organization:{
+                            ...prevState.organization,
+                            value:''
+                        }
+                    }
+                });
+
+                setTargetAudienceUser(prevState => {
+                    return{
+                        ...prevState,
+                        targetAudienceUserEmail:{
+                            ...prevState.targetAudienceUserEmail,
+                            value:''
+                        },
+                        targetAudienceUserUpload:{
+                            ...prevState.targetAudienceUserUpload,
+                            value:null
+                        }
+                    }
+                })
             })
             .catch(err => console.log(err))
         
@@ -247,12 +309,12 @@ function TargetAudienceGroup(props) {
     //add new audience handler
     const addnewAudienceHandler = (event) => {
         event.preventDefault();
-        console.log("data submitted!!!")
+        // console.log("data submitted!!!")
 
         //first group create
 
         if (!uploadFieldActive && targetAudienceUser.targetAudienceUserEmail.value.length > 0) {
-            console.log("user email")
+            // console.log("user email")
             fetch(targetAudienceApi.targetusergroupcreate, {
                 method: "POST",
                 headers: {
@@ -291,7 +353,7 @@ function TargetAudienceGroup(props) {
             })
                 .then(response => response.json())
                 .then(groupData => {
-                    console.log(groupData);
+                    // console.log(groupData);
                     targetAudienceUploadHandler(groupData)
                 })
                 .catch(err => console.log(err));
@@ -317,7 +379,7 @@ function TargetAudienceGroup(props) {
         disable = false;
     }
 
-    console.log('props', props);
+    // console.log('props', props);
 
     //edit part
 
@@ -329,7 +391,7 @@ function TargetAudienceGroup(props) {
             (newAudience.department.value.length > 0) &&
             (newAudience.organization.value.length > 0)
         ) {
-            console.log("user email")
+            // console.log("user email")
             fetch(targetAudienceApi.targetusergroupupdate, {
                 method: "PUT",
                 headers: {
@@ -363,7 +425,7 @@ function TargetAudienceGroup(props) {
                             errmsg:''
                         }
                     })
-                    console.log(groupData);
+                    // console.log(groupData);
                     setShowSuccessmsg(false);
                     setShowErrormsg(true);
                     props.groupEditHandler();
@@ -454,7 +516,7 @@ function TargetAudienceGroup(props) {
         );
     }
 
-    console.log('groups', props.type);
+    // console.log('groups', props.type);
     return (
         <div className={classes.targetAudienceGroup}>
             <div className={classes.targetAudienceGroup__content}>

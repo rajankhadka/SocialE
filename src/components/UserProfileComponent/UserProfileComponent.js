@@ -112,7 +112,7 @@ function UserProfileComponent(props) {
                 {
                     (props.titleState.error && props.titleState.edit ) &&
                     <div style={{color:'red'}}>
-                        field must be unique
+                        {props.titleState.errormsg}
                     </div>
                 }
             </div>

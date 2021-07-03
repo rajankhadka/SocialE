@@ -9,6 +9,7 @@ import { template } from "../../../api/template/template";
 import CampaignTargetAudienceGroup from '../../CampaignTargetAudienceGroup/CampaignTargetAudienceGroup';
 import CampaignPreview from '../../CampaignPreview/CampaignPreview';
 import { campaignApi } from '../../../api/campaign/campaign';
+import { userapi } from '../../../api/userapi/user';
 
 function BodyTableBody(props) {
 
@@ -44,7 +45,44 @@ function BodyTableBody(props) {
 
     let body = null;
 
-    
+    //usermanagement data
+    const [userSpecificData, setUserSpecificData] = useState({});
+    const [userSpecificGroup, setUserSpecificGroup] = useState(null);
+    //preview user management
+    const [userPreview, setUserPreview] = useState(false);
+
+
+    //fetching data to preview user management group and permission
+
+    useEffect(() =>{
+        console.log("user effect");
+        switch(props.title){
+            case 'User':
+                const fetchuserPerviewData = async() => {
+                    const res = await fetch(userapi.usergroup,{
+                        method:'POST',
+                        headers:{
+                            'Content-Type':'application/json',
+                            'Authorization':`Token ${window.localStorage.getItem('token')}`
+                        },
+                        body:JSON.stringify({
+                            user_id: userSpecificData.id
+                        })
+                    })
+                    if(res.status === 200){
+                        const data = (await res.json());
+                        setUserSpecificGroup({...data});
+                    }
+                }
+
+                fetchuserPerviewData();
+                break;
+            
+            default:
+                break;
+        }
+    },[userPreview])
+
     switch (props.title) {
 
         case 'Template':
@@ -196,19 +234,39 @@ function BodyTableBody(props) {
                                 <p>{element.phonenumber}</p>
                             </div>
 
-                            {/* user delete */}
+                            {/* user permission edit */}
                             <div className={classes.homePage__body__bodyTable__edit}>
                                 <IconButton
-                                    
+                                    onClick={() =>{
+                                        console.log("edit",element);
+                                        setUserSpecificData({...element})
+                                    }}
+                                >
+                                    <Edit style={{ fontSize: 15, color: "blue" }} />
+                                </IconButton>
+                            </div>
+
+                            {/* user delete
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    onClick={() =>{
+                                        console.log("delete",element);
+                                        setUserSpecificData({...element})
+                                    }}
                                 >
                                     <Delete style={{ fontSize: 15, color: "red" }} />
                                 </IconButton>
-                            </div>
+                            </div> */}
     
                             {/* user preview */}
                             <div className={classes.homePage__body__bodyTable__edit}>
                                 <IconButton
-                                   
+                                    onClick={() =>{
+
+                                        console.log("preview",element);
+                                        setUserSpecificData({...element});
+                                        setUserPreview(true);
+                                    }}
                                 >
                                     <Visibility style={{ fontSize: 15, color: "green" }} />
                                 </IconButton>
@@ -323,9 +381,13 @@ function BodyTableBody(props) {
                     <h4> Contact Number</h4>
                 </div>
 
-                <div className={classes.homePage__body__bodyTable__delete}>
-                    <h4>Delete</h4>
+                <div className={classes.homePage__body__bodyTable__edit}>
+                    <h4>Edit</h4>
                 </div>
+
+                {/* <div className={classes.homePage__body__bodyTable__delete}>
+                    <h4>Delete</h4>
+                </div> */}
 
                 <div className={classes.homePage__body__bodyTable__delete}>
                     <h4>Preview</h4>
@@ -401,12 +463,45 @@ function BodyTableBody(props) {
                 </div>
             }
 
-            {/* campaign info edit  */}
+            {/* user management preview */}
+            {
+                userPreview &&
+                <Model>
+                    <div className={classes.usermanagement__preview}>
+                        <div className={classes.usermanagement__preview__header}>
+                            <Close style={{cursor:'pointer'}} onClick={() => setUserPreview(false)} />
+                        </div>
 
+                        <div className={classes.usermanagement__preview__body}>
+                            {/* left side (group name) */}
+                            <div className={classes.usermanagement__preview__left}>
+                                <h3>Group</h3>
+                                {
+                                    userSpecificGroup &&
+                                    userSpecificGroup.group_associated.map((group,index) => <p>{group}</p>)
+                                }
+                            </div>
+
+                            {/* right side permission name */}
+                            <div className={classes.usermanagement__preview__right}>
+                                <h3>Permission</h3>
+                                {
+                                    userSpecificGroup &&
+                                    userSpecificGroup.permission_list.map((permission,index) => <p>{permission}</p>)
+                                }
+                            </div>
+                            
+                        </div>
+                    </div>
+                </Model>
+            }
+
+            {/* campaign info edit  */}
             {
                 props.campaignEditTrigger
                 &&
                 <Model>
+                    {/* data is passed using context api */}
                     <EditCampaignDetail campaignEditTriggerHanlderOFF={props.campaignEditTriggerHanlderOFF}/>
                 </Model>
             }

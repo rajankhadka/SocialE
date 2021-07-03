@@ -115,71 +115,7 @@ function BodyTableGroup(props) {
     // -----------------------------------
     
 
-    let body = null;
-
-    if (groups.length > 0) {
-
-        body = (
-            groups.map(element => (
-                    <div className={classes.homePage__body__bodyTableBodyRow} key={element.id}>
-                        <div className={classes.homePage__body__bodyTable__name}>
-                            <p>{element.group_name}</p>
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__create}>
-                            <p>{element.organization}</p>
-                        </div>
-
-                         <div className={classes.homePage__body__bodyTable__create}>
-                            <p>{element.department}</p>
-                        </div>
-
-
-                        <div className={classes.homePage__body__bodyTable__edit}>
-                        <IconButton
-                            onClick={() => {
-                                showGroupONEditHandler();
-                                setGroupEditData(element);
-                                showGroupOFFPreviewhandler();
-                                // console.log(element);
-                                editandpreviewTriggerHandler();
-                                // console.log(editandpreviewTrigger);
-                                
-                            }}>
-                                <Edit style={{ fontSize: 15, color: "blue" }} />
-                            </IconButton>
-                        </div>
-                        
-                        <div className={classes.homePage__body__bodyTable__edit}>
-                        <IconButton
-                            onClick={() => {
-                                showGroupONPreviewHandler();
-                                setGroupPreviewData(element);
-                                showGroupOFFEdithandler();
-                            }}
-                        >
-                                <Visibility style={{ fontSize: 15, color: "green" }} />
-                            </IconButton>
-                        </div>
-
-                        <div className={classes.homePage__body__bodyTable__edit}>
-                            <IconButton
-                                onClick={() => {
-                                    console.log("groupDelete")
-                                    console.log(element)
-                                    setDeleteGroup(true);
-                                    setGroupPreviewData(element);
-                                }}
-                            >
-                                <Delete style={{ fontSize: 15, color: "red" }} />
-                            </IconButton>
-                        </div>
-
-                        
-                    </div>
-            ))
-        )
-    }
+    
 
     //organization
     const [specificOrgGroup, setSpecificOrgGroup] = useState([]);
@@ -255,8 +191,8 @@ function BodyTableGroup(props) {
                     <div className={classes.homePage__body__bodyTable__edit}>
                         <IconButton
                             onClick={() => {
-                                console.log("groupDelete")
-                                console.log(element)
+                                // console.log("groupDelete")
+                                // console.log(element)
                                 setDeleteGroup(true);
                                 setGroupPreviewData(element);
                             }}
@@ -353,7 +289,27 @@ function BodyTableGroup(props) {
             return null;
         }
     }
-        
+    
+    
+    //delete group
+    const targetAudienceGroupDelete = async() => {
+        // console.log(groupPreviewData);
+        const res = await fetch(targetAudienceApi.targetusergroupdelete,{
+            method:"DELETE",
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Token ${window.localStorage.getItem('token')}`
+            },
+            body:JSON.stringify({
+                group_id:groupPreviewData.id
+            })
+        })
+
+        if(res.status !== 200){
+            let deletemsg = await res.json();
+            alert(`${deletemsg.success} \n Cannot remove, since groups are used in following campaigns \n ${deletemsg.msg['Cannot remove, since groups are used in following campaigns']}`)
+        }
+    }
 
     return (
         <div className={classes.homePage__body__bodyTable}>
@@ -412,9 +368,10 @@ function BodyTableGroup(props) {
                             <button
                                 className={classes.DeleteButton}
                                 onClick={() => {
+                                    targetAudienceGroupDelete();
                                     groupEditHandler();
                                     setDeleteGroup(false);
-                                    console.log(groupPreviewData);
+                                    // console.log(groupPreviewData);
                                 }}
                             >
                                 Yes

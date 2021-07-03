@@ -3,7 +3,7 @@ import classes from "./CreateGroup.module.css";
 
 function CreateGroup(props) {
 
-    console.log("object", props.groupType);
+    // console.log("object", props.groupType);
 
     let showHeader = null;
 

@@ -17,6 +17,7 @@ import { SpecificCampaignDetailProvider } from '../../contextAPI/SpecificCampaig
 import { campaignApi } from '../../api/campaign/campaign';
 import { signinApi } from '../../api/signin/signin';
 import ErrorBoundary from '../../hoc/ErrorBoundary';
+import TokenVerification from '../../hoc/TokenVerification';
 
 
 //token and user
@@ -152,7 +153,7 @@ function HomePage(props) {
 
     const [errorOccured, setErrorOccured] = useState(false)
     return (
-        <ErrorBoundary>
+        <TokenVerification>
             <div className={classes.homePage}>
                 {(window.localStorage.getItem("token") === null || errorOccured) && homepageHistory.replace('/login')}
                 <Header />
@@ -214,7 +215,7 @@ function HomePage(props) {
                 </div>
 
             </div>
-        </ErrorBoundary>
+        </TokenVerification>
     )
 }
 

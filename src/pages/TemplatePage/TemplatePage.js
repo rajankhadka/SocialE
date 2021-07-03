@@ -14,7 +14,8 @@ import { signinApi } from "../../api/signin/signin";
 
 //react router dom
 import { useHistory } from "react-router-dom";
-import { template } from "../../api/template/template";
+import { template as templateApi } from "../../api/template/template";
+import TokenVerification from "../../hoc/TokenVerification";
 
 const token = window.localStorage.getItem('token');
 const user = window.localStorage.getItem('user')
@@ -38,7 +39,8 @@ const TemplatePage = props => {
 
         //fetch the template of specific user
         if(selectTemplate === 'only'){
-            fetch(template.resource_list,{
+            setTemplateData([]);
+            fetch(templateApi.resource_list,{
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -53,7 +55,25 @@ const TemplatePage = props => {
                 })
                 .catch(err => console.log(err));
         }else if(selectTemplate === 'all'){
-            setTemplateData([]);
+
+            const fetchallTemplate = async() =>{
+                const res = await fetch(templateApi.templateallget,{
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Authorization':`Token ${window.localStorage.getItem('token')}`
+                    },
+                });
+
+                if(res.status === 200){
+                    const allTemplate = await res.json();
+                    setTemplateData([...allTemplate])
+                }else{
+                    setTemplateData([]);
+                }
+            }
+            fetchallTemplate();
+            
         }
     },[selectTemplate])
 
@@ -84,32 +104,34 @@ const TemplatePage = props => {
     },[token,user])
     
     return(
-        <div className={classes.homePage} >
-            {window.localStorage.getItem("token") === null && templatePageHistory.replace('/login')}
-            <Header />
-            <div className={classes.homePage__body}>
-                <SideBar />
-                
-                <SpecificCampaignDetailProvider>
+        <TokenVerification>
+            <div className={classes.homePage} >
+                {window.localStorage.getItem("token") === null && templatePageHistory.replace('/login')}
+                <Header />
+                <div className={classes.homePage__body}>
+                    <SideBar />
+                    
+                    <SpecificCampaignDetailProvider>
 
-                    <BodyTable
+                        <BodyTable
 
-                        //choose
-                        selectTemplate={selectTemplate}
-                        selectTemplateValueHandler={selectTemplateValueHandler}
+                            //choose
+                            selectTemplate={selectTemplate}
+                            selectTemplateValueHandler={selectTemplateValueHandler}
 
-                        //template data
-                        templateData = {templateData}
-                        header="Templates" 
-                        buttonName = "Create New Template" 
-                        title="Template"
-                        url="/home/create-template"
-                    />
-                </SpecificCampaignDetailProvider>
-                
-                
+                            //template data
+                            templateData = {templateData}
+                            header="Templates" 
+                            buttonName = "Create New Template" 
+                            title="Template"
+                            url="/home/create-template"
+                        />
+                    </SpecificCampaignDetailProvider>
+                    
+                    
+                </div>
             </div>
-        </div>
+        </TokenVerification>
     );
 }
 

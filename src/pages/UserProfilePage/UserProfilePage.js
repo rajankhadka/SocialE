@@ -24,6 +24,7 @@ const UserProfilePage = props => {
         edit:false,
         value:'',
         error:false,
+        errormsg:'',
     });
 
     //firstname
@@ -45,6 +46,7 @@ const UserProfilePage = props => {
         edit:false,
         value:'',
         error:false,
+        errormsg:'',
     })
 
     //phonenumber
@@ -52,10 +54,12 @@ const UserProfilePage = props => {
         edit:false,
         value:'',
         error:false,
+        errormsg:'',
     })
 
     //fetching all information about user profile
     useEffect(()=>{
+        console.log("it is called")
         fetch(userapi.individualuserprofile,{
             method:'GET',
             headers:{
@@ -109,6 +113,39 @@ const UserProfilePage = props => {
                 })
             })
             .catch(err => console.log(err));
+        return ()=>{
+            console.log("cleanup")
+            setUserProfile(null);
+            setUpdateTrigger(false);
+            setUsername({
+                edit:false,
+                value:'',
+                error:false,
+                errormsg:'',
+            })
+            setEmail({
+                edit:false,
+                value:'',
+                error:false,
+                errormsg:'',
+            })
+            setPhonenumber({
+                edit:false,
+                value:'',
+                error:false,
+                errormsg:'',
+            })
+            setLastname({
+                edit:false,
+                value:'',
+                error:false,
+            })
+            setFirstname({
+                edit:false,
+                value:'',
+                error:false,
+            })
+        }
     },[updatetrigger]);
 
     //all handler
@@ -350,6 +387,7 @@ const UserProfilePage = props => {
     }
 
     const updateuserprofile =() => {
+        
         fetch(userapi.individualuserprofileupdate,{
             method:'PUT',
             headers:{
@@ -376,6 +414,7 @@ const UserProfilePage = props => {
                                     ...prevState,
                                     error:true,
                                     edit:true,
+                                    errormsg:result.username[0]
                                 }
                             })
                         }else{
@@ -396,6 +435,7 @@ const UserProfilePage = props => {
                                     ...prevState,
                                     error:true,
                                     edit:true,
+                                    errormsg:result.email[0]
                                 }
                             })
                         }else{
@@ -416,6 +456,7 @@ const UserProfilePage = props => {
                                     ...prevState,
                                     error:true,
                                     edit:true,
+                                    errormsg:result.phonenumber[0]
                                 }
                             })
                         }else{
@@ -429,12 +470,11 @@ const UserProfilePage = props => {
                         }
                     }
                 }else{
-
+                    setUpdateTrigger(prevState => !prevState);
                 }
                 
             })
             .catch(err => console.log(err));
-
     }
 
     const [status, setStatus] = useState(200);

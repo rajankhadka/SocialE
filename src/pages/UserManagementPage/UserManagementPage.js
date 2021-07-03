@@ -32,7 +32,7 @@ function UserManagementPage(props) {
         })
             .then(res => res.json())
             .then(allUserData => {
-                console.log(allUserData)
+                // console.log(allUserData)
                 setAllUser([...allUserData])
             })
             .catch(err => console.log(err));
