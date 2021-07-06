@@ -1,9 +1,9 @@
-import React,{} from "react";
+import React,{useState} from "react";
 import classes from "./HomePageBodyHeader.module.css"
 
 //material UI
 import { Button, Select, TextField } from '@material-ui/core';
-import { Add, Search } from '@material-ui/icons';
+import { Add, List, Search } from '@material-ui/icons';
 
 //react router 
 import {useHistory} from "react-router-dom"
@@ -11,6 +11,8 @@ import {useHistory} from "react-router-dom"
 //redux
 import { connect } from "react-redux";
 import { templatePageCreate,templatePageView } from "../../redux/actions/templatePageToggleAction";
+import Model from "../Model/Model";
+import GroupManagementComponent from "../GroupManagementComponent/GroupManagementComponent";
 
 const HomePageBodyHeader = (props) =>{
     const homepageHistory = useHistory();
@@ -75,6 +77,18 @@ const HomePageBodyHeader = (props) =>{
                 />
             </div>
         );
+    }
+
+    //group management 
+    const [groupManagementModal, setGroupManagementModal] = useState(false);
+
+    //group management
+    const groupManagementModalON = () => {
+        setGroupManagementModal(true);
+    }
+
+    const groupManagementModalOFF = () => {
+        setGroupManagementModal(false);
     }
 
     return(
@@ -173,11 +187,40 @@ const HomePageBodyHeader = (props) =>{
                             {props.buttonName}
                         </Button>
 
+                        {
+                            props.header === 'User Management'     
+                            &&
+                            <Button
+                                variant="text"
+                                startIcon={<List />}
+                                style={{
+                                    fontSize: 15,
+                                    textTransform: 'capitalize',
+                                    fontWeight: 'lighter',
+                                    marginLeft: "20px"
+                                }}
+                                onClick={()=>{
+                                    groupManagementModalON()
+                                }}
+                            >
+                                Group Management
+                            </Button>
+                        }
+
                     </div>
                 }
 
                 {searchButton}
             </div>
+
+            {
+                groupManagementModal &&
+                <Model>
+                    <GroupManagementComponent 
+                        groupManagementModalOFF={groupManagementModalOFF}
+                    />
+                </Model>
+            }
         </div>
     );
 }

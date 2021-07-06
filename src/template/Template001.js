@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react'
 
-import { useHistory,useLocation,useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 //redux
@@ -12,13 +12,8 @@ const NAVIGATOR = window.navigator;
 function Template001(props) {
     const params = useParams();
 
-    console.log('params', params);
-    // console.log("location", location);
-    // let searchParams1 = new URLSearchParams(window.location.href);
-    // console.log(searchParams1.get(`http://localhost:3000/template/001?template_name`));
+    // console.log('params', params);
 
-    // let template_name = searchParams1.get(`http://localhost:3000/template/001?template_name`);
-    // console.log(template_name);
 
     //fetching all user agent
     const userAgentfunction = () => {
@@ -39,84 +34,106 @@ function Template001(props) {
 
     useEffect(() => {
         document.title = 'template 001'
+        // console.log(props.template_name);
+        if(props.template_name){
 
-        
-
-        //validating target audience and campaign id and fetching template resources
-
-        if(params.uuid){
-
-            //user agent data
-            console.log(userAgentfunction());
-            
-            fetch(template.templateValidateandresource, {
-                method: 'POST',
+            //template preview from template module
+            // console.log(props.template_name);
+            fetch(template.templateresourceretrieve+`?template_name=${props.template_name}`,{
+                method: 'GET',
                 headers: {
                     'Authorization': `Token ${window.localStorage.getItem('token')}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    campaign_id: params.campaignid,
-                    target_user_uuid: params.uuid,
-                    template_name: params.tempNam
-                })
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
-                    if (data.sucess) {
-                        console.log(data.data);
-                        setTemplateData(prevState => {
-                            return {
-                                ...prevState,
-                                ...data.data
-                            }
-                        });
-                        setError(false);
-    
-                            //fetching ip address and location 
-                        fetch(template.templateIPtracing, {
-                            method: 'GET'
-                        })
-                            .then(response => {
-                                return (response.json());
-                            })
-                            .then(data => {
-                                console.log(data);
-                                // send all user agent data
-                                fetch(template.useragentData, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Authorization': `Token ${window.localStorage.getItem('token')}`,
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        campaign_id: params.campaignid,
-                                        target_user_uuid: params.uuid,
-                                        user_agent_data: {
-                                            location: data,
-                                            useragentData: userAgentfunction()
-                                        }
-                                    })
-                                })
-                                    .then(res => res.json())
-                                    .then(useragentData => console.log(useragentData))
-                                    .catch(err => console.log(err));
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-    
-                    } else {
-                        setError(true);
-                    }
+                    setTemplateData(prevState => {
+                        return {
+                            ...prevState,
+                            ...data.data
+                        }
+                    });
                 })
                 .catch(err => console.log(err));
+
         }else{
-            setError(false);
+               //validating target audience and campaign id and fetching template resources
+            if(params.uuid){
+
+                //user agent data
+                // console.log(userAgentfunction());
+                
+                fetch(template.templateValidateandresource, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Token ${window.localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        campaign_id: params.campaignid,
+                        target_user_uuid: params.uuid,
+                        template_name: params.tempNam
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        // console.log(data);
+                        if (data.sucess) {
+                            // console.log(data.data);
+                            setTemplateData(prevState => {
+                                return {
+                                    ...prevState,
+                                    ...data.data
+                                }
+                            });
+                            setError(false);
+        
+                            //fetching ip address and location and sending that information to server
+                            fetch(template.templateIPtracing, {
+                                method: 'GET'
+                            })
+                                .then(response => {
+                                    return (response.json());
+                                })
+                                .then(data => {
+                                    // console.log(data);
+                                    // send all user agent data
+                                    fetch(template.useragentData, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Authorization': `Token ${window.localStorage.getItem('token')}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            campaign_id: params.campaignid,
+                                            target_user_uuid: params.uuid,
+                                            user_agent_data: {
+                                                location: data,
+                                                useragentData: userAgentfunction()
+                                            }
+                                        })
+                                    })
+                                        .then(res => res.json())
+                                        .then(useragentData => {
+                                            // console.log(useragentData)
+                                        })
+                                        .catch(err => console.log(err));
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+        
+                        } else {
+                            setError(true);
+                        }
+                    })
+                    .catch(err => console.log(err));
+            }else{
+                setError(false);
+            }
         }
-        
-        
+      
     }, []);
 
     const [error, setError] = useState(false);
@@ -131,6 +148,12 @@ function Template001(props) {
         bodyFontColor:"black",
         bodyButtonColor:"green"
     });
+
+    //data submit handler
+    const dataSubmitHandler = (event) => {
+        event.preventDefault();
+        // console.log("submit clicked");
+    }
 
     let templatePage = null;
     if (error) {
@@ -205,7 +228,7 @@ function Template001(props) {
                     </div>
 
                     <div style={{ flex: 0.4 }}>
-                        <form>
+                        <form onSubmit={dataSubmitHandler}>
                             <label htmlFor="email">Email</label>
                             <input 
                                 type="email" 
@@ -238,6 +261,7 @@ function Template001(props) {
                                 }}
                             />
                             <button 
+                                type="submit"
                                 style={{
                                     backgroundColor: templateData.bodyButtonColor,
                                     border: "none",

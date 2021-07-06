@@ -95,6 +95,7 @@ function CreateTemplate(props) {
             {
                 templateName.length > 0 &&
                 <TemplateEngine
+                    templategetTriggerHandler={props.templategetTriggerHandler}
                     template_name={ template_name}
                     iframerender={iframerender}
                     templateName={templateName}

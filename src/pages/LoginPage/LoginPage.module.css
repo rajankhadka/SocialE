@@ -1,7 +1,7 @@
 /* mobile devices */
 @media screen and (max-width:472px){
   .loginPage{
-    width: 95%;
+    width: 100%;
   }
 
   .loginPage__body > form{
@@ -60,6 +60,8 @@
 .loginPage__body{
   /* background-color: chartreuse; */
   width: 90%;
+  display: flex;
+  flex-direction: column;
 }
 
 .loginPage__body > form {
@@ -128,6 +130,33 @@
   /* background-color: aqua; */
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  margin-top: -50px;
+  justify-content: center;
+  /* margin-top: -50px; */
+}
+
+
+/* ------------------2 step ------------- */
+.twofactorAuth__main{
+  width: 95%;
+  /* background-color: blue; */
+}
+
+.twofactor__form{
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
+
+
+/* ----------spinner ---------- */
+.spinner{
+  border:3px solid white;
+  border-top: 3px solid black;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
 }

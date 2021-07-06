@@ -2,8 +2,8 @@ import React,{useState,useRef,useEffect} from 'react';
 import classes from "./LoginPage.module.css";
 
 //material UI
-import {  Lock, Visibility, VisibilityOff } from '@material-ui/icons';
-import { Button, IconButton, TextField } from '@material-ui/core';
+import {  Close, Lock, } from '@material-ui/icons';
+import { Button, TextField } from '@material-ui/core';
 
 //implementating redux
 import { connect } from "react-redux";
@@ -17,6 +17,8 @@ import validator from 'validator';
 //react-router
 import { useHistory } from "react-router-dom";
 import { signinApi } from '../../api/signin/signin';
+import Spinner from '../../components/Spinner/Spinner';
+import Model from '../../components/Model/Model';
 
 
 
@@ -131,11 +133,15 @@ function LoginPage(props) {
 
 
 
-
+    //spinner
+    const [spinner, setSpinner] = useState(false);
 
     //submitting the data to the server
     const submitHandler = (event) => {
         event.preventDefault();
+        //spinner state true
+        setSpinner(true);
+
         setErrormsg("");
         fetch(signinApi.sigin, {
             method: "POST",
@@ -150,6 +156,7 @@ function LoginPage(props) {
         })
             .then(response => response.json())
             .then(token => {
+                setNoInternetConnection(false);
                 props.savedtokenAction(token.key);
                 
                 //get phoneNumber
@@ -167,6 +174,7 @@ function LoginPage(props) {
                     .catch(err => console.log(err));
 
                 if (token.status) {
+                    setSpinner(false);
                     setErrormsg(token.status);
                     setEmail(prevState => {
                         return {
@@ -195,6 +203,9 @@ function LoginPage(props) {
                         .then(response => response.json())
                         .then(data => {
                             console.log(data);
+
+                            //spinner state false
+                            setSpinner(false);
                             if (data.totp_two_factor_auth) {
                                 console.log('Token.user',token.user);
                                 setUsername__(token.user);
@@ -239,14 +250,25 @@ function LoginPage(props) {
                 
                 
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                // console.log(err);
+                console.log("no internet connection!!!");
+                setNoInternetConnection(true);
+            });
 
     }
+
+    //internet connection
+    const [noInternetConnection, setNoInternetConnection] = useState(false);
 
     //otp code verify
     const otpcodeHandler = (event) => {
         event.preventDefault();
-        // console.log(props.token);
+        
+        //setSpinner state true
+        setSpinner(true);
+
+        console.log(props.token);
         if (twoAuth === 'totp') {
             fetch(signinApi.signintotp, {
                 method: "POST",
@@ -272,9 +294,13 @@ function LoginPage(props) {
                                 helperText:""
                             }
                         })
-
+                        //spinner state false
+                        setSpinner(false)
                         loginHistory.replace("/")
                     } else  {
+
+                        //spinner state false
+                        setSpinner(false)
                         setOtpcode(prevState => {
                             return {
                                 ...prevState,
@@ -312,8 +338,13 @@ function LoginPage(props) {
                             }
                         })
 
+                        //spinner state false
+                        setSpinner(false)
                         loginHistory.replace("/")
                     } else  {
+
+                        //spinner state false
+                        setSpinner(false)
                         setOtpcode(prevState => {
                             return {
                                 ...prevState,
@@ -351,6 +382,7 @@ function LoginPage(props) {
                             }
                         })
                     }}
+                    disabled={spinner ? true : false}
                 />
 
                 <TextField variant="outlined"
@@ -386,15 +418,16 @@ function LoginPage(props) {
                             }
                         })
                     }}
-                    
+                    disabled={spinner ? true : false}
                 />
 
                 <Button variant="contained"
                     type="submit" color="primary" 
+                    disabled = {spinner ? true : false}
                     // disabled={ buttondisable || initialclick }
                     className={classes.loginPage__button}
                 >
-                    Sign In
+                    Sign In { spinner &&  <Spinner className={classes.spinner }/>}
                 </Button>
 
             </form>
@@ -489,7 +522,7 @@ function LoginPage(props) {
     //if google authenticator is enable
     if ((message === "Check Google Authenticator") && (twoAuth.length > 0)) {
         twostepVerification = (
-            <div style={{ width: "300px" }}>
+            <div  className={classes.twofactorAuth__main}>
                 <p>
                     2-Step Verification
                 </p>
@@ -497,9 +530,10 @@ function LoginPage(props) {
                     {message}
                 </p>
 
-                <form onSubmit={otpcodeHandler}>
+                <form onSubmit={otpcodeHandler} className={classes.twofactor__form}>
                     <TextField
-                        style={{width:"300px"}}
+                        disabled={spinner ? true : false}
+                        style={{width:"95%"}}
                         variant="outlined"
                         label="OTP Code" type="text" name={twoAuth}
                         className={classes.loginPage__input}
@@ -529,8 +563,9 @@ function LoginPage(props) {
                     <Button variant="contained"
                         type="submit" color="primary" 
                         className={classes.loginPage__button}
+                        disabled={spinner ? true : false}
                     >
-                        Verify OTP
+                        Verify OTP { spinner &&  <Spinner className={classes.spinner } />}
                     </Button>
                 </form>
 
@@ -543,7 +578,16 @@ function LoginPage(props) {
                             setTwosteptotp('totp');
                             setMessage("try another way");
                             setTwoAuth('email');
+                            setOtpcode(prevState => {
+                                return {
+                                    ...prevState,
+                                    error: false,
+                                    helperText:'',
+                                    value:''
+                                }
+                            })
                         }}
+                        disabled={spinner ? true : false}
                     >
                         Try Another Ways
                     </Button>
@@ -561,7 +605,7 @@ function LoginPage(props) {
         sliceEmail += `...${email.value.slice(-3)}`
 
         twostepVerification = (
-            <div style={{ width: "300px" }}>
+            <div className={classes.twofactorAuth__main}>
                 <h2>
                     2-Step Verification
                 </h2>
@@ -599,7 +643,7 @@ function LoginPage(props) {
     let email_sms = null;
     if (twostepmsg.length > 0) {
         email_sms = (
-            <div style={{ width: "300px" }}>
+            <div className={classes.twofactorAuth__main}>
                 <h2>
                     2-Step Verification
                 </h2>
@@ -607,9 +651,9 @@ function LoginPage(props) {
                     {twostepmsg}
                 </p>
 
-                <form onSubmit={otpcodeHandler}>
+                <form onSubmit={otpcodeHandler} className={classes.twofactor__form} >
                     <TextField
-                        style={{width:"300px"}}
+                        style={{width:"95%"}}
                         variant="outlined"
                         label="OTP Code" type="text" name={twoAuth}
                         className={classes.loginPage__input}
@@ -630,16 +674,19 @@ function LoginPage(props) {
                             setOtpcode(prevState => {
                                 return {
                                     ...prevState,
-                                    error: false
+                                    error: false,
+                                    helperText:''
                                 }
                             })
                         }}
+                        disabled={spinner ? true : false}
                     />
                     <Button variant="contained"
                         type="submit" color="primary" 
+                        disabled={spinner ? true : false}
                         className={classes.loginPage__button}
                     >
-                        Verify OTP
+                        Verify OTP { spinner &&  <Spinner className={classes.spinner }/>}
                     </Button>
                 </form>
 
@@ -647,7 +694,18 @@ function LoginPage(props) {
                     <Button variant="text"
                         type="submit" color="primary" 
                         className={classes.loginPage__button}
-                        onClick={() => setTwostepmsg("")}
+                        onClick={() =>{ 
+                            setTwostepmsg("");
+                            setOtpcode(prevState => {
+                                return {
+                                    ...prevState,
+                                    error: false,
+                                    helperText:'',
+                                    value:''
+                                }
+                            })
+                        }}
+                        disabled={spinner ? true : false}
                     >
                         Back
                     </Button>
@@ -727,14 +785,28 @@ function LoginPage(props) {
                     twoAuth.length === 0
                     &&
                     <Button color="primary"
-                    className={classes.loginPage__forget}
-                    onClick ={ props.openForgetPasswordAction}
+                        className={classes.loginPage__forget}
+                        onClick ={ props.openForgetPasswordAction}
+                        disabled={spinner ? true : false}
                     >
                         Forgot Password
                     </Button>
                 }
                 
             </div>
+
+            {
+                noInternetConnection &&
+                <Model>
+                    <div style={{display:'flex',width:'30%',backgroundColor:'white',height:'10vh',borderRadius:'10px',justifyContent:'space-between','alignItems':'center'}} >
+                        <h3 style={{paddingLeft:'10px'}}>No Internet Connection</h3>
+                        <Close style={{cursor:'pointer',paddingRight:'10px'}} onClick={()=> {
+                            setSpinner(false);
+                            setNoInternetConnection(false);
+                        }} />
+                    </div>
+                </Model>
+            }
         </div>
     )
 }

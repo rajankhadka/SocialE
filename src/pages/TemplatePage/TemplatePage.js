@@ -28,11 +28,16 @@ const TemplatePage = props => {
     const [selectTemplate, setSelectTemplate] = useState('only');
 
     const selectTemplateValueHandler = (event) =>{
-    setSelectTemplate(event.target.value);
+        setSelectTemplate(event.target.value);
     }
 
     //saving template data
     const [templateData, setTemplateData] = useState([]);
+
+    //get template trigger every time create template is success
+    const [templategetTrigger, setTemplategetTrigger] = useState(false);
+    
+    const templategetTriggerHandler = () => setTemplategetTrigger(prevState => !prevState);
 
     useEffect(()=>{
         console.log(selectTemplate)
@@ -75,7 +80,7 @@ const TemplatePage = props => {
             fetchallTemplate();
             
         }
-    },[selectTemplate])
+    },[selectTemplate,templategetTrigger])
 
     useEffect(()=>{
         
@@ -125,6 +130,7 @@ const TemplatePage = props => {
                             buttonName = "Create New Template" 
                             title="Template"
                             url="/home/create-template"
+                            templategetTriggerHandler={templategetTriggerHandler}
                         />
                     </SpecificCampaignDetailProvider>
                     

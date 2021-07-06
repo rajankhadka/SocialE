@@ -10,6 +10,9 @@ import { template } from '../../../api/template/template';
 
 function TemplateEngineBody(props) {
 
+    //template created successfully
+    const [templateCreate, setTemplateCreate] = useState(false);
+
     //upload field
 
     //template name
@@ -21,7 +24,7 @@ function TemplateEngineBody(props) {
 
     const colorHandler = ( color) => {
         setHeaderbackgroundColorPicker(color.hex);
-        console.log(color.hex);
+        // console.log(color.hex);
     }
 
     const [headerColorPicker, setHeaderColorPicker] = useState("#ffffff");
@@ -70,11 +73,11 @@ function TemplateEngineBody(props) {
     const [headerNav2, setHeaderNav2] = useState("");
     const [headerNav3, setHeaderNav3] = useState("");
 
-    const [bodyLandingImage, setBodyLandingImage] = useState();
+    const [bodyLandingImage, setBodyLandingImage] = useState(null);
 
     //title logo handler 
     const tileLogoHandler = (event) => {
-        console.log(event.target.files[0]);
+        // console.log(event.target.files[0]);
         setTitleLogo(event.target.files[0]);
     }
 
@@ -92,29 +95,34 @@ function TemplateEngineBody(props) {
         setCreatenewTemplate(true);
         props.modifyTemplateHandler()
         props.createCampaignHandler();
-        console.log("Submitted!!!");
-        console.log("title logo", titleLogo);
-        console.log("title Name", titleName);
+        // console.log("Submitted!!!");
+        // console.log("title logo", titleLogo);
+        // console.log("title Name", titleName);
 
-        console.log("header background color", headerbackgroundColorPicker);
-        console.log("header Font color", headerColorPicker);
-        console.log("header logo", headerLogo);
-        console.log("header navbar ", headerNav1, "\n", headerNav2, "\n", headerNav3);
+        // console.log("header background color", headerbackgroundColorPicker);
+        // console.log("header Font color", headerColorPicker);
+        // console.log("header logo", headerLogo);
+        // console.log("header navbar ", headerNav1, "\n", headerNav2, "\n", headerNav3);
 
-        console.log("body background color", bodybackgroundColorPicker);
-        console.log("body color", bodyColorPicker);
-        console.log("body landing page", bodyLandingImage);
-        console.log("body button color", bodyButtonColorPicker);
+        // console.log("body background color", bodybackgroundColorPicker);
+        // console.log("body color", bodyColorPicker);
+        // console.log("body landing page", bodyLandingImage);
+        // console.log("body button color", bodyButtonColorPicker);
 
-        console.log("footer background color", footerbackgroundColorPicker);
-        console.log("footer font color", footerColorPicker);
+        // console.log("footer background color", footerbackgroundColorPicker);
+        // console.log("footer font color", footerColorPicker);
 
-        console.log("props.iframerender-->", props.iframerender);
+        // console.log("props.iframerender-->", props.iframerender);
 
+        // console.log(template.templateresourcecreate);
+
+        // console.log(props.shownewtemplateReducers) //template url
+        // console.log(templateName) //new template name
         fetch(template.templateresourcecreate, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                // "Content-Type":"multipart/form-data",
                 "Authorization": `Token ${window.localStorage.getItem('token')}`
             },
             body: JSON.stringify({
@@ -130,11 +138,47 @@ function TemplateEngineBody(props) {
                 bodyButtonColor: bodyButtonColorPicker
             })
         })
-            .then(response => response.json())
+            .then(response => {
+                if(response.status === 400){
+                    response.json().then(data => {
+                        // console.log(data);
+                        if(data.template_name){
+                            alert(data.template_name[0]);
+                        }
+                    })
+                }else{
+                    return response.json()
+                }
+                
+            })
             .then(data => {
-                console.log(data);
-                props.newTemplateHandler(data.tempate_name);
-                console.log("original url", `${props.iframerender}?template_name=${props.template_name}`);
+                if(data){
+                    alert('Template Successfully Created!!!');
+                    props.templategetTriggerHandler();
+                    // console.log(data);
+                    props.newTemplateHandler(data.tempate_name);
+
+                    //resetting all value
+                    setTemplateName('');
+                    setHeaderbackgroundColorPicker('#ffffff');
+                    setHeaderColorPicker("#ffffff");
+                    setBodybackgroundColorPicker("#ffffff");
+                    setBodyColorPicker("#ffffff");
+                    setBodyButtonColorPicker("#ffffff");
+                    setFooterbackgroundColorPicker('"#ffffff"');
+                    setFooterColorPicker("#ffffff");
+                    setTitleLogo('')
+                    setTitleName('')
+                    setHeaderLogo('')
+                    setHeaderNav1('')
+                    setHeaderNav2('')
+                    setHeaderNav3('')
+                    setBodyLandingImage(null);
+                    setCreatenewTemplate(false);
+
+                }
+                
+                // console.log("original url", `${props.iframerender}?template_name=${props.template_name}`);
             })
             .catch(err => console.log(err));
     }
@@ -369,8 +413,8 @@ function TemplateEngineBody(props) {
                     {
                         templateName.length > 0 &&
                         <Button
-                            variant="contained"
-                            style={{ textTransform: "capitalize",marginRight:"400px" }}
+                            variant="text"
+                            style={{ textTransform: "capitalize",marginLeft:'10px' }}
                             onClick={createTemplateHandler}
                             size="small"
 
@@ -382,8 +426,8 @@ function TemplateEngineBody(props) {
                     {
                         (templateName.length > 0 && createnewTemplate ) &&
                         <Button
-                            variant="contained"
-                            style={{ textTransform: "capitalize",marginRight:"20px" }}
+                            variant="text"
+                            style={{ textTransform: "capitalize" }}
                             onClick={() => window.open(`${props.shownewtemplateReducers}?template_name=${templateName}`)}
                             size="small"
                         >

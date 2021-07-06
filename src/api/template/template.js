@@ -10,6 +10,12 @@ const template = {
 
     //get all template 
     'templateallget': BASEURL +`template/resource/get/`,
+
+    //template resource retrieve
+    'templateresourceretrieve': BASEURL +'template/resource/retrieve',
+
+    //template delete
+    'templatedelete': BASEURL +'template/resource/delete/'
 }
 
 

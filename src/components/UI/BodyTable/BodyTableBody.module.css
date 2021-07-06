@@ -102,6 +102,12 @@
   padding-left: 10px;
 }
 
+/* testing purpose without edit */
+.homePage__body__bodyTable__name__template__1{
+  flex:0.8;
+  padding-left: 10px;
+}
+
 /* user management  */
 .homePage__body__bodyTable__name__user{
   flex:0.2;
@@ -358,6 +364,12 @@
   justify-content: flex-end;
 }
 
+.groupManagement__preview__header{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .usermanagement__preview__body{
   width: 100%;
   display: flex;
@@ -404,4 +416,24 @@
 
 .usermanagement__preview__right > div::-webkit-scrollbar{
   display: none;
+}
+
+
+
+
+
+
+
+/* template management ------------- */
+.templatepreview{
+  background-color: white;
+  width: 90%;
+}
+
+.templatepreview__header{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  /* background-color: blue; */
+  align-items: center;
 }

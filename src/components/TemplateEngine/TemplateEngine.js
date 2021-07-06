@@ -175,7 +175,7 @@ function TemplateEngine(props) {
     }
 
     const activeclassesTitleHandler = (event) => {
-        console.log(event.target.id);
+        // console.log(event.target.id);
         switch (event.target.id) {
             case "titleName":
                 setActiveclassesTitle({
@@ -293,7 +293,7 @@ function TemplateEngine(props) {
                     <div>
                         <a style={{ color: "white" }}
                             onClick={() => {
-                                console.log("a tag clicked!!!")
+                                // console.log("a tag clicked!!!")
                             }}
                             href={`${props.iframerender}?template_name=${props.templateName}`} target="_blank"
                             rel="noreferrer"
@@ -345,6 +345,7 @@ function TemplateEngine(props) {
                     createCampaignHandler={props.createCampaignHandler}
                     modifyTemplateHandler={modifyTemplateHandler}
                     template_name={props.template_name}
+                    templategetTriggerHandler={props.templategetTriggerHandler}
                 />
                 
                 

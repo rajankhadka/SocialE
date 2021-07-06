@@ -10,11 +10,15 @@ import { openForgetPassword } from "../../redux/actions/showforgetpasswordAction
 import { closeForgetPassword } from "../../redux/actions/showforgetpasswordAction";
 
 //router
-import { useHistory } from "react-router-dom";
+import {  } from "react-router-dom";
 import { signinApi } from '../../api/signin/signin';
+import Spinner from '../../components/Spinner/Spinner';
+
+
+
 
 function ForgetPassword(props) {
-    const forgotPasswordHistory = useHistory()
+    // const forgotPasswordHistory = useHistory()
 
     const [email, setEmail] = useState("");
     const [errormsg, setErrormsg] = useState("");
@@ -29,10 +33,14 @@ function ForgetPassword(props) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    //spinner
+    const [spinnerModal, setSpinnerModal] = useState(false);
+
     const passwordverifyHandler = (event) => {
         event.preventDefault();
         console.log(password);
         console.log(confirmPassword);
+        setSpinnerModal(true);
         if (password === confirmPassword) {
             fetch(signinApi.setpassword, {
                 method: "POST",
@@ -42,17 +50,19 @@ function ForgetPassword(props) {
                 body: JSON.stringify({
                     "email": email,
                     "new_password": password,
+                    confirm_password:confirmPassword,
                 })
             })
                 .then(response => response.json())
                 .then(data => {
-                    
+                    setSpinnerModal(false);
                     setErrormsg("");
                     props.closeForgetPasswordAction();
                     // forgotPasswordHistory.replace("/login");
                 })
                 .catch(err => console.log(err));
         } else {
+            setSpinnerModal(false);
             setErrormsg("Password mismatch")
         }
     }
@@ -60,6 +70,7 @@ function ForgetPassword(props) {
     //email verify
     const forgetPasswordHandler = (event) => {
         event.preventDefault();
+        setSpinnerModal(true);
         fetch(signinApi.sendmail, {
             method: "POST",
             headers: {
@@ -70,6 +81,7 @@ function ForgetPassword(props) {
             })
         })
             .then(response => {
+                setSpinnerModal(false);
                 if (response.status !== 200) {
                     return;
                 }
@@ -85,7 +97,7 @@ function ForgetPassword(props) {
                     setShowemail(true);
                     setShowpassword(false);
                 } else {
-                    console.log("data--->",data);
+                    
                     setErrormsg("");
                     setShowotp(true);
                     setShowemail(false);
@@ -99,8 +111,9 @@ function ForgetPassword(props) {
 
     //otphandler
     const otpverifyHandler = (event) => {
+        setSpinnerModal(true);
         event.preventDefault();
-        fetch(signinApi.verifyotp, {
+        fetch(signinApi.forgetpasswordverfityotp, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -113,6 +126,7 @@ function ForgetPassword(props) {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
+                setSpinnerModal(false);
                 if (data.status === "OTP Verified") {
                     setShowotp(false);
                     setShowemail(false);
@@ -145,6 +159,7 @@ function ForgetPassword(props) {
                         onChange={(event) => {
                             setEmail(event.target.value);
                         }}
+                        disabled = {spinnerModal ? true : false}
                         style={{
                             marginTop: "20px",
                             marginBottom: "20px",
@@ -161,11 +176,12 @@ function ForgetPassword(props) {
                     <Button color="primary"
                         variant="contained"
                         style={{
-                            width: "50px"
+                            width: "200px"
                         }}
                         type="submit"
+                        disabled = {spinnerModal ? true : false}
                     >
-                        Verify
+                        Send Otp {spinnerModal && <Spinner className={classes.spinner} />}
                     </Button>
                 </form>
             }
@@ -182,6 +198,7 @@ function ForgetPassword(props) {
                         onChange={(event) => {
                             setotp(event.target.value);
                         }}
+                        disabled = {spinnerModal ? true : false}
                         style={{
                             marginTop: "20px",
                             marginBottom: "20px",
@@ -198,11 +215,12 @@ function ForgetPassword(props) {
                     <Button color="primary"
                         variant="contained"
                         style={{
-                            width: "50px"
+                            width: "200px"
                         }}
                         type="submit"
+                        disabled = {spinnerModal ? true : false}
                     >
-                        Verify
+                        Verify {spinnerModal && <Spinner className={classes.spinner} />}
                     </Button>
                 </form>
             }
@@ -220,6 +238,7 @@ function ForgetPassword(props) {
                             
                             setPassword(event.target.value);
                         }}
+                        disabled = {spinnerModal ? true : false}
                         style={{
                             marginTop: "15px",
                             marginBottom: "20px",
@@ -239,6 +258,7 @@ function ForgetPassword(props) {
                         type="password"
                         required={true}
                         value={confirmPassword}
+                        disabled = {spinnerModal ? true : false}
                         onChange={(event) => {
                             
                             setConfirmPassword(event.target.value);
@@ -259,11 +279,12 @@ function ForgetPassword(props) {
                     <Button color="primary"
                         variant="contained"
                         style={{
-                            width: "50px"
+                            width: "200px"
                         }}
                         type="submit"
+                        disabled = {spinnerModal ? true : false}
                     >
-                        Submit
+                        Submit {spinnerModal && <Spinner className={classes.spinner} />}
                     </Button>
                 </form>
             }

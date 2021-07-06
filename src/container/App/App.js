@@ -1,7 +1,7 @@
 import './App.css';
 
 //react-router
-import { Route, Switch,BrowserRouter as Router,Redirect } from "react-router-dom";
+import { Route, Switch,BrowserRouter as Router } from "react-router-dom";
 
 //importing components
 import LoginRegisterUI from '../../components/UI/LoginRegisterUI/LoginRegisterUI';
@@ -16,7 +16,6 @@ import Campaign from '../../pages/HomePage/Campaign/Campaign';
 import Setting from '../../pages/Setting/Setting';
 import Template001 from '../../template/Template001';
 import Template002 from '../../template/Template002';
-import Test from './Test';
 import TargetAudienceGroup from '../../pages/TargetAudienceGroup/TargetAudienceGroup';
 import PageNotFound from '../../hoc/PageNotFound';
 import LogsPage from '../../pages/LogsPage/LogsPage';

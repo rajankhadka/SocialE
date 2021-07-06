@@ -1,4 +1,4 @@
-import { Button, FormControl, IconButton, InputLabel, Select, TextField } from '@material-ui/core';
+import { Button, IconButton, } from '@material-ui/core';
 import { Close, Delete, Edit, Group, Send, Visibility } from '@material-ui/icons';
 import React,{useState,useContext,useEffect} from 'react'
 import { SpecificCampaignDetailContext } from '../../../contextAPI/SpecificCampaignDetail/SpecificCampaignDetailContext';
@@ -10,11 +10,13 @@ import CampaignTargetAudienceGroup from '../../CampaignTargetAudienceGroup/Campa
 import CampaignPreview from '../../CampaignPreview/CampaignPreview';
 import { campaignApi } from '../../../api/campaign/campaign';
 import { userapi } from '../../../api/userapi/user';
+import GroupPermission from '../../UserPermissions/GroupPermission';
+import Template001 from '../../../template/Template001';
+import Template002 from '../../../template/Template002';
 
 function BodyTableBody(props) {
 
     const [campaignDetail, setCampaignDetail] = useContext(SpecificCampaignDetailContext);
-
     
 
     const [showSendEmail, setShowSendEmail] = useState(false);
@@ -25,9 +27,9 @@ function BodyTableBody(props) {
 
     const [sendemailBody, setSendemailBody] = useState("");
 
-    const [campaignEditSelected, setCampaignEditSelected] = useState(false);
+    // const [campaignEditSelected, setCampaignEditSelected] = useState(false);
 
-    const campaignEditOff = () => setCampaignEditSelected(false);
+    // const campaignEditOff = () => setCampaignEditSelected(false);
 
     //user campaign target audience group
     const [showgroupModal, setShowgroupModal] = useState(false);
@@ -51,13 +53,77 @@ function BodyTableBody(props) {
     //preview user management
     const [userPreview, setUserPreview] = useState(false);
 
+    //group management
+    const [groupManagementSpecificData, setGroupManagementSpecificData] = useState({});
+    const [groupManagementModal, setGroupManagementModal] = useState(false);
+    const [groupPermissionList, setGroupPermissionList] = useState({});
+    const [groupDeleteModal, setGroupDeleteModal] = useState(false);
+    const [groupUpdateModal, setGroupUpdateModal] = useState(false);
+    //preview
+    const groupManagementModalOff = () =>{
+        setGroupManagementModal(false)
+    }
+
+    const groupManagementModalOn = () => {
+        setGroupManagementModal(true)
+    }
+
+    //delete
+    const groupManagementDeleteOffHandler = () =>{
+        setGroupDeleteModal(false);
+    }
+    const groupManagementDeleteOnHandler =() =>{
+        setGroupDeleteModal(true);
+    }
+
+    //update
+    const groupManagementUpdateOffHandler = () =>{
+        setGroupUpdateModal(false);
+    }
+    const groupManagementUpdateOnHandler = () =>{
+        setGroupUpdateModal(true);
+    }
+
+    //template management
+    const [templateSpecificData, setTemplateSpecificData] = useState({});
+
+    //template preview
+    const [templatePreviewModal, setTemplatePreviewModal] = useState(false);
+
+    const templatePreviewModalOffHandler = () => setTemplatePreviewModal(false);
+    const templatePreviewModalOnHandler = () => setTemplatePreviewModal(true);
+
+    //template delete
+    const [templateDelete, setTemplateDelete] = useState(false);
+
+    // conditionally template rendering
+    let templateRendering = null;
+    if(templateSpecificData.id && templatePreviewModal){
+        const split = templateSpecificData.template_url.split('/');
+        
+        if(split.length >=5){
+            // console.log(split);
+            let template_url = [split[3],split[4]].join('/');
+            // console.log(template_url);
+            if(template_url === 'template/001'){
+                templateRendering = <Template001 template_name={templateSpecificData.template_name} />
+            }else if(template_url === 'template/002'){
+                templateRendering = <Template002 template_name={templateSpecificData.template_name} />
+            }else{
+                templateRendering =<h1>No Template</h1>
+            }
+        }else{
+            templateRendering =<h1>No Template</h1>
+        }
+    }
 
     //fetching data to preview user management group and permission
 
     useEffect(() =>{
-        console.log("user effect");
+        // console.log("user effect");
         switch(props.title){
             case 'User':
+                
                 const fetchuserPerviewData = async() => {
                     const res = await fetch(userapi.usergroup,{
                         method:'POST',
@@ -75,13 +141,38 @@ function BodyTableBody(props) {
                     }
                 }
 
-                fetchuserPerviewData();
+                if(userSpecificData.id){
+                    fetchuserPerviewData();
+                }
+                
                 break;
             
+            case 'Group Management':
+                // console.log("groupManagementSpecificData");
+                
+                    fetch(userapi.viewgrouppermission,{
+                        method:'POST',
+                        headers:{
+                            'Content-Type':'application/json',
+                            'Authorization':`Token ${window.localStorage.getItem('token')}`
+                        },
+                        body:JSON.stringify({
+                            group_id: groupManagementSpecificData.id
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            setGroupPermissionList({...data})
+                            // console.log(data);
+                        })
+                        .catch(err => console.log(err));
+                
+                break;
+
             default:
                 break;
         }
-    },[userPreview])
+    },[userPreview, groupManagementSpecificData.id])
 
     switch (props.title) {
 
@@ -90,36 +181,46 @@ function BodyTableBody(props) {
                 body = (
                     props.templateData.map(element => (
                         <div className={classes.homePage__body__bodyTableBodyRow} key={element.id}>
-                            <div className={classes.homePage__body__bodyTable__name__template}>
+                            <div className={classes.homePage__body__bodyTable__name__template__1}>
                                 <p>{element.template_name}</p>
                             </div>
     
                             {/* template edit */}
-                            <div className={classes.homePage__body__bodyTable__edit}>
+                            {/* <div className={classes.homePage__body__bodyTable__edit}>
                                 <IconButton
                                     
                                 >
                                     <Edit style={{ fontSize: 15, color: "green" }} />
                                 </IconButton>
-                            </div>
+                            </div> */}
     
+                            {/* template preview */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    onClick = {()=>{
+                                        // console.log(element);
+                                        templatePreviewModalOnHandler();
+                                        setTemplateSpecificData({...element})
+                                    }}
+                                >
+                                    <Visibility style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
+
                             {/* template delete */}
                             <div className={classes.homePage__body__bodyTable__edit}>
                                 <IconButton
-                                    
+                                    onClick={() => {
+                                        // console.log(element)
+                                        setTemplateDelete(true);
+                                        setTemplateSpecificData({...element})
+                                    }}
                                 >
                                     <Delete style={{ fontSize: 15, color: "red" }} />
                                 </IconButton>
                             </div>
     
-                            {/* template preview */}
-                            <div className={classes.homePage__body__bodyTable__edit}>
-                                <IconButton
-                                   
-                                >
-                                    <Visibility style={{ fontSize: 15, color: "green" }} />
-                                </IconButton>
-                            </div>
+                            
                         </div>
                     ))
                 )
@@ -150,7 +251,7 @@ function BodyTableBody(props) {
     
                             <div className={classes.homePage__body__bodyTable__send}>
                                 <IconButton onClick={() => {
-                                    console.log(element);
+                                    // console.log(element);
                                     setCampaignID(element.id)
                                     setShowSendEmail(true)
                                 }}>
@@ -162,7 +263,7 @@ function BodyTableBody(props) {
                             <div className={classes.homePage__body__bodyTable__edit}>
                                 <IconButton
                                     onClick={() => {
-                                        console.log(element);
+                                        // console.log(element);
                                         // setCampaignEditSelected(true);
                                         setCampaignDetail(element);
                                         props.campaignEditTriggerHanlderON()
@@ -238,7 +339,7 @@ function BodyTableBody(props) {
                             <div className={classes.homePage__body__bodyTable__edit}>
                                 <IconButton
                                     onClick={() =>{
-                                        console.log("edit",element);
+                                        // console.log("edit",element);
                                         setUserSpecificData({...element})
                                     }}
                                 >
@@ -263,7 +364,7 @@ function BodyTableBody(props) {
                                 <IconButton
                                     onClick={() =>{
 
-                                        console.log("preview",element);
+                                        // console.log("preview",element);
                                         setUserSpecificData({...element});
                                         setUserPreview(true);
                                     }}
@@ -278,15 +379,65 @@ function BodyTableBody(props) {
             }
             break;
 
+        case 'Group Management':
+            if(props.groups.length > 0){
+                body =(
+                    props.groups.map((element => (
+                        <div key={element.id} className={classes.homePage__body__bodyTableHeader}>
+                            <div className={classes.homePage__body__bodyTable__name__template}>
+                                <p className={classes.h4}>{ element.name }</p>
+                            </div>
+
+                            {/* group edit */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    onClick={() =>{
+                                        setGroupManagementSpecificData({...element});
+                                        groupManagementUpdateOnHandler()
+                                    }}
+                                >
+                                    <Edit style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
+    
+                            {/* group delete */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                    onClick={() =>{
+                                        setGroupManagementSpecificData({...element});
+                                        groupManagementDeleteOnHandler();
+                                    }}
+                                >
+                                    <Delete style={{ fontSize: 15, color: "red" }} />
+                                </IconButton>
+                            </div>
+    
+                            {/* group preview */}
+                            <div className={classes.homePage__body__bodyTable__edit}>
+                                <IconButton
+                                   onClick={() =>{
+                                        setGroupManagementSpecificData({...element});
+                                        groupManagementModalOn();
+                                }}
+                                >
+                                    <Visibility style={{ fontSize: 15, color: "green" }} />
+                                </IconButton>
+                            </div>
+                        </div>
+                    )))
+                )
+            }
+            break;
+
         default:
             break;
     }
 
     const sendEmailHandler = (event) => {
         event.preventDefault();
-        console.log(sendemailSubject);
-        console.log(sendemailBody);
-        console.log(campaignId);
+        // console.log(sendemailSubject);
+        // console.log(sendemailBody);
+        // console.log(campaignId);
 
         fetch(template.templatesend, {
             method: "POST",
@@ -301,7 +452,10 @@ function BodyTableBody(props) {
             })
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                //mail send status
+                console.log(data)
+            })
             .catch(err => console.log(err));
     }
 
@@ -349,20 +503,22 @@ function BodyTableBody(props) {
     }else if(props.title === 'Template'){
         header =(
             <div className={classes.homePage__body__bodyTableHeader}>
-                <div className={classes.homePage__body__bodyTable__name__template}>
+                <div className={classes.homePage__body__bodyTable__name__template__1}>
                     <h4>{props.title}</h4>
                 </div>
 
-                <div className={classes.homePage__body__bodyTable__edit}>
+                {/* <div className={classes.homePage__body__bodyTable__edit}>
                     <h4>Edit</h4>
+                </div> */}
+
+                
+
+                <div className={classes.homePage__body__bodyTable__delete}>
+                    <h4>Preview</h4>
                 </div>
 
                 <div className={classes.homePage__body__bodyTable__delete}>
                     <h4>Delete</h4>
-                </div>
-
-                <div className={classes.homePage__body__bodyTable__delete}>
-                    <h4>Preview</h4>
                 </div>
             </div>
         )
@@ -394,6 +550,26 @@ function BodyTableBody(props) {
                 </div>
             </div>
         )
+    }else if(props.title === 'Group Management'){
+        header=(
+            <div className={classes.homePage__body__bodyTableHeader}>
+                <div className={classes.homePage__body__bodyTable__name__template}>
+                    <h4>Group Name</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__edit}>
+                    <h4>Edit</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__delete}>
+                    <h4>Delete</h4>
+                </div>
+
+                <div className={classes.homePage__body__bodyTable__delete}>
+                    <h4>Preview</h4>
+                </div>
+            </div>
+            )
     }
 
     return (
@@ -557,7 +733,7 @@ function BodyTableBody(props) {
                             <button
                                 className={classes.DeleteButton}
                                 onClick={() => {
-                                    console.log("yes delete");
+                                    // console.log("yes delete");
 
                                     fetch(campaignApi.campaigndelete,{
                                         method:'DELETE',
@@ -571,7 +747,7 @@ function BodyTableBody(props) {
                                     })
                                         .then(res => res.json())
                                         .then(data => {
-                                            console.log(data);
+                                            // console.log(data);
                                             props.campaignDeleteTriggerHandlerOFF();
                                         })
                                         .catch(err => console.log(err))
@@ -584,7 +760,7 @@ function BodyTableBody(props) {
                             <button
                                 className={classes.DeleteNotButton}
                                 onClick={() => {
-                                    console.log("no delete")
+                                    // console.log("no delete")
                                     props.campaignDeleteTriggerHandlerOFF();
                                 }}
                             >
@@ -597,7 +773,189 @@ function BodyTableBody(props) {
 
                 </Model>
             }
-            
+
+            {/* group management preview */}
+            {
+                (groupManagementModal && groupPermissionList.group ) &&
+                <Model>
+
+                    <div className={classes.usermanagement__preview}>
+                        <div className={classes.groupManagement__preview__header}>
+                            {groupManagementSpecificData.name}
+                            <Close style={{cursor:'pointer'}} onClick={() => groupManagementModalOff(false)} />
+                        </div>
+
+                        <div className={classes.usermanagement__preview__body}>
+                            {/* left side (group name) */}
+                            <div className={classes.usermanagement__preview__left}>
+                                {
+                                    groupPermissionList.group &&
+
+                                    <div>
+                                        {
+                                            groupPermissionList.permissons.map((group,index) => <p key={index} >{index +1 }) {group}</p>)
+                                        }
+                                    </div>
+                                    
+                                }
+                            </div>                    
+                        </div>
+                    </div>
+
+                </Model>
+            }
+
+            {/* group management delete */}
+
+            {
+                groupDeleteModal &&
+            <Model>
+                    <div className={classes.deleteGroup} style={{
+                        display: 'flex',
+                        flexDirection: 'column', alignItems: 'center'
+
+                    }}>
+                        <p style={{paddingTop:'10px',paddingBottom:'10px'}} >Are You Sure!!!</p>
+                        <div style={{marginTop:'15px',paddingBottom:'20px'}}>
+                            <button
+                                className={classes.DeleteButton}
+                                onClick={() => {
+                                    // console.log("yes delete");
+                                    
+
+                                    fetch(userapi.deleteGroup,{
+                                        method:'DELETE',
+                                        headers:{
+                                            'Content-Type':'application/json',
+                                            'Authorization':`Token ${window.localStorage.getItem('token')}`
+                                        },
+                                        body:JSON.stringify({
+                                            id:groupManagementSpecificData.id
+                                        })
+                                    })
+                                        .then(res => res.json())
+                                        .then(result => {
+                                            groupManagementDeleteOffHandler();
+                                            props.groupDeleteTriggerHandler();
+                                        })
+                                        .catch(err => console.log(err));
+                                }}
+                            >
+                                Yes
+                                 
+                            </button>
+                            <button
+                                className={classes.DeleteNotButton}
+                                onClick={() => {
+                                    // console.log("no delete")
+                                    groupManagementDeleteOffHandler();
+                                }}
+                            >
+                                No
+                            </button>
+                        </div>
+                        
+                    </div>
+                    
+
+                </Model>
+            }
+
+            {/* group management update  */}
+            {
+                groupUpdateModal &&
+                <Model>
+                    <GroupPermission 
+                        groupUpdateTriggerHandler={props.groupUpdateTriggerHandler}
+                        groupManagementSpecificData={groupManagementSpecificData}
+                        groupManagementUpdateOffHandler={groupManagementUpdateOffHandler}
+                    />
+                </Model>
+            }
+
+
+            {/* template management */}
+            {
+                (templatePreviewModal && templateSpecificData.template_name) &&
+                <Model>
+                    <div className={classes.templatepreview}>
+                        <div className={classes.templatepreview__header}>
+                            <p style={{paddingBottom:'10px',paddingLeft:'10px'}}> Template Name : {templateSpecificData.template_name}</p>
+
+                            <Close 
+                                style={{cursor:'pointer',paddingRight:'5px'}}
+                                onClick={templatePreviewModalOffHandler}
+                            />
+                        </div>
+
+                        {/* conditionally template rendering */}
+                        { templateRendering }
+                    </div>
+                </Model>
+            }
+
+            {/* template delete  */}
+
+            {
+                templateDelete &&
+
+                <Model>
+                    <div className={classes.deleteGroup} style={{
+                        display: 'flex',
+                        flexDirection: 'column', alignItems: 'center'
+
+                    }}>
+                        <p style={{paddingTop:'10px',paddingBottom:'10px'}} >Are You Sure!!!</p>
+                        <div style={{marginTop:'15px',paddingBottom:'20px'}}>
+                            <button
+                                className={classes.DeleteButton}
+                                onClick={() => {
+                                    // console.log("yes delete");
+                                    
+                                    fetch(template.templatedelete,{
+                                        method:'DELETE',
+                                        headers:{
+                                            'Content-Type':'application/json',
+                                            'Authorization':`Token ${window.localStorage.getItem('token')}`
+                                        },
+                                        body:JSON.stringify({
+                                            id:templateSpecificData.id
+                                        })
+                                    })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            // console.log(data);
+                                            if(data.success){
+                                                setTemplateDelete(false);
+                                                props.templategetTriggerHandler();
+                                            }else{
+                                                alert(`Cannot delete resource , since they are associated in following campaigns \n ${data['Cannot delete resource , since they are associated in following campaigns']}`)
+                                            }
+                                            
+                                        })
+                                        .catch(err => console.log(err))
+                                    
+                                }}
+                            >
+                                Yes
+                                 
+                            </button>
+                            <button
+                                className={classes.DeleteNotButton}
+                                onClick={() => {
+                                    // console.log("no delete")
+                                    setTemplateDelete(false)
+                                }}
+                            >
+                                No
+                            </button>
+                        </div>
+                        
+                    </div>
+                    
+
+                </Model>
+            }
         </div>
     )
 }

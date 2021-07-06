@@ -1,4 +1,4 @@
-import React from "react";
+import React,{} from "react";
 import classes from "./BodyTable.module.css";
 
 //material UI
@@ -30,10 +30,11 @@ const BodyTable = (props) => {
                 title={props.title}
                 routeURLHandler={routeURLHandler}
                 campaigndetailURL={props.campaigndetailURL}
+                templategetTriggerHandler={props.templategetTriggerHandler}
             />
         );
     } else if (props.header === 'Templates' && props.templatePageToggle === "create") {
-        bodyTable = <CreateTemplate />;
+        bodyTable = <CreateTemplate templategetTriggerHandler={props.templategetTriggerHandler} />;
     } else if (props.header === "Target Audience Groups") {
         bodyTable = null;
     }else if(props.header === "User Management"){
@@ -42,6 +43,15 @@ const BodyTable = (props) => {
             title={props.title}
             allUser={props.allUser}
         />
+    }else if(props.header === 'Group Management'){
+        // console.log(props.groups);
+        bodyTable = 
+            <BodyTableBody 
+                groups={props.groups}
+                title={props.title}
+                groupUpdateTriggerHandler={props.groupUpdateTriggerHandler}
+                groupDeleteTriggerHandler={props.groupDeleteTriggerHandler}
+            />
     }
     
     else {
@@ -71,28 +81,31 @@ const BodyTable = (props) => {
                 zIndex: !props.showtooltipReducers.bodyzIndex ? "-1" : "1" 
             }}
         >
-            <HomePageBodyHeader 
+            {
+                props.header !== 'Group Management' &&
+                <HomePageBodyHeader 
+                    //header select campaign part
+                    selectCampaign={props.selectCampaign}
+                    selectCampaignValueHandler={props.selectCampaignValueHandler}
 
-                //header select campaign part
-                selectCampaign={props.selectCampaign}
-                selectCampaignValueHandler={props.selectCampaignValueHandler}
-
-                //template choose part
-                selectTemplate={props.selectTemplate}
-                selectTemplateValueHandler={props.selectTemplateValueHandler}
+                    //template choose part
+                    selectTemplate={props.selectTemplate}
+                    selectTemplateValueHandler={props.selectTemplateValueHandler}
 
 
-                header={props.header} 
-                buttonName={props.buttonName}
-                groupName={props.groupName}
-                title={props.title}
-                url={props.url}
-                showGroup={props.showGroup}
-                showGroupONHandler={props.showGroupONHandler}
-                showAllGroup={props.showAllGroup}
-                showONAllGroupHandler={props.showONAllGroupHandler}
-                showcreateGroupONhandler={props.showcreateGroupONhandler}
-            />
+                    header={props.header} 
+                    buttonName={props.buttonName}
+                    groupName={props.groupName}
+                    title={props.title}
+                    url={props.url}
+                    showGroup={props.showGroup}
+                    showGroupONHandler={props.showGroupONHandler}
+                    showAllGroup={props.showAllGroup}
+                    showONAllGroupHandler={props.showONAllGroupHandler}
+                    showcreateGroupONhandler={props.showcreateGroupONhandler}
+                />
+            }
+            
 
             {bodyTable}
            

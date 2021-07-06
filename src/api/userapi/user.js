@@ -18,4 +18,13 @@ export const userapi = {
 
     //user permission and group detail
     "usergroup": BASEURL + 'group/details/',
+
+    //view group permission
+    "viewgrouppermission": BASEURL + 'group/viewpermissions/',
+
+    //update group
+    "updateGroup": BASEURL + 'group/update/',
+
+    //delete group
+    "deleteGroup":BASEURL + 'group/delete/'
 }

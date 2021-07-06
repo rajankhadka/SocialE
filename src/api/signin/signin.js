@@ -16,7 +16,8 @@ const signinApi = {
 
     // change password
     'setpassword':BASEURL+'setpassword/',
-    'sendmail':BASEURL+'sendmail/',
+    'sendmail':BASEURL+'email/',
+    'forgetpasswordverfityotp':BASEURL + 'verify/',
 
     //token check
     'tokenverification':BASEURL +'user/state/',
