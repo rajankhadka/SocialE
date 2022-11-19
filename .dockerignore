@@ -1,0 +1,7 @@
+Dockerfile
+dockerfile.*
+mediafile*
+README*
+test.js
+.*
+node_modules/
