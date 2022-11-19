@@ -11,6 +11,6 @@ RUN npm i && \
 
 COPY . .
 
-RUN npm run build
+# RUN npm run build
 
-ENTRYPOINT ["serve", "-s", "-p", "9000" , "build"]
+# ENTRYPOINT ["serve", "-s", "-p", "9000" , "build"]
