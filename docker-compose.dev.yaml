@@ -10,6 +10,6 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - /app/node_modules
-      - .:/app
+      - /demo_project/socialE
+      - ./:./
     restart: always

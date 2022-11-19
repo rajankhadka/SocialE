@@ -2,7 +2,7 @@ FROM node:16-alpine
 
 EXPOSE 9000
 
-WORKDIR /demo_project/socialE
+WORKDIR /root/demo_project/socialE
 
 COPY ./package.json .
 
