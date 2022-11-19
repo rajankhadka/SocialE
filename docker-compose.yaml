@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  sociale-app:
+    image: socalie:1.0.0
+    container_name: socalie-container
+    build: 
+      context: .
+      dockerfile: dockerfile.dev
+    ports:
+      - 9000:9000
+    volumes:
+      - /app/node_modules
+      - .:/app
+    restart: always
